@@ -1,0 +1,23 @@
+{
+  "name": "backendserver",
+  "version": "1.0.0",
+  "description": "This is the backend files for our server",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "jsesc": "^3.0.2",
+    "knex": "^2.5.1",
+    "localtunnel": "^2.0.2",
+    "nodemon": "^3.0.1",
+    "python-shell": "^5.0.0",
+    "sqlite3": "^5.1.6"
+  }
+}
