@@ -20,7 +20,7 @@ app.get('/route/:ID/:workingTime/:startingAddress', async (req, res) => {
   }
 
   let returningData = '';
-  const python = spawn('python', ['pythonScript.py', req.params.workingTime, addressList]); //JSON.stringify(undeliveredLetters)
+  const python = spawn('python', ['route_creation_script .py', req.params.workingTime, addressList]); //JSON.stringify(undeliveredLetters)
 
   python.stdout.on('data', function (data) { // output stream FROM the python script
     returningData += data.toString();
