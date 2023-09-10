@@ -1,5 +1,16 @@
 Version 1.0.0
-	Final project
+	* Final project
 
 Version 1.0.1
-	Fix filenames
+	* Fix filenames
+
+Version 1.1.0
+	Backend:
+	* Fix python script call
+
+	Frontend:
+	* Create Global Style folder
+	* Create Home page stlye file ("home_page_style.js) and use it in Home pages screens (Deliver & Manager)
+	* Create a filter button in "Delivery_management.js" that opens a
+		filter dialog ("Delivery_filter_dialog.js") That now filter only by Status.
+

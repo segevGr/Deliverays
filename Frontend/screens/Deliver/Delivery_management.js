@@ -2,12 +2,23 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image, Alert } from 'react-native';
 import { IP, getLoginUserId } from '../../constsFiles';
 import { useFocusEffect } from '@react-navigation/native';
+import Delivery_filter_dialog from './Dialogs/Delivery_filter_dialog';
 
 const { width, height } = Dimensions.get('window');
 
 const Delivery_management = ({ navigation }) => {
     const deliver_id = getLoginUserId();
     const ip = IP();
+
+    const [filterDialogVisible, setDilterDialogVisible] = useState(false);
+
+    const showFilterDialog = () => {
+        setDilterDialogVisible(true);
+    };
+
+    const closeFilterDialog = () => {
+        setDilterDialogVisible(false);
+    };
 
     const delete_alert = (letterNumber, deliveryAddress) => {
         Alert.alert(
@@ -66,6 +77,7 @@ const Delivery_management = ({ navigation }) => {
                 letterNumber: result.letterNumber,
                 deliveryAddress: result.deliveryAddress, isDelivered: result.isDelivered
             }))
+            setOriginal_delivery_list(result)
             setdelivery_list(result);
         } catch (error) {
             console.log('Error fetching users:', error);
@@ -73,6 +85,16 @@ const Delivery_management = ({ navigation }) => {
     };
 
     const [delivery_list, setdelivery_list] = useState([]);
+
+    const [original_delivery_list, setOriginal_delivery_list] = useState([]);
+
+    const filterData = (filter_array) => {
+        let filtered_delivery_list = original_delivery_list;
+        if (filter_array['status'] != null){
+            filtered_delivery_list = filtered_delivery_list.filter(delivery => delivery.isDelivered === filter_array['status']);
+        }
+        setdelivery_list(filtered_delivery_list);
+    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -82,11 +104,12 @@ const Delivery_management = ({ navigation }) => {
 
     return (
         <View style={styles.container} >
+            <Delivery_filter_dialog visible={filterDialogVisible} onClose={closeFilterDialog} onSave={filterData} />
             <View style={styles.title_style}>
                 <TouchableOpacity onPress={back_to_previous_page}>
                     <Image source={require('../../assets/back_icon.png')} style={styles.back_icon} />
                 </TouchableOpacity>
-                <Text style={styles.title_text}>יש לך {delivery_list.length} משלוחים להשלים</Text>
+                <Text style={styles.title_text}>יש לך {delivery_list.length} משלוחים ברשימה</Text>
             </View>
             <ScrollView style={styles.scrollView}>
                 <View style={styles.content}>
@@ -126,6 +149,11 @@ const Delivery_management = ({ navigation }) => {
                 style={styles.add_user_btn}
                 onPress={add_delivery}>
                 <Text style={styles.add_user_lable}>הוספת משלוח</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.filter_btn}
+                onPress={showFilterDialog}>
+                <Text style={styles.add_user_lable}>סינון תוצאות</Text>
             </TouchableOpacity>
         </View>
     );
@@ -188,6 +216,15 @@ const styles = StyleSheet.create({
         height: height * 0.06,
         borderRadius: width * 0.1,
         marginTop: height * 0.03,
+        marginBottom: height * 0.02,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    filter_btn: {
+        backgroundColor: "#bbbbbb",
+        width: width * 0.36,
+        height: height * 0.06,
+        borderRadius: width * 0.1,
         marginBottom: height * 0.05,
         alignItems: 'center',
         justifyContent: 'center',

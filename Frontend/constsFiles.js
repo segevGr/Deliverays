@@ -4,5 +4,5 @@ export const getLoginUserId = () => login_user_id;
 export const setLoginUserId = (id) => (login_user_id = id);      
 export const getLoginUserName = () => login_user_name;      
 export const setLoginUserName = (name) => (login_user_name = name);    
-var IPaddress = 'XXX';   
+var IPaddress = '172.20.10.2';   
 export const IP = () => IPaddress;      
