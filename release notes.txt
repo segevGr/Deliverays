@@ -12,5 +12,8 @@ Version 1.1.0
 	* Create Global Style folder
 	* Create Home page stlye file ("home_page_style.js) and use it in Home pages screens (Deliver & Manager)
 	* Create a filter button in "Delivery_management.js" that opens a
-		filter dialog ("Delivery_filter_dialog.js") That now filter only by Status.
+	  filter dialog ("Delivery_filter_dialog.js") That now filter only by Status.
 
+Version 1.1.1
+	* Create Managment style file ("Managment_file.js") and use it on "Delivery_management.js" & "Delivers_managment.js"
+	* Create gitignore file
