@@ -1,16 +1,21 @@
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
-import { IP, getLoginUserName, getLoginUserId } from '../../constsFiles';
-import DialogInput from 'react-native-dialog-input';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { getLoginUserName } from '../../constsFiles';
 import React, { useState } from 'react';
-import styles from '../Global_Style/home_page_style'
+import styles from '../Global_Files/Home_page_style'
+import Change_password_dialog from '../Global_Files/Change_password_dialog';
 
 const Home_page_deliver = ({ navigation, route }) => {
-    const username = getLoginUserName();
-    const user_id = getLoginUserId();
-    const ip = IP();
+    const user_name = getLoginUserName();
 
-    const [showCurrentDialog, setShowCurrentDialog] = useState(false);
-    const [showChangeDialog, setShowChangeDialog] = useState(false);
+    const [pass_dialog, set_change_pass_dialog] = useState(false);
+
+    const show_change_pass_dialog = () => {
+        set_change_pass_dialog(true)
+    }
+
+    const close_pass_dialog = () => {
+        set_change_pass_dialog(false);
+    };
 
     const delivers_management = () => {
         navigation.navigate('Delivers_managment');
@@ -20,88 +25,10 @@ const Home_page_deliver = ({ navigation, route }) => {
         navigation.navigate('Delivery_search');
     }
 
-    const show_current_dialog = () => {
-        setShowCurrentDialog(!showCurrentDialog)
-    }
-
-    const show_change_dialog = () => {
-        setShowChangeDialog(!showChangeDialog)
-    }
-
-    const check_current_pass = async (current) => {
-        if (current == "") {
-            Alert.alert(
-                `שגיאה!`,
-                'אנא הכנס סיסמא!',
-                [
-                    { text: 'הבנתי', onPress: () => null },
-                ],
-                { cancelable: false }
-            );
-            return;
-        }
-        try {
-            const response = await fetch(`http://${ip}:3000/user/${username}/${current}`, {
-                method: 'GET',
-            });
-            const data = await response.json();
-            if (data.users.length == 1) {
-                show_current_dialog()
-                show_change_dialog()
-            } else {
-                Alert.alert(
-                    `שגיאה - הסיסמא הנוכחית שהזנת לא נכונה`,
-                    'אנא הזן סיסמא נוכחית תקינה',
-                    [
-                        { text: 'הבנתי', onPress: () => null },
-                    ],
-                    { cancelable: false }
-                );
-
-            }
-        } catch (error) {
-            console.log('Error fetching letters:', error);
-        }
-    }
-
-    const change_pass = async (input) => {
-        const requestBody = JSON.stringify({
-            "password": input,
-        });
-
-        try {
-            const response = await fetch(`http://${ip}:3000/user/${user_id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: requestBody,
-            });
-            show_change_dialog();
-            Alert.alert(
-                `הסיסמא עודכנה בהצלחה!`,
-                '',
-                [
-                    { text: 'תודה!', onPress: () => null },
-                ],
-                { cancelable: false }
-            );
-        } catch (error) {
-            console.log('Error fetching users:', error);
-            Alert.alert(
-                `אופס... משהו השתבש`,
-                'אנא נסו שוב מאוחר יותר',
-                [
-                    { text: 'הבנתי', onPress: () => null },
-                ],
-                { cancelable: false }
-            );
-        }
-    }
-
     return (
         <View style={styles.container}>
-            <Text style={styles.title_text}>שלום {username},{'\n'}מה תרצה לעשות היום?</Text>
+            <Change_password_dialog visible={pass_dialog} onClose={close_pass_dialog} />
+            <Text style={styles.title_text}>שלום {user_name},{'\n'}מה תרצה לעשות היום?</Text>
             <TouchableOpacity
                 style={styles.btn}
                 onPress={delivers_management}
@@ -116,28 +43,10 @@ const Home_page_deliver = ({ navigation, route }) => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.btn}
-                onPress={(show_current_dialog)}
+                onPress={(show_change_pass_dialog)}
             >
                 <Text style={styles.btn_text}>לשנות סיסמא</Text>
             </TouchableOpacity>
-            <DialogInput isDialogVisible={showCurrentDialog}
-                title={"שינוי סיסמא"}
-                message={"הכנס את הסיסמא הנוכחית"}
-                submitText={"המשך לשינוי"}
-                cancelText={"ביטול"}
-                textInputProps={{ autoCorrect: false }}
-                submitInput={(inputText) => { check_current_pass(inputText) }}
-                closeDialog={() => { show_current_dialog() }}>
-            </DialogInput>
-            <DialogInput isDialogVisible={showChangeDialog}
-                title={"שינוי סיסמא"}
-                message={"הכנס את הסיסמא החדשה"}
-                submitText={"שנה סיסמא"}
-                cancelText={"ביטול"}
-                textInputProps={{ autoCorrect: false }}
-                submitInput={(inputText) => { change_pass(inputText) }}
-                closeDialog={() => { show_change_dialog() }}>
-            </DialogInput>
         </View>
     );
 };

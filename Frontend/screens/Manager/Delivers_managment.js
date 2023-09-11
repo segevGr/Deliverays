@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { IP, getLoginUserId, getLoginUserName } from '../../constsFiles';
 import {
-    View, Text, StyleSheet, TouchableOpacity,
-    ScrollView, Dimensions, Image, Alert
+    View, Text, TouchableOpacity,
+    ScrollView, Image, Alert
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import styles from '../Global_Style/Managment_file'
+import styles from '../Global_Files/Managment_style';
 
 const Delivers_managment = ({ navigation }) => {
     const ip = IP();

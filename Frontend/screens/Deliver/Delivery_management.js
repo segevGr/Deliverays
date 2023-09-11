@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import { IP, getLoginUserId } from '../../constsFiles';
 import { useFocusEffect } from '@react-navigation/native';
 import Delivery_filter_dialog from './Dialogs/Delivery_filter_dialog';
-import styles from '../Global_Style/Managment_file'
+import styles from '../Global_Files/Managment_style';
 
 const Delivery_management = ({ navigation }) => {
     const deliver_id = getLoginUserId();
