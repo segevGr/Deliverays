@@ -21,3 +21,7 @@ Version 1.1.1
 Version 1.2.0
 	* Create global "change password dialog"
 	* Use "Change_password_dialog.js" on home pages
+
+Version 1.2.1
+	* Add to delivery filter a filter of client name
+	* Add to delivery filter a clean button

@@ -10,6 +10,7 @@ const Delivery_management = ({ navigation }) => {
     const ip = IP();
 
     const [filterDialogVisible, setDilterDialogVisible] = useState(false);
+    const [clientNameList, setclientNameList] = useState([]);
 
     const showFilterDialog = () => {
         setDilterDialogVisible(true);
@@ -74,14 +75,24 @@ const Delivery_management = ({ navigation }) => {
 
             const result = data.result.map(result => ({
                 letterNumber: result.letterNumber,
-                deliveryAddress: result.deliveryAddress, isDelivered: result.isDelivered
+                deliveryAddress: result.deliveryAddress, isDelivered: result.isDelivered,
+                clientName: result.clientName
             }))
             setOriginal_delivery_list(result)
             setdelivery_list(result);
+            create_clientNameList(result);
         } catch (error) {
             console.log('Error fetching users:', error);
         }
     };
+
+    const create_clientNameList = (result) => {
+        let clientNames_set = new Set();
+        result.forEach(item => {
+            clientNames_set.add(item.clientName);
+        })
+        setclientNameList(Array.from(clientNames_set));
+    }
 
     const [delivery_list, setdelivery_list] = useState([]);
 
@@ -89,8 +100,11 @@ const Delivery_management = ({ navigation }) => {
 
     const filterData = (filter_array) => {
         let filtered_delivery_list = original_delivery_list;
-        if (filter_array['status'] != null){
+        if (filter_array['status'] != null) {
             filtered_delivery_list = filtered_delivery_list.filter(delivery => delivery.isDelivered === filter_array['status']);
+        }
+        if (filter_array['client'] != null){
+            filtered_delivery_list = filtered_delivery_list.filter(delivery => delivery.clientName === filter_array['client']);
         }
         setdelivery_list(filtered_delivery_list);
     }
@@ -103,7 +117,7 @@ const Delivery_management = ({ navigation }) => {
 
     return (
         <View style={styles.container} >
-            <Delivery_filter_dialog visible={filterDialogVisible} onClose={closeFilterDialog} onSave={filterData} />
+            <Delivery_filter_dialog visible={filterDialogVisible} onClose={closeFilterDialog} onSave={filterData} clientNameList={clientNameList} />
             <View style={styles.title_style}>
                 <TouchableOpacity onPress={back_to_previous_page}>
                     <Image source={require('../../assets/back_icon.png')} style={styles.back_icon} />

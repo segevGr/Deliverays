@@ -4,31 +4,41 @@ import RNPickerSelect from 'react-native-picker-select';
 
 const { width, height } = Dimensions.get('window');
 
-const Delivery_filter_dialog = ({ visible, onClose, onSave }) => {
-	const dropdownItems1 = [
+const Delivery_filter_dialog = ({ visible, onClose, onSave, clientNameList }) => {
+	const delivered_dropdown = [
 		{ label: 'נמסר', value: 1 },
 		{ label: 'לא נמסר', value: 0 },
 	];
-	const dropdownItems2 = [
-		{ label: 'Choice A', value: 'choiceA' },
-		{ label: 'Choice B', value: 'choiceB' },
-	];
+
+	const clients_dropdown = clientNameList.map(client => ({
+		label: client,
+		value: client,
+	  }));
+	
 	const dropdownItems3 = [
 		{ label: 'Item X', value: 'itemX' },
 		{ label: 'Item Y', value: 'itemY' },
 	];
 
 	const [selectedStatus, setSelectedStatus] = useState(null);
-	const [selectedOption2, setSelectedOption2] = useState(null);
+	const [selectedClient, setSelectedClient] = useState(null);
 	const [selectedOption3, setSelectedOption3] = useState(null);
 
-	const handle_saved_filter = () =>{
-		let filter_array = {'status': null}
-		if (selectedStatus != null){
+	const handle_saved_filter = () => {
+		let filter_array = { 'status': null, 'client': null }
+		if (selectedStatus != null) {
 			filter_array['status'] = selectedStatus;
+		}
+		if (selectedClient != null){
+			filter_array['client'] = selectedClient;
 		}
 		onSave(filter_array);
 		onClose();
+	}
+
+	const clean_filters = () => {
+		setSelectedStatus(null);
+		setSelectedClient(null);
 	}
 
 	return (
@@ -56,7 +66,7 @@ const Delivery_filter_dialog = ({ visible, onClose, onSave }) => {
 								},
 							}}
 							placeholder={{ label: 'בחר סטטוס', }}
-							items={dropdownItems1}
+							items={delivered_dropdown}
 							onValueChange={(value) => setSelectedStatus(value)}
 							value={selectedStatus}
 						/>
@@ -81,10 +91,10 @@ const Delivery_filter_dialog = ({ visible, onClose, onSave }) => {
 									borderWidth: 1,
 								},
 							}}
-							placeholder={{ label: 'בחר סטטוס', }}
-							items={dropdownItems1}
-							onValueChange={(value) => setSelectedStatus(value)}
-							value={selectedStatus}
+							placeholder={{ label: 'בחר לקוח', }}
+							items={clients_dropdown}
+							onValueChange={(value) => setSelectedClient(value)}
+							value={selectedClient}
 						/>
 					</View>
 
@@ -108,7 +118,7 @@ const Delivery_filter_dialog = ({ visible, onClose, onSave }) => {
 								},
 							}}
 							placeholder={{ label: 'בחר סטטוס', }}
-							items={dropdownItems1}
+							items={delivered_dropdown}
 							onValueChange={(value) => setSelectedStatus(value)}
 							value={selectedStatus}
 						/>
@@ -120,6 +130,12 @@ const Delivery_filter_dialog = ({ visible, onClose, onSave }) => {
 							style={styles.btns}
 							onPress={onClose}>
 							<Text style={styles.btns_text}>ביטול</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity
+							style={styles.btns}
+							onPress={clean_filters}>
+							<Text style={styles.btns_text}>נקה</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity
