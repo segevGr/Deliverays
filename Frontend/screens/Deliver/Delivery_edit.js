@@ -39,17 +39,27 @@ const Delivery_edit = ({ navigation, route }) => {
 		setclient(newclient);
 	};
 
-	const [editaddress, setAddressOnPress] = useState(false);
-	const [address, setAddress] = useState();
+	const [editStreet, setStreetOnPress] = useState(false);
+	const [street, setStreet] = useState('');
 
-	const editAddressBtnPress = () => {
-		setAddressOnPress(true);
+	const editStreetBtnPress = () => {
+		setStreetOnPress(true);
 	};
 
-	const addressTextChangeFunction = (newaddress) => {
-		setAddress(newaddress);
+	const streetTextChangeFunction = (newStreet) => {
+		setStreet(newStreet);
 	};
 
+	const [editCity, setCityOnPress] = useState(false);
+	const [city, setCity] = useState('');
+
+	const editCityBtnPress = () => {
+		setCityOnPress(true);
+	};
+
+	const cityTextChangeFunction = (newCity) => {
+		setCity(newCity);
+	};
 
 	const [editRecipient, setRecipientOnPress] = useState(false);
 	const [recipient, setRecipient] = useState();
@@ -76,8 +86,12 @@ const Delivery_edit = ({ navigation, route }) => {
 	const [deliveryStatus, setDeliveryStatus] = useState("לא נמסר");
 
 	const exitEditMode = () => {
-		if (editaddress) {
-			setAddressOnPress(false);
+		if (editStreet) {
+			setStreetOnPress(false);
+			Keyboard.dismiss();
+		}
+		else if (editCity) {
+			setRecipientOnPress(false);
 			Keyboard.dismiss();
 		}
 		else if (editRecipient) {
@@ -111,7 +125,7 @@ const Delivery_edit = ({ navigation, route }) => {
 	}
 
 	const check_if_filled_all_fields = async () => {
-		if (address == "" || client == "" || recipient == "" ||
+		if (city == "" || street == "" || client == "" || recipient == "" ||
 			recipient_phoneNumber == "" || deliveryDate == "") {
 			Alert.alert(
 				`אנא מלאו את כל השדות`,
@@ -163,6 +177,7 @@ const Delivery_edit = ({ navigation, route }) => {
 	}
 
 	const validAddress = async () => {
+		let address = street + ", " + city
 		const response = await fetch(`http://${ip}:3000/letterValidation/${address}`, {
 			method: 'GET',
 			headers: {
@@ -199,10 +214,14 @@ const Delivery_edit = ({ navigation, route }) => {
 			return;
 		}
 
+		setStreet(currect_address.split(',')[0].trim());
+		setCity(currect_address.split(',')[1].trim());
+
 		const requestBody = JSON.stringify({
 			"addressee": recipient,
 			"clientName": client,
-			"deliveryAddress": currect_address,
+			"deliveryStreet": street,
+			"deliveryCity": city,
 			"deliveryDeadline": conver_date_to_request_syntax(deliveryDate),
 			"addresseePhoneNumber": recipient_phoneNumber,
 		});
@@ -261,7 +280,8 @@ const Delivery_edit = ({ navigation, route }) => {
 				method: 'GET',
 			});
 			const data = await response.json();
-			setAddress(data["result"][0]['deliveryAddress']);
+			setStreet(data["result"][0]['deliveryStreet']);
+			setCity(data["result"][0]['deliveryCity']);
 			setRecipient(data["result"][0]['addressee']);
 			setrecipient_phoneNumber(data['result'][0]['addresseePhoneNumber'])
 			setclient(data['result'][0]['clientName'])
@@ -294,18 +314,32 @@ const Delivery_edit = ({ navigation, route }) => {
 					style={{ flex: 1 }}>
 					<ScrollView contentContainerStyle={styles.scrollView}>
 						<View>
-							<Text style={styles.attribute_text}>כתובת</Text>
-							<TouchableOpacity style={styles.btn} onPress={editAddressBtnPress}>
-								{editaddress ? (
+							<Text style={styles.attribute_text}>שם ומספר רחוב</Text>
+							<TouchableOpacity style={styles.btn} onPress={editStreetBtnPress}>
+								{editStreet ? (
 									<TextInput
 										style={styles.attribute_input_text}
-										onChangeText={addressTextChangeFunction}
-										value={address}
+										onChangeText={streetTextChangeFunction}
+										value={street}
 										autoFocus={true}
-										onBlur={() => setAddressOnPress(false)}
+										onBlur={() => setStreetOnPress(false)}
 									/>
 								) : (
-									<Text style={styles.attribute_input_text}>{address}</Text>
+									<Text style={styles.attribute_input_text}>{street}</Text>
+								)}
+							</TouchableOpacity>
+							<Text style={styles.attribute_text}>עיר</Text>
+							<TouchableOpacity style={styles.btn} onPress={editCityBtnPress}>
+								{editCity ? (
+									<TextInput
+										style={styles.attribute_input_text}
+										onChangeText={cityTextChangeFunction}
+										value={city}
+										autoFocus={true}
+										onBlur={() => setCityOnPress(false)}
+									/>
+								) : (
+									<Text style={styles.attribute_input_text}>{city}</Text>
 								)}
 							</TouchableOpacity>
 							<Text style={styles.attribute_text}>שולח</Text>

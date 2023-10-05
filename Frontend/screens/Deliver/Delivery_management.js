@@ -75,7 +75,9 @@ const Delivery_management = ({ navigation }) => {
 
             const result = data.result.map(result => ({
                 letterNumber: result.letterNumber,
-                deliveryAddress: result.deliveryAddress, isDelivered: result.isDelivered,
+                deliveryAddress: result.deliveryStreet + ", " + result.deliveryCity,
+                deliveryCity: result.deliveryCity,
+                isDelivered: result.isDelivered,
                 clientName: result.clientName
             }))
             setOriginal_delivery_list(result)

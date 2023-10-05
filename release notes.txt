@@ -25,3 +25,12 @@ Version 1.2.0
 Version 1.2.1
 	* Add to delivery filter a filter of client name
 	* Add to delivery filter a clean button
+
+Version 1.3.0
+	Backend:
+	* Split "deliveryAddress" column in DB to 2 columns: "deliveryStreet", "deliveryCity"
+
+	Frontend:
+	* Update "Delivery_management.js" becuse of DB changes
+	* Update "Add_delivery.js" becuse of DB changes
+	* Update "Delivery_edit.js" becuse of DB changes

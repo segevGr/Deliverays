@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {IP, getLoginUserId} from '../../constsFiles';
+import { IP, getLoginUserId } from '../../constsFiles';
 import {
 	View, TextInput, Text, StyleSheet, TouchableOpacity, Alert,
 	Dimensions, Image, TouchableWithoutFeedback, Keyboard, ScrollView,
@@ -27,15 +27,26 @@ const Add_delivery = ({ navigation }) => {
 		setID(newID);
 	};
 
-	const [editaddress, setAddressOnPress] = useState(false);
-	const [address, setAddress] = useState('');
+	const [editStreet, setStreetOnPress] = useState(false);
+	const [street, setStreet] = useState('');
 
-	const editAddressBtnPress = () => {
-		setAddressOnPress(true);
+	const editStreetBtnPress = () => {
+		setStreetOnPress(true);
 	};
 
-	const addressTextChangeFunction = (newaddress) => {
-		setAddress(newaddress);
+	const streetTextChangeFunction = (newStreet) => {
+		setStreet(newStreet);
+	};
+
+	const [editCity, setCityOnPress] = useState(false);
+	const [city, setCity] = useState('');
+
+	const editCityBtnPress = () => {
+		setCityOnPress(true);
+	};
+
+	const cityTextChangeFunction = (newCity) => {
+		setCity(newCity);
 	};
 
 	const [editclient, setclientOnPress] = useState(false);
@@ -84,8 +95,12 @@ const Add_delivery = ({ navigation }) => {
 	};
 
 	const exitEditMode = () => {
-		if (editaddress) {
-			setAddressOnPress(false);
+		if (editStreet) {
+			setStreetOnPress(false);
+			Keyboard.dismiss();
+		}
+		else if (editCity) {
+			setRecipientOnPress(false);
 			Keyboard.dismiss();
 		}
 		else if (editRecipient) {
@@ -135,8 +150,8 @@ const Add_delivery = ({ navigation }) => {
 	}
 
 	const check_if_filled_all_fields = async () => {
-		if (ID == "" || address == "" || client == "" || recipient == "" ||
-			recipient_phoneNumber == "" || deliveryDate == "") {
+		if (ID == "" || street == "" || city == "" || client == "" ||
+			recipient == "" || recipient_phoneNumber == "" || deliveryDate == "") {
 			Alert.alert(
 				`אנא מלאו את כל השדות`,
 				'',
@@ -190,7 +205,7 @@ const Add_delivery = ({ navigation }) => {
 
 		const today = new Date();
 
-		if (providedDate < today){
+		if (providedDate < today) {
 			Alert.alert(
 				`שגיאה - תאריך לא תקין`,
 				'התאריך שהזנת כבר עבר\nאנא הכנס תאריך עתידי',
@@ -202,6 +217,7 @@ const Add_delivery = ({ navigation }) => {
 	}
 
 	const validAddress = async () => {
+		let address = street + ", " + city
 		const response = await fetch(`http://${ip}:3000/letterValidation/${address}`, {
 			method: 'GET',
 			headers: {
@@ -246,11 +262,15 @@ const Add_delivery = ({ navigation }) => {
 			return;
 		}
 
+		setStreet(currect_address.split(',')[0].trim());
+		setCity(currect_address.split(',')[1].trim());
+
 		const requestBody = JSON.stringify({
 			"letterNumber": ID,
 			"addressee": recipient,
 			"clientName": client,
-			"deliveryAddress": currect_address,
+			"deliveryStreet": street,
+			"deliveryCity": city,
 			"deliveryDeadline": conver_date_to_request_syntax(deliveryDate),
 			"addresseePhoneNumber": recipient_phoneNumber,
 			"userID": deliver_id
@@ -306,18 +326,32 @@ const Add_delivery = ({ navigation }) => {
 					style={{ flex: 1 }}>
 					<ScrollView contentContainerStyle={styles.scrollView}>
 						<View>
-							<Text style={styles.attribute_text}>כתובת</Text>
-							<TouchableOpacity style={styles.btn} onPress={editAddressBtnPress}>
-								{editaddress ? (
+							<Text style={styles.attribute_text}>שם ומספר רחוב</Text>
+							<TouchableOpacity style={styles.btn} onPress={editStreetBtnPress}>
+								{editStreet ? (
 									<TextInput
 										style={styles.attribute_input_text}
-										onChangeText={addressTextChangeFunction}
-										value={address}
+										onChangeText={streetTextChangeFunction}
+										value={street}
 										autoFocus={true}
-										onBlur={() => setAddressOnPress(false)}
+										onBlur={() => setStreetOnPress(false)}
 									/>
 								) : (
-									<Text style={styles.attribute_input_text}>{address}</Text>
+									<Text style={styles.attribute_input_text}>{street}</Text>
+								)}
+							</TouchableOpacity>
+							<Text style={styles.attribute_text}>עיר</Text>
+							<TouchableOpacity style={styles.btn} onPress={editCityBtnPress}>
+								{editCity ? (
+									<TextInput
+										style={styles.attribute_input_text}
+										onChangeText={cityTextChangeFunction}
+										value={city}
+										autoFocus={true}
+										onBlur={() => setCityOnPress(false)}
+									/>
+								) : (
+									<Text style={styles.attribute_input_text}>{city}</Text>
 								)}
 							</TouchableOpacity>
 							<Text style={styles.attribute_text}>מספר סידורי של המכתב</Text>
@@ -486,7 +520,7 @@ const styles = StyleSheet.create({
 	},
 	btns_container: {
 		alignItems: 'center',
-		marginBottom: width* 0.1,
+		marginBottom: width * 0.1,
 	},
 });
 
