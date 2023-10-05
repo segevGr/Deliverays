@@ -10,7 +10,8 @@ const Delivery_management = ({ navigation }) => {
     const ip = IP();
 
     const [filterDialogVisible, setDilterDialogVisible] = useState(false);
-    const [clientNameList, setclientNameList] = useState([]);
+    const [clientNameList, setClientNameList] = useState([]);
+    const [citiesList, setCitiesList] = useState([]);
 
     const showFilterDialog = () => {
         setDilterDialogVisible(true);
@@ -83,17 +84,26 @@ const Delivery_management = ({ navigation }) => {
             setOriginal_delivery_list(result)
             setdelivery_list(result);
             create_clientNameList(result);
+            create_CitiesList(result);
         } catch (error) {
             console.log('Error fetching users:', error);
         }
     };
+
+    const create_CitiesList = (result) => {
+        let cities_set = new Set();
+        result.forEach(item => {
+            cities_set.add(item.deliveryCity);
+        })
+        setCitiesList(Array.from(cities_set));
+    }
 
     const create_clientNameList = (result) => {
         let clientNames_set = new Set();
         result.forEach(item => {
             clientNames_set.add(item.clientName);
         })
-        setclientNameList(Array.from(clientNames_set));
+        setClientNameList(Array.from(clientNames_set));
     }
 
     const [delivery_list, setdelivery_list] = useState([]);
@@ -108,6 +118,9 @@ const Delivery_management = ({ navigation }) => {
         if (filter_array['client'] != null){
             filtered_delivery_list = filtered_delivery_list.filter(delivery => delivery.clientName === filter_array['client']);
         }
+        if (filter_array['city'] != null){
+            filtered_delivery_list = filtered_delivery_list.filter(delivery => delivery.deliveryCity === filter_array['city']);
+        }
         setdelivery_list(filtered_delivery_list);
     }
 
@@ -119,7 +132,8 @@ const Delivery_management = ({ navigation }) => {
 
     return (
         <View style={styles.container} >
-            <Delivery_filter_dialog visible={filterDialogVisible} onClose={closeFilterDialog} onSave={filterData} clientNameList={clientNameList} />
+            <Delivery_filter_dialog visible={filterDialogVisible} onClose={closeFilterDialog} onSave={filterData}
+            clientNameList={clientNameList} citiesList={citiesList} />
             <View style={styles.title_style}>
                 <TouchableOpacity onPress={back_to_previous_page}>
                     <Image source={require('../../assets/back_icon.png')} style={styles.back_icon} />

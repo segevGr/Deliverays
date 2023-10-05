@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 
 const { width, height } = Dimensions.get('window');
 
-const Delivery_filter_dialog = ({ visible, onClose, onSave, clientNameList }) => {
+const Delivery_filter_dialog = ({ visible, onClose, onSave, clientNameList, citiesList }) => {
 	const delivered_dropdown = [
 		{ label: 'נמסר', value: 1 },
 		{ label: 'לא נמסר', value: 0 },
@@ -14,31 +14,35 @@ const Delivery_filter_dialog = ({ visible, onClose, onSave, clientNameList }) =>
 		label: client,
 		value: client,
 	  }));
-	
-	const dropdownItems3 = [
-		{ label: 'Item X', value: 'itemX' },
-		{ label: 'Item Y', value: 'itemY' },
-	];
 
+	  const cities_dropdown = citiesList.map(client => ({
+		label: client,
+		value: client,
+	  }));
+	
 	const [selectedStatus, setSelectedStatus] = useState(null);
 	const [selectedClient, setSelectedClient] = useState(null);
-	const [selectedOption3, setSelectedOption3] = useState(null);
+	const [selectedCity, setSelectedCity] = useState(null);
 
 	const handle_saved_filter = () => {
-		let filter_array = { 'status': null, 'client': null }
+		let filter_array = { 'status': null, 'client': null, 'city': null }
 		if (selectedStatus != null) {
 			filter_array['status'] = selectedStatus;
 		}
 		if (selectedClient != null){
 			filter_array['client'] = selectedClient;
 		}
+		if (selectedCity != null){
+			filter_array['city'] = selectedCity;
+		}
 		onSave(filter_array);
 		onClose();
 	}
 
-	const clean_filters = () => {
+	const clear_filters = () => {
 		setSelectedStatus(null);
 		setSelectedClient(null);
+		setSelectedCity(null);
 	}
 
 	return (
@@ -99,7 +103,7 @@ const Delivery_filter_dialog = ({ visible, onClose, onSave, clientNameList }) =>
 					</View>
 
 					<View style={styles.option_container}>
-						<Text style={{ fontSize: 22, }}>סטטוס המשלוח</Text>
+						<Text style={{ fontSize: 22, }}>עיר המשלוח</Text>
 						<RNPickerSelect
 							style={{
 								inputIOS: {
@@ -117,10 +121,10 @@ const Delivery_filter_dialog = ({ visible, onClose, onSave, clientNameList }) =>
 									borderWidth: 1,
 								},
 							}}
-							placeholder={{ label: 'בחר סטטוס', }}
-							items={delivered_dropdown}
-							onValueChange={(value) => setSelectedStatus(value)}
-							value={selectedStatus}
+							placeholder={{ label: 'בחר עיר', }}
+							items={cities_dropdown}
+							onValueChange={(value) => setSelectedCity(value)}
+							value={selectedCity}
 						/>
 					</View>
 
@@ -134,7 +138,7 @@ const Delivery_filter_dialog = ({ visible, onClose, onSave, clientNameList }) =>
 
 						<TouchableOpacity
 							style={styles.btns}
-							onPress={clean_filters}>
+							onPress={clear_filters}>
 							<Text style={styles.btns_text}>נקה</Text>
 						</TouchableOpacity>
 
