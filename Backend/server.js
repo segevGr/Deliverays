@@ -16,11 +16,12 @@ app.get('/route/:ID/:workingTime/:startingAddress', async (req, res) => {
   const undeliveredLetters = await db_letters.getAllPendingLetters(req.params.ID)
   var addressList = req.params.startingAddress // adding starting position
   for (let index = 0; index < undeliveredLetters.length; index++) { // loop to add all addressed for the undelivered letters json
-    addressList += "|" + undeliveredLetters[index].deliveryAddress;
+    let deliveryAddress = undeliveredLetters[index].deliveryStreet + ", " + undeliveredLetters[index].deliveryCity;
+    addressList += "|" + deliveryAddress;
   }
 
   let returningData = '';
-  const python = spawn('python', ['route_creation_script.py', req.params.workingTime, addressList]); //JSON.stringify(undeliveredLetters)
+  const python = spawn('python', ['pythonScriptWaze.py', req.params.workingTime, addressList]); //JSON.stringify(undeliveredLetters)
 
   python.stdout.on('data', function (data) { // output stream FROM the python script
     returningData += data.toString();
@@ -29,13 +30,10 @@ app.get('/route/:ID/:workingTime/:startingAddress', async (req, res) => {
       res.json(JSON.parse(text));
     }else{
       var addressOrder = [];
-      var unreachable = [];
-      var list = returningData.split("~")
-      unreachable = unreachable.concat(list[1].split("^")); // list of unreachable stations. currently disabled
-      addressOrder = addressOrder.concat(list[0].split("|"));
+      addressOrder = returningData.split("|");
       const addressOrderJson = {};
       for (let index = 1; index < addressOrder.length; index++) { // starting from index 1 becuase 0 will always be empty
-        var letter = undeliveredLetters.find(obj => obj.deliveryAddress == addressOrder[index]);
+        var letter = undeliveredLetters.find(obj => obj.deliveryStreet  + ", " + obj.deliveryCity === addressOrder[index]);
         if (index == 1) { // if first letter is undefined (starting point), skip it
           continue;
         }
@@ -43,10 +41,10 @@ app.get('/route/:ID/:workingTime/:startingAddress', async (req, res) => {
           addressOrderJson[index-1] = {"RouteLength": parseInt(addressOrder[index])};
         }else {
           addressOrderJson[index-1] = {"letterNumber": letter.letterNumber,
-                                    "deliveryAddress": addressOrder[index]};
+                                    "deliveryStreet": letter.deliveryStreet,
+                                    "deliveryCity": letter.deliveryCity};
         }
       }
-      //addressOrderJson["Unreachable"] = unreachable; // add unreachable stations to JSON. un-comment if need to be added
       res.json(addressOrderJson);
     }
   });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import {IP} from '../../constsFiles';
+import { IP } from '../../constsFiles';
 
 const { width, height } = Dimensions.get('window');
 
@@ -47,36 +47,36 @@ const Route = ({ navigation, route }) => {
             "isDelivered": 1,
         });
 
-		try {
-			const response = await fetch(`http://${ip}:3000/letter/${delivery_id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: requestBody,
-			});
+        try {
+            const response = await fetch(`http://${ip}:3000/letter/${delivery_id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: requestBody,
+            });
 
-			Alert.alert(
-				`המשלוח עודכן כנמסר!`,
-				'',
-				[
-					{ text: 'תודה!', onPress: () => null },
-				],
-				{ cancelable: false }
-			);
+            Alert.alert(
+                `המשלוח עודכן כנמסר!`,
+                '',
+                [
+                    { text: 'תודה!', onPress: () => null },
+                ],
+                { cancelable: false }
+            );
             delete_delivery(delivery_id);
 
-		} catch (error) {
-			console.log('Error fetching users:', error);
-			Alert.alert(
-				`אופס... משהו השתבש`,
-				'אנא נסו שוב מאוחר יותר',
-				[
-					{ text: 'הבנתי', onPress: () => null },
-				],
-				{ cancelable: false }
-			);
-		}        
+        } catch (error) {
+            console.log('Error fetching users:', error);
+            Alert.alert(
+                `אופס... משהו השתבש`,
+                'אנא נסו שוב מאוחר יותר',
+                [
+                    { text: 'הבנתי', onPress: () => null },
+                ],
+                { cancelable: false }
+            );
+        }
     }
 
     const back_to_previous_page = () => {
@@ -87,7 +87,7 @@ const Route = ({ navigation, route }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            setDeliveryList(routeList.map(result => ({ letterNumber: result.letterNumber, deliveryAddress: result.deliveryAddress })));
+            setDeliveryList(routeList.map(result => ({ letterNumber: result.letterNumber, deliveryAddress: result.deliveryStreet + ", " + result.deliveryCity })));
         }, [])
     );
 

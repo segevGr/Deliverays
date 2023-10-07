@@ -16,3 +16,4 @@
 Thumbs.db    # Windows
 
 ToDo.txt
+constsFiles.js
