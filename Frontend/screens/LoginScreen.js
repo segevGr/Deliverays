@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IP, setLoginUserId, setLoginUserName } from '../constsFiles';
+import { IP, setLoginUserId, setLoginUserName } from '../constFiles';
 import { View, TextInput, Text, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -13,7 +13,7 @@ const LoginScreen = ({ navigation }) => {
 	const handleLogin = async () => {
 		if (username == "" || password == "") {
 			Alert.alert(
-				'שם משתמש או סיסמא חסרים',
+				'שם משתמש או סיסמה חסרים',
 				'אנא מלאו את כל השדות לפני ניסיון ההתחברות',
 				[{ text: 'OK', }]
 			);
@@ -40,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
 
 		else {
 			Alert.alert(
-				'שם משתמש או סיסמא לא נכונים',
+				'שם משתמש או סיסמה לא נכונים',
 				'אנא וודאו שהזנתם פרטים נכונים',
 				[{ text: 'OK', }]
 			);
@@ -76,7 +76,7 @@ const LoginScreen = ({ navigation }) => {
 			/>
 			<TextInput
 				style={styles.input}
-				placeholder="סיסמא"
+				placeholder="סיסמה"
 				value={password}
 				onChangeText={setPassword}
 				secureTextEntry={true}

@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
-import { IP, getLoginUserId } from '../../constsFiles';
+import { IP, getLoginUserId } from '../../constFiles';
 import { useFocusEffect } from '@react-navigation/native';
 import Delivery_filter_dialog from './Dialogs/Delivery_filter_dialog';
-import styles from '../Global_Files/Managment_style';
+import styles from '../Global_Files/management_style';
 
 const Delivery_management = ({ navigation }) => {
     const deliver_id = getLoginUserId();
     const ip = IP();
 
-    const [filterDialogVisible, setDilterDialogVisible] = useState(false);
+    const [filterDialogVisible, setFilterDialogVisible] = useState(false);
     const [clientNameList, setClientNameList] = useState([]);
     const [citiesList, setCitiesList] = useState([]);
 
     const showFilterDialog = () => {
-        setDilterDialogVisible(true);
+        setFilterDialogVisible(true);
     };
 
     const closeFilterDialog = () => {
-        setDilterDialogVisible(false);
+        setFilterDialogVisible(false);
     };
 
     const delete_alert = (letterNumber, deliveryAddress) => {
@@ -51,8 +51,8 @@ const Delivery_management = ({ navigation }) => {
             );
         }
 
-        const updateddelivery_list = delivery_list.filter(delivery => delivery.letterNumber !== letterNumber)
-        setdelivery_list(updateddelivery_list)
+        const updatedDelivery_list = delivery_list.filter(delivery => delivery.letterNumber !== letterNumber)
+        setDelivery_list(updatedDelivery_list)
     }
 
     const add_delivery = () => {
@@ -67,7 +67,7 @@ const Delivery_management = ({ navigation }) => {
         navigation.goBack();
     };
 
-    const getLettersrsFromDB = async () => {
+    const getLettersFromDB = async () => {
         try {
             const response = await fetch(`http://${ip}:3000/letter/all/${deliver_id}`, {
                 method: 'GET',
@@ -82,7 +82,7 @@ const Delivery_management = ({ navigation }) => {
                 clientName: result.clientName
             }))
             setOriginal_delivery_list(result)
-            setdelivery_list(result);
+            setDelivery_list(result);
             create_clientNameList(result);
             create_CitiesList(result);
         } catch (error) {
@@ -106,7 +106,7 @@ const Delivery_management = ({ navigation }) => {
         setClientNameList(Array.from(clientNames_set));
     }
 
-    const [delivery_list, setdelivery_list] = useState([]);
+    const [delivery_list, setDelivery_list] = useState([]);
 
     const [original_delivery_list, setOriginal_delivery_list] = useState([]);
 
@@ -121,12 +121,12 @@ const Delivery_management = ({ navigation }) => {
         if (filter_array['city'] != null){
             filtered_delivery_list = filtered_delivery_list.filter(delivery => delivery.deliveryCity === filter_array['city']);
         }
-        setdelivery_list(filtered_delivery_list);
+        setDelivery_list(filtered_delivery_list);
     }
 
     useFocusEffect(
         React.useCallback(() => {
-            getLettersrsFromDB();
+            getLettersFromDB();
         }, [])
     );
 
@@ -168,7 +168,7 @@ const Delivery_management = ({ navigation }) => {
                                 <TouchableOpacity onPress={() => edit_delivery(letter.letterNumber)}>
                                     <Image source={require('../../assets/edit_icon.png')} style={styles.info_btn} />
                                 </TouchableOpacity>
-                                <Text style={styles.item_name_lable}>{letter.deliveryAddress}</Text>
+                                <Text style={styles.item_name_label}>{letter.deliveryAddress}</Text>
                             </TouchableOpacity>
                         );
                     })}
@@ -177,12 +177,12 @@ const Delivery_management = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.add_item_btn}
                 onPress={add_delivery}>
-                <Text style={styles.add_user_lable}>הוספת משלוח</Text>
+                <Text style={styles.add_user_label}>הוספת משלוח</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.filter_btn}
                 onPress={showFilterDialog}>
-                <Text style={styles.add_user_lable}>סינון תוצאות</Text>
+                <Text style={styles.add_user_label}>סינון תוצאות</Text>
             </TouchableOpacity>
         </View>
     );

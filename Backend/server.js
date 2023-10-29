@@ -1,5 +1,5 @@
 const express = require ('express'); // library to handle API routing
-const app = express(); // libary to build REST API
+const app = express(); // library to build REST API
 app.use(express.json());
 const { EMPTY } = require('sqlite3');
 
@@ -32,7 +32,7 @@ app.get('/route/:ID/:workingTime/:startingAddress', async (req, res) => {
       var addressOrder = [];
       addressOrder = returningData.split("|");
       const addressOrderJson = {};
-      for (let index = 1; index < addressOrder.length; index++) { // starting from index 1 becuase 0 will always be empty
+      for (let index = 1; index < addressOrder.length; index++) { // starting from index 1 because 0 will always be empty
         var letter = undeliveredLetters.find(obj => obj.deliveryStreet  + ", " + obj.deliveryCity === addressOrder[index]);
         if (index == 1) { // if first letter is undefined (starting point), skip it
           continue;

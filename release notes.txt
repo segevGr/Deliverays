@@ -10,13 +10,13 @@ Version 1.1.0
 
 	Frontend:
 	* Create "Global_Files" folder
-	* Create Home page stlye file ("home_page_style.js) and use it in Home pages screens (Deliver & Manager)
+	* Create Home page style file ("home_page_style.js) and use it in Home pages screens (Deliver & Manager)
 	* Create a filter button in "Delivery_management.js" that opens a
 	  filter dialog ("Delivery_filter_dialog.js") That now filter only by Status.
 
 Version 1.1.1
 	Frontend:
-	* Create Managment style file ("Managment_file.js") and use it on "Delivery_management.js" & "Delivers_managment.js"
+	* Create Management style file ("Management_file.js") and use it on "Delivery_management.js" & "Delivers_Management.js"
 	* Create gitignore file
 
 Version 1.2.0
@@ -34,9 +34,9 @@ Version 1.3.0
 	* Split "deliveryAddress" column in DB to 2 columns: "deliveryStreet", "deliveryCity"
 
 	Frontend:
-	* Update "Delivery_management.js" becuse of DB changes
-	* Update "Add_delivery.js" becuse of DB changes
-	* Update "Delivery_edit.js" becuse of DB changes
+	* Update "Delivery_management.js" because of DB changes
+	* Update "Add_delivery.js" because of DB changes
+	* Update "Delivery_edit.js" because of DB changes
 
 Version 1.3.1
 	Frontend:
@@ -48,8 +48,11 @@ Version 1.3.2
 
 Version 1.4.0
 	Backend:
-	* Change rout createion script and set that script in "server.js" file.
+	* Change rout creation script and set that script in "server.js" file.
 	* Fix "server.js" file according the the Split of "deliveryAddress" (Version 1.3.0)
 	
 	Frontend:
 	* Fix "Route.js" file according the the Split of "deliveryAddress" (Version 1.3.0)
+
+Version 1.4.1
+	* Grammar fixing all over the project

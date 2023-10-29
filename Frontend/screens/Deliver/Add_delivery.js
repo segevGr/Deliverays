@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IP, getLoginUserId } from '../../constsFiles';
+import { IP, getLoginUserId } from '../../constFiles';
 import {
 	View, TextInput, Text, StyleSheet, TouchableOpacity, Alert,
 	Dimensions, Image, TouchableWithoutFeedback, Keyboard, ScrollView,
@@ -49,15 +49,15 @@ const Add_delivery = ({ navigation }) => {
 		setCity(newCity);
 	};
 
-	const [editclient, setclientOnPress] = useState(false);
-	const [client, setclient] = useState('');
+	const [editClient, setClientOnPress] = useState(false);
+	const [client, setClient] = useState('');
 
-	const editclientBtnPress = () => {
-		setclientOnPress(true);
+	const editClientBtnPress = () => {
+		setClientOnPress(true);
 	};
 
-	const clientTextChangeFunction = (newclient) => {
-		setclient(newclient);
+	const clientTextChangeFunction = (newClient) => {
+		setClient(newClient);
 	};
 
 	const [editRecipient, setRecipientOnPress] = useState(false);
@@ -67,31 +67,31 @@ const Add_delivery = ({ navigation }) => {
 		setRecipientOnPress(true);
 	};
 
-	const recipientChangeFunction = (newrecipient) => {
-		setRecipient(newrecipient);
+	const recipientChangeFunction = (newRecipient) => {
+		setRecipient(newRecipient);
 	};
 
 
-	const [editrecipient_phoneNumber, setrecipient_phoneNumberOnPress] = useState(false);
-	const [recipient_phoneNumber, setrecipient_phoneNumber] = useState('');
+	const [editRecipient_phoneNumber, setRecipient_phoneNumberOnPress] = useState(false);
+	const [recipient_phoneNumber, setRecipient_phoneNumber] = useState('');
 
-	const editrecipient_phoneNumberBtnPress = () => {
-		setrecipient_phoneNumberOnPress(true);
+	const editRecipient_phoneNumberBtnPress = () => {
+		setRecipient_phoneNumberOnPress(true);
 	};
 
-	const recipient_phoneNumberChangeFunction = (newrecipient_phoneNumber) => {
-		setrecipient_phoneNumber(newrecipient_phoneNumber);
+	const recipient_phoneNumberChangeFunction = (newRecipient_phoneNumber) => {
+		setRecipient_phoneNumber(newRecipient_phoneNumber);
 	};
 
-	const [editdeliveryDate, setDeliveryDateOnPress] = useState(false);
+	const [editDeliveryDate, setDeliveryDateOnPress] = useState(false);
 	const [deliveryDate, setDeliveryDate] = useState('');
 
 	const editDeliveryDateBtnPress = () => {
 		setDeliveryDateOnPress(true);
 	};
 
-	const deliveryDateChangeFunction = (newdeliveryDate) => {
-		setDeliveryDate(newdeliveryDate);
+	const deliveryDateChangeFunction = (newDeliveryDate) => {
+		setDeliveryDate(newDeliveryDate);
 	};
 
 	const exitEditMode = () => {
@@ -107,20 +107,20 @@ const Add_delivery = ({ navigation }) => {
 			setRecipientOnPress(false);
 			Keyboard.dismiss();
 		}
-		else if (editdeliveryDate) {
+		else if (editDeliveryDate) {
 			setDeliveryDateOnPress(false);
 			Keyboard.dismiss();
 		}
-		else if (editclient) {
-			setclientOnPress(false);
+		else if (editClient) {
+			setClientOnPress(false);
 			Keyboard.dismiss();
 		}
 		else if (editID) {
 			setIDOnPress(false);
 			Keyboard.dismiss();
 		}
-		else if (editrecipient_phoneNumber) {
-			setrecipient_phoneNumberOnPress(false);
+		else if (editRecipient_phoneNumber) {
+			setRecipient_phoneNumberOnPress(false);
 			Keyboard.dismiss();
 		}
 	};
@@ -161,7 +161,7 @@ const Add_delivery = ({ navigation }) => {
 		else { save_changes_in_DB() }
 	}
 
-	const conver_date_to_request_syntax = (date) => {
+	const convert_date_to_request_syntax = (date) => {
 		return date.replace(/\./g, '-')
 
 	}
@@ -174,7 +174,7 @@ const Add_delivery = ({ navigation }) => {
 		return false;
 	}
 
-	const is_id_already_exsists = async () => {
+	const is_id_already_exists = async () => {
 		try {
 			const response = await fetch(`http://${ip}:3000/letter/${ID}`, {
 				method: 'GET',
@@ -230,8 +230,8 @@ const Add_delivery = ({ navigation }) => {
 	}
 
 	const save_changes_in_DB = async () => {
-		const currect_address = await validAddress();
-		if (await is_id_already_exsists()) {
+		const correct_address = await validAddress();
+		if (await is_id_already_exists()) {
 			Alert.alert(
 				`שגיאה - מספר המשלוח כבר קיים במערכת`,
 				'אנא בדקו שהזנתם את מספר המשלוח כראוי',
@@ -239,7 +239,7 @@ const Add_delivery = ({ navigation }) => {
 			);
 			return;
 		}
-		else if (!currect_address) {
+		else if (!correct_address) {
 			Alert.alert(
 				`שגיאה! כתובת המשלוח אינה קיימת`,
 				`אנא מלא כתובת תקינה`,
@@ -262,8 +262,8 @@ const Add_delivery = ({ navigation }) => {
 			return;
 		}
 
-		setStreet(currect_address.split(',')[0].trim());
-		setCity(currect_address.split(',')[1].trim());
+		setStreet(correct_address.split(',')[0].trim());
+		setCity(correct_address.split(',')[1].trim());
 
 		const requestBody = JSON.stringify({
 			"letterNumber": ID,
@@ -271,7 +271,7 @@ const Add_delivery = ({ navigation }) => {
 			"clientName": client,
 			"deliveryStreet": street,
 			"deliveryCity": city,
-			"deliveryDeadline": conver_date_to_request_syntax(deliveryDate),
+			"deliveryDeadline": convert_date_to_request_syntax(deliveryDate),
 			"addresseePhoneNumber": recipient_phoneNumber,
 			"userID": deliver_id
 		});
@@ -370,14 +370,14 @@ const Add_delivery = ({ navigation }) => {
 								)}
 							</TouchableOpacity>
 							<Text style={styles.attribute_text}>שולח</Text>
-							<TouchableOpacity style={styles.btn} onPress={editclientBtnPress}>
-								{editclient ? (
+							<TouchableOpacity style={styles.btn} onPress={editClientBtnPress}>
+								{editClient ? (
 									<TextInput
 										style={styles.attribute_input_text}
 										onChangeText={clientTextChangeFunction}
 										value={client}
 										autoFocus={true}
-										onBlur={() => setclientOnPress(false)}
+										onBlur={() => setClientOnPress(false)}
 									/>
 								) : (
 									<Text style={styles.attribute_input_text}>{client}</Text>
@@ -398,15 +398,15 @@ const Add_delivery = ({ navigation }) => {
 								)}
 							</TouchableOpacity>
 							<Text style={styles.attribute_text}>מספר טלפון של הנמען</Text>
-							<TouchableOpacity style={styles.btn} onPress={editrecipient_phoneNumberBtnPress}>
-								{editrecipient_phoneNumber ? (
+							<TouchableOpacity style={styles.btn} onPress={editRecipient_phoneNumberBtnPress}>
+								{editRecipient_phoneNumber ? (
 									<TextInput
 										style={styles.attribute_input_text}
 										onChangeText={recipient_phoneNumberChangeFunction}
 										value={recipient_phoneNumber}
 										keyboardType="numeric"
 										autoFocus={true}
-										onBlur={() => setrecipient_phoneNumberOnPress(false)}
+										onBlur={() => setRecipient_phoneNumberOnPress(false)}
 									/>
 								) : (
 									<Text style={styles.attribute_input_text}>{recipient_phoneNumber}</Text>
@@ -414,7 +414,7 @@ const Add_delivery = ({ navigation }) => {
 							</TouchableOpacity>
 							<Text style={styles.attribute_text}>צריך להימסר עד</Text>
 							<TouchableOpacity style={styles.btn} onPress={editDeliveryDateBtnPress}>
-								{editdeliveryDate ? (
+								{editDeliveryDate ? (
 									<TextInput
 										style={styles.attribute_input_text}
 										onChangeText={deliveryDateChangeFunction}

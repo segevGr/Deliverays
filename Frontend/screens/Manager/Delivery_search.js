@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {IP} from '../../constsFiles';
+import {IP} from '../../constFiles';
 import {
     View, TextInput, Text, StyleSheet, TouchableOpacity, Alert,
     Dimensions, Image, TouchableWithoutFeedback, Keyboard
@@ -80,12 +80,12 @@ const Delivery_search = ({ navigation }) => {
             return;
         }
 
-        const delivey_status = await getDeliveryFromDB();
+        const delivery_status = await getDeliveryFromDB();
 
-        if (delivey_status == "notExists") {
+        if (delivery_status == "notExists") {
             setDeliveryDetails(false);
             setNotFoundDelivery(true);
-        } else if (delivey_status == "delivered") {
+        } else if (delivery_status == "delivered") {
             setDeliveryStatus({ 'color': 'green', 'status': 'נמסר' })
             setNotFoundDelivery(false);
             setDeliveryDetails(true);
@@ -125,7 +125,7 @@ const Delivery_search = ({ navigation }) => {
                     </TouchableOpacity>
                     <Text style={styles.title_text}>חיפוש משלוח</Text>
                 </View>
-                <View style={styles.search_bar_conainer}>
+                <View style={styles.search_bar_container}>
                     <TouchableOpacity style={styles.search_btn_container} onPress={editSearchBtnPress}>
                         <View style={styles.search_btn_icon_container}>
                             <TouchableOpacity onPress={search_delivery}>
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
         marginLeft: width * 0.05,
         marginTop: width * 0.02
     },
-    search_bar_conainer: {
+    search_bar_container: {
         alignItems: 'center',
         justifyContent: 'center',
     },

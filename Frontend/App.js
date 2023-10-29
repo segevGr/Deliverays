@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import Home_page_deliver from './screens/Deliver/Home_page_deliver'
 import Home_page_manager from './screens/Manager/Home_page_manager'
-import Delivers_managment from './screens/Manager/Delivers_managment';
+import Delivers_management from './screens/Manager/Delivers_management';
 import Delivery_management from './screens/Deliver/Delivery_management';
 import Deliver_edit from './screens/Manager/Deliver_edit';
 import Delivery_search from './screens/Manager/Delivery_search'
@@ -28,7 +28,7 @@ const MyStack = () => {
 				/>
 				<Stack.Screen name="Home_page_deliver" component={Home_page_deliver} />
 				<Stack.Screen name="Home_page_manager" component={Home_page_manager} />
-				<Stack.Screen name="Delivers_managment" component={Delivers_managment} />
+				<Stack.Screen name="Delivers_management" component={Delivers_management} />
 				<Stack.Screen name="Delivery_management" component={Delivery_management} />
 				<Stack.Screen name="Deliver_edit" component={Deliver_edit} />
 				<Stack.Screen name="Delivery_search" component={Delivery_search} />

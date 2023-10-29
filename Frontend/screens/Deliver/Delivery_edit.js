@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IP } from '../../constsFiles';
+import { IP } from '../../constFiles';
 import {
 	View, TextInput, Text, StyleSheet, TouchableOpacity, Alert,
 	Dimensions, Image, TouchableWithoutFeedback, Keyboard,
@@ -17,26 +17,26 @@ const Delivery_edit = ({ navigation, route }) => {
 		navigation.goBack();
 	};
 
-	const [editrecipient_phoneNumber, setrecipient_phoneNumberOnPress] = useState(false);
-	const [recipient_phoneNumber, setrecipient_phoneNumber] = useState('');
+	const [editRecipient_phoneNumber, setRecipient_phoneNumberOnPress] = useState(false);
+	const [recipient_phoneNumber, setRecipient_phoneNumber] = useState('');
 
-	const editrecipient_phoneNumberBtnPress = () => {
-		setrecipient_phoneNumberOnPress(true);
+	const editRecipient_phoneNumberBtnPress = () => {
+		setRecipient_phoneNumberOnPress(true);
 	};
 
-	const recipient_phoneNumberChangeFunction = (newrecipient_phoneNumber) => {
-		setrecipient_phoneNumber(newrecipient_phoneNumber);
+	const recipient_phoneNumberChangeFunction = (newRecipient_phoneNumber) => {
+		setRecipient_phoneNumber(newRecipient_phoneNumber);
 	};
 
-	const [editclient, setclientOnPress] = useState(false);
-	const [client, setclient] = useState('');
+	const [editClient, setClientOnPress] = useState(false);
+	const [client, setClient] = useState('');
 
-	const editclientBtnPress = () => {
-		setclientOnPress(true);
+	const editClientBtnPress = () => {
+		setClientOnPress(true);
 	};
 
-	const clientTextChangeFunction = (newclient) => {
-		setclient(newclient);
+	const clientTextChangeFunction = (newClient) => {
+		setClient(newClient);
 	};
 
 	const [editStreet, setStreetOnPress] = useState(false);
@@ -68,19 +68,19 @@ const Delivery_edit = ({ navigation, route }) => {
 		setRecipientOnPress(true);
 	};
 
-	const recipientChangeFunction = (newrecipient) => {
-		setRecipient(newrecipient);
+	const recipientChangeFunction = (newRecipient) => {
+		setRecipient(newRecipient);
 	};
 
-	const [editdeliveryDate, setDeliveryDateOnPress] = useState(false);
+	const [editDeliveryDate, setDeliveryDateOnPress] = useState(false);
 	const [deliveryDate, setDeliveryDate] = useState();
 
 	const editDeliveryDateBtnPress = () => {
 		setDeliveryDateOnPress(true);
 	};
 
-	const deliveryDateChangeFunction = (newdeliveryDate) => {
-		setDeliveryDate(newdeliveryDate);
+	const deliveryDateChangeFunction = (newDeliveryDate) => {
+		setDeliveryDate(newDeliveryDate);
 	};
 
 	const [deliveryStatus, setDeliveryStatus] = useState("לא נמסר");
@@ -98,16 +98,16 @@ const Delivery_edit = ({ navigation, route }) => {
 			setRecipientOnPress(false);
 			Keyboard.dismiss();
 		}
-		else if (editdeliveryDate) {
+		else if (editDeliveryDate) {
 			setDeliveryDateOnPress(false);
 			Keyboard.dismiss();
 		}
-		else if (editclient) {
-			setclientOnPress(false);
+		else if (editClient) {
+			setClientOnPress(false);
 			Keyboard.dismiss();
 		}
-		else if (editrecipient_phoneNumber) {
-			setrecipient_phoneNumberOnPress(false);
+		else if (editRecipient_phoneNumber) {
+			setRecipient_phoneNumberOnPress(false);
 			Keyboard.dismiss();
 		}
 	};
@@ -136,7 +136,7 @@ const Delivery_edit = ({ navigation, route }) => {
 		else { save_changes_in_DB() }
 	}
 
-	const conver_date_to_request_syntax = (date) => {
+	const convert_date_to_request_syntax = (date) => {
 		return date.replace(/\./g, '-')
 
 	}
@@ -190,8 +190,8 @@ const Delivery_edit = ({ navigation, route }) => {
 	}
 
 	const save_changes_in_DB = async () => {
-		const currect_address = await validAddress();
-		if (!currect_address) {
+		const correct_address = await validAddress();
+		if (!correct_address) {
 			Alert.alert(
 				`שגיאה! כתובת המשלוח אינה קיימת`,
 				`אנא מלא כתובת תקינה`,
@@ -214,15 +214,15 @@ const Delivery_edit = ({ navigation, route }) => {
 			return;
 		}
 
-		setStreet(currect_address.split(',')[0].trim());
-		setCity(currect_address.split(',')[1].trim());
+		setStreet(correct_address.split(',')[0].trim());
+		setCity(correct_address.split(',')[1].trim());
 
 		const requestBody = JSON.stringify({
 			"addressee": recipient,
 			"clientName": client,
 			"deliveryStreet": street,
 			"deliveryCity": city,
-			"deliveryDeadline": conver_date_to_request_syntax(deliveryDate),
+			"deliveryDeadline": convert_date_to_request_syntax(deliveryDate),
 			"addresseePhoneNumber": recipient_phoneNumber,
 		});
 
@@ -283,8 +283,8 @@ const Delivery_edit = ({ navigation, route }) => {
 			setStreet(data["result"][0]['deliveryStreet']);
 			setCity(data["result"][0]['deliveryCity']);
 			setRecipient(data["result"][0]['addressee']);
-			setrecipient_phoneNumber(data['result'][0]['addresseePhoneNumber'])
-			setclient(data['result'][0]['clientName'])
+			setRecipient_phoneNumber(data['result'][0]['addresseePhoneNumber'])
+			setClient(data['result'][0]['clientName'])
 			setDeliveryDate(data["result"][0]['deliveryDeadline'].replaceAll("-", "."))
 			if (data["result"][0]['isDelivered'] == 1) {
 				setDeliveryStatus("נמסר")
@@ -343,14 +343,14 @@ const Delivery_edit = ({ navigation, route }) => {
 								)}
 							</TouchableOpacity>
 							<Text style={styles.attribute_text}>שולח</Text>
-							<TouchableOpacity style={styles.btn} onPress={editclientBtnPress}>
-								{editclient ? (
+							<TouchableOpacity style={styles.btn} onPress={editClientBtnPress}>
+								{editClient ? (
 									<TextInput
 										style={styles.attribute_input_text}
 										onChangeText={clientTextChangeFunction}
 										value={client}
 										autoFocus={true}
-										onBlur={() => setclientOnPress(false)}
+										onBlur={() => setClientOnPress(false)}
 									/>
 								) : (
 									<Text style={styles.attribute_input_text}>{client}</Text>
@@ -371,15 +371,15 @@ const Delivery_edit = ({ navigation, route }) => {
 								)}
 							</TouchableOpacity>
 							<Text style={styles.attribute_text}>מספר טלפון של הנמען</Text>
-							<TouchableOpacity style={styles.btn} onPress={editrecipient_phoneNumberBtnPress}>
-								{editrecipient_phoneNumber ? (
+							<TouchableOpacity style={styles.btn} onPress={editRecipient_phoneNumberBtnPress}>
+								{editRecipient_phoneNumber ? (
 									<TextInput
 										style={styles.attribute_input_text}
 										onChangeText={recipient_phoneNumberChangeFunction}
 										value={recipient_phoneNumber}
 										keyboardType="numeric"
 										autoFocus={true}
-										onBlur={() => setrecipient_phoneNumberOnPress(false)}
+										onBlur={() => setRecipient_phoneNumberOnPress(false)}
 									/>
 								) : (
 									<Text style={styles.attribute_input_text}>{recipient_phoneNumber}</Text>
@@ -387,7 +387,7 @@ const Delivery_edit = ({ navigation, route }) => {
 							</TouchableOpacity>
 							<Text style={styles.attribute_text}>צריך להימסר עד</Text>
 							<TouchableOpacity style={styles.btn} onPress={editDeliveryDateBtnPress}>
-								{editdeliveryDate ? (
+								{editDeliveryDate ? (
 									<TextInput
 										style={styles.attribute_input_text}
 										onChangeText={deliveryDateChangeFunction}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IP } from '../../constsFiles';
+import { IP } from '../../constFiles';
 import {
 	View, TextInput, Text, StyleSheet, TouchableOpacity, Alert,
 	Dimensions, Image, TouchableWithoutFeedback, Keyboard, ScrollView,
@@ -106,7 +106,7 @@ const Add_deliver = ({ navigation }) => {
 		);
 	}
 
-	const is_id_already_exsists = async () => {
+	const is_id_already_exists = async () => {
 		try {
 			const response = await fetch(`http://${ip}:3000/user/${ID}`, {
 				method: 'GET',
@@ -121,7 +121,7 @@ const Add_deliver = ({ navigation }) => {
 		}
 	};
 
-	const is_username_already_exsists = async () => {
+	const is_username_already_exists = async () => {
 		try {
 			const response = await fetch(`http://${ip}:3000/username/${Username}`, {
 				method: 'GET',
@@ -168,8 +168,8 @@ const Add_deliver = ({ navigation }) => {
 	}
 
 	const save_changes_in_DB = async () => {
-		const currect_address = await validAddress();
-		if (await is_id_already_exsists()) {
+		const correct_address = await validAddress();
+		if (await is_id_already_exists()) {
 			Alert.alert(
 				`שגיאה - מספר התז כבר קיים במערכת`,
 				'אנא בדקו שהמשתמש כבר לא קיים במערכת',
@@ -177,7 +177,7 @@ const Add_deliver = ({ navigation }) => {
 			);
 			return;
 		}
-		else if (await is_username_already_exsists()) {
+		else if (await is_username_already_exists()) {
 			Alert.alert(
 				`שגיאה - שם המשתמש כבר תפוס`,
 				'אנא נסו להזין שם משתמש חדש',
@@ -185,7 +185,7 @@ const Add_deliver = ({ navigation }) => {
 			);
 			return;
 		}
-		else if (!currect_address) {
+		else if (!correct_address) {
 			Alert.alert(
 				`שגיאה! כתובת השליח אינה קיימת`,
 				`אנא מלא כתובת תקינה`,
@@ -208,7 +208,7 @@ const Add_deliver = ({ navigation }) => {
 		const requestBody = JSON.stringify({
 			"ID": ID,
 			"FullName": Username,
-			"address": currect_address,
+			"address": correct_address,
 			"phoneNumber": phoneNumber,
 			"isAdmin": parseInt(role, 10),
 			"password": "1234",

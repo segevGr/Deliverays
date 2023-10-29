@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { IP } from '../../constsFiles';
+import { IP } from '../../constFiles';
 
 const { width, height } = Dimensions.get('window');
 
@@ -113,7 +113,7 @@ const Route = ({ navigation, route }) => {
                             <TouchableOpacity onPress={() => accept_alert(item.letterNumber, item.deliveryAddress)}>
                                 <Image source={require('../../assets/accept_icon.png')} style={styles.accept_btn} />
                             </TouchableOpacity>
-                            <Text style={styles.delivery_name_lable}>{item.deliveryAddress}</Text>
+                            <Text style={styles.delivery_name_label}>{item.deliveryAddress}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'space-between',
         alignItems: 'center',
     },
-    delivery_name_lable: {
+    delivery_name_label: {
         color: 'white',
         flex: 1,
         textAlign: 'right',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IP } from '../../constsFiles';
+import { IP } from '../../constFiles';
 import {
 	View, TextInput, Text, StyleSheet, TouchableOpacity, Alert,
 	Dimensions, Image, TouchableWithoutFeedback, Keyboard
@@ -103,7 +103,7 @@ const Deliver_edit = ({ navigation, route }) => {
 		);
 	}
 
-	const is_username_already_exsists = async () => {
+	const is_username_already_exists = async () => {
 		if (deliver_name == Username) {
 			return false;
 		}
@@ -142,8 +142,8 @@ const Deliver_edit = ({ navigation, route }) => {
 	}
 
 	const save_changes_in_DB = async () => {
-		const currect_address = await validAddress();
-		if (await is_username_already_exsists()) {
+		const correct_address = await validAddress();
+		if (await is_username_already_exists()) {
 			Alert.alert(
 				`שגיאה - שם המשתמש כבר תפוס`,
 				'אנא נסו להזין שם משתמש חדש',
@@ -151,7 +151,7 @@ const Deliver_edit = ({ navigation, route }) => {
 			);
 			return;
 		}
-		else if (!currect_address) {
+		else if (!correct_address) {
 			Alert.alert(
 				`שגיאה! כתובת השליח אינה קיימת`,
 				`אנא מלא כתובת תקינה`,
@@ -174,7 +174,7 @@ const Deliver_edit = ({ navigation, route }) => {
 		try {
 			const requestBody = JSON.stringify({
 				"FullName": Username,
-				"address": currect_address,
+				"address": correct_address,
 				"phoneNumber": phoneNumber
 			});
 

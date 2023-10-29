@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    item_name_lable: {
+    item_name_label: {
         color: 'white',
         flex: 1,
         textAlign: 'right',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    add_user_lable: {
+    add_user_label: {
         color: 'white',
         fontSize: width * 0.05,
     },

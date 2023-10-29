@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { IP, getLoginUserId, getLoginUserName } from '../../constsFiles';
+import { IP, getLoginUserId, getLoginUserName } from '../../constFiles';
 import {
     View, Text, TouchableOpacity,
     ScrollView, Image, Alert
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import styles from '../Global_Files/Managment_style';
+import styles from '../Global_Files/management_style';
 
-const Delivers_managment = ({ navigation }) => {
+const Delivers_management = ({ navigation }) => {
     const ip = IP();
 
     const delete_alert = (deliver_id, deliver_name) => {
@@ -38,8 +38,8 @@ const Delivers_managment = ({ navigation }) => {
                 { cancelable: false }
             );
         }
-        const updateddelivers_list = delivers_list.filter(deliver => deliver.id !== deliver_id)
-        setDelivers_list(updateddelivers_list)
+        const updatedDelivers_list = delivers_list.filter(deliver => deliver.id !== deliver_id)
+        setDelivers_list(updatedDelivers_list)
     }
 
     const info_screen = (deliver_id, deliver_name) => {
@@ -103,7 +103,7 @@ const Delivers_managment = ({ navigation }) => {
                             <TouchableOpacity onPress={() => info_screen(deliver.id, deliver.fullName)}>
                                 <Image source={require('../../assets/edit_icon.png')} style={styles.info_btn} />
                             </TouchableOpacity>
-                            <Text style={styles.item_name_lable}>{deliver.fullName}</Text>
+                            <Text style={styles.item_name_label}>{deliver.fullName}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
@@ -111,15 +111,15 @@ const Delivers_managment = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.add_item_btn}
                 onPress={add_deliver}>
-                <Text style={styles.add_user_lable}>הוספת שליח</Text>
+                <Text style={styles.add_user_label}>הוספת שליח</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.filter_btn}
                 onPress={null}>
-                <Text style={styles.add_user_lable}>סינון תוצאות</Text>
+                <Text style={styles.add_user_label}>סינון תוצאות</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
-export default Delivers_managment;
+export default Delivers_management;

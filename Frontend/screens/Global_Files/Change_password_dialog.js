@@ -3,7 +3,7 @@ import {
 	Modal, View, Text, StyleSheet, TouchableOpacity,
 	Dimensions, TextInput, Alert
 } from 'react-native';
-import { IP, getLoginUserName, getLoginUserId } from '../../constsFiles';
+import { IP, getLoginUserName, getLoginUserId } from '../../constFiles';
 
 const { width, height } = Dimensions.get('window');
 
@@ -52,15 +52,15 @@ const Change_password_dialog = ({ visible, onClose }) => {
 		if (currentPass == '' || newPass == '' || acceptNewPass == '') {
 			Alert.alert(
 				'שגיאה!',
-				'אנא מלאו את כל השדות על מנת לשנות סיסמא',
+				'אנא מלאו את כל השדות על מנת לשנות סיסמה',
 				[{ text: 'הבנתי' }]
 			);
 			return;
 		}
 		else if (! await check_current_pass()) {
 			Alert.alert(
-				`שגיאה! הסיסמא הנוכחית שהזנת לא נכונה`,
-				'אנא הזן סיסמא נוכחית תקינה',
+				`שגיאה! הסיסמה הנוכחית שהזנת לא נכונה`,
+				'אנא הזן סיסמה נוכחית תקינה',
 				[{ text: 'הבנתי' }]
 			);
 			return;
@@ -68,7 +68,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 		else if (newPass != acceptNewPass) {
 			Alert.alert(
 				`שגיאה! הסיסמאות החדשות לא מתאימות`,
-				'אנא וודא שהסיסמא החדשה זהה לאימות הסיסמא שהזנת',
+				'אנא וודא שהסיסמה החדשה זהה לאימות הסיסמה שהזנת',
 				[{ text: 'הבנתי' }]
 			);
 			return;
@@ -76,7 +76,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 		else if (newPass == currentPass) {
 			Alert.alert(
 				`שגיאה!`,
-				'הסיסמא החדשה לא יכולה להיות זהה לסיסמא הנוכחית',
+				'הסיסמה החדשה לא יכולה להיות זהה לסיסמה הנוכחית',
 				[{ text: 'הבנתי' }]
 			);
 			return;
@@ -84,7 +84,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 		else {
 			if (await change_password()) {
 				Alert.alert(
-					`הסיסמא עודכנה בהצלחה!`,
+					`הסיסמה עודכנה בהצלחה!`,
 					'',
 					[
 						{ text: 'תודה!', onPress: () => null },
@@ -123,7 +123,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 					<View style={styles.option_container}>
 						<TextInput
 							style={styles.input}
-							placeholder="סיסמא נוכחית"
+							placeholder="סיסמה נוכחית"
 							value={currentPass}
 							onChangeText={setCurrentPass}
 							placeholderTextColor="white"
@@ -134,7 +134,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 					<View style={styles.option_container}>
 						<TextInput
 							style={styles.input}
-							placeholder="סיסמא חדשה"
+							placeholder="סיסמה חדשה"
 							value={newPass}
 							onChangeText={setNewPass}
 							placeholderTextColor="white"
@@ -145,7 +145,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 					<View style={styles.option_container}>
 						<TextInput
 							style={styles.input}
-							placeholder="אימות סיסמא חדשה"
+							placeholder="אימות סיסמה חדשה"
 							value={acceptNewPass}
 							onChangeText={setAcceptNewPass}
 							placeholderTextColor="white"
@@ -164,7 +164,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 						<TouchableOpacity
 							style={styles.btns}
 							onPress={handle_change_password}>
-							<Text style={styles.btns_text}>שנה סיסמא</Text>
+							<Text style={styles.btns_text}>שנה סיסמה</Text>
 						</TouchableOpacity>
 
 					</View>

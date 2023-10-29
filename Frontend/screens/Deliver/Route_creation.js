@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IP, getLoginUserId, getLoginUserName } from '../../constsFiles';
+import { IP, getLoginUserId, getLoginUserName } from '../../constFiles';
 import {
     View, TextInput, Text, StyleSheet, TouchableOpacity, Alert,
     Dimensions, Image, TouchableWithoutFeedback, Keyboard,
@@ -18,15 +18,15 @@ const Route_creation = ({ navigation }) => {
         navigation.goBack();
     };
 
-    const [editworkDuration, setworkDurationOnPress] = useState(false);
-    const [workDuration, setworkDuration] = useState();
+    const [editWorkDuration, setWorkDurationOnPress] = useState(false);
+    const [workDuration, setWorkDuration] = useState();
 
-    const editworkDurationBtnPress = () => {
-        setworkDurationOnPress(true);
+    const editWorkDurationBtnPress = () => {
+        setWorkDurationOnPress(true);
     };
 
-    const workDurationChangeFunction = (newworkDuration) => {
-        setworkDuration(newworkDuration);
+    const workDurationChangeFunction = (newWorkDuration) => {
+        setWorkDuration(newWorkDuration);
     };
 
     const [editStartAddress, setStartAddressOnPress] = useState(false);
@@ -36,13 +36,13 @@ const Route_creation = ({ navigation }) => {
         setStartAddressOnPress(true);
     };
 
-    const startAddressChangeFunction = (newstartAddress) => {
-        setStartAddress(newstartAddress);
+    const startAddressChangeFunction = (newStartAddress) => {
+        setStartAddress(newStartAddress);
     };
 
     const exitEditMode = () => {
-        if (editworkDuration) {
-            setworkDurationOnPress(false);
+        if (editWorkDuration) {
+            setWorkDurationOnPress(false);
             Keyboard.dismiss();
         }
         else if (editStartAddress) {
@@ -101,8 +101,8 @@ const Route_creation = ({ navigation }) => {
                 return;
 
             }
-            const currect_address = await validAddress();
-            if (!currect_address) {
+            const correct_address = await validAddress();
+            if (!correct_address) {
                 Alert.alert(
                     `שגיאה! כתובת ההתחלה אינה קיימת`,
                     `אנא מלא כתובת התחלה תקינה`,
@@ -114,7 +114,7 @@ const Route_creation = ({ navigation }) => {
                 return;
             }
             setIsLoading(true);
-            const response = await fetch(`http://${ip}:3000/route/${deliver_id}/${workDuration}/${currect_address}`, {
+            const response = await fetch(`http://${ip}:3000/route/${deliver_id}/${workDuration}/${correct_address}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -163,15 +163,15 @@ const Route_creation = ({ navigation }) => {
                 </View>
                 <View>
                     <Text style={styles.attribute_text}>שעות עבודה</Text>
-                    <TouchableOpacity style={styles.btn} onPress={editworkDurationBtnPress}>
-                        {editworkDuration ? (
+                    <TouchableOpacity style={styles.btn} onPress={editWorkDurationBtnPress}>
+                        {editWorkDuration ? (
                             <TextInput
                                 style={styles.attribute_input_text}
                                 onChangeText={workDurationChangeFunction}
                                 value={workDuration}
                                 autoFocus={true}
                                 keyboardType="numeric"
-                                onBlur={() => setworkDurationOnPress(false)}
+                                onBlur={() => setWorkDurationOnPress(false)}
                             />
                         ) : (
                             <Text style={styles.attribute_input_text}>{workDuration}</Text>
