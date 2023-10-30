@@ -238,11 +238,6 @@ app.put('/letter/:letterNumber', async (req, res) => { // update one letter, bas
   res.status(200).json({'updated rows': cnt});
 })
 
-app.put('/letterUpdate', async (req, res) => { // iterates over all letters, and update the 'isLate' attribute if delivery date has passed
-  const undelivered = await db_letters.updateUndeliveredLetters();
-  res.status(200).json({'late letters count': undelivered});
-})
-
 // # DELETE - remove request
 app.delete('/letter/:letterNumber', async (req, res) => { 
   const cnt = await db_letters.deleteLetter(req.params.letterNumber); // cnt = updated rows count

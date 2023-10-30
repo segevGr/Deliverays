@@ -29,11 +29,6 @@ function getLetter(id){
     return knex("Letter").select("*").where("letterNumber", id);
 };
 
-function updateUndeliveredLetters(){
-    var currentTimestamp = (new Date()).getTime();
-    return knex("Letter").whereRaw('deliveryDeadline < ?', currentTimestamp).andWhere('isLate', 0).update({'isLate': 1});
-};
-
 function updateLetter(id, letter){
     return knex("Letter").where("letterNumber", id).update(letter);
 };
@@ -42,4 +37,4 @@ function deleteLetter(id){
     return knex("Letter").where("letterNumber", id).del();
 };
 
-module.exports = {createLetter, getAllPendingLetters, getLetters, getAllLetters, getGlobalPendingLetters, getLetter, updateUndeliveredLetters, deleteLetter, updateLetter};
+module.exports = {createLetter, getAllPendingLetters, getLetters, getAllLetters, getGlobalPendingLetters, getLetter, deleteLetter, updateLetter};

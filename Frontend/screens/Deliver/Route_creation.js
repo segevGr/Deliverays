@@ -29,15 +29,26 @@ const Route_creation = ({ navigation }) => {
         setWorkDuration(newWorkDuration);
     };
 
-    const [editStartAddress, setStartAddressOnPress] = useState(false);
-    const [startAddress, setStartAddress] = useState();
+    const [editStreet, setStreetOnPress] = useState(false);
+    const [street, setStreet] = useState();
 
-    const editStartAddressBtnPress = () => {
-        setStartAddressOnPress(true);
+    const editStreetBtnPress = () => {
+        setStreetOnPress(true);
     };
 
-    const startAddressChangeFunction = (newStartAddress) => {
-        setStartAddress(newStartAddress);
+    const streetChangeFunction = (newStartAddress) => {
+        setStreet(newStartAddress);
+    };
+    
+    const [editCity, setCityOnPress] = useState(false);
+    const [city, setCity] = useState();
+
+    const editCityBtnPress = () => {
+        setCityOnPress(true);
+    };
+
+    const cityChangeFunction = (newStartAddress) => {
+        setCity(newStartAddress);
     };
 
     const exitEditMode = () => {
@@ -45,8 +56,12 @@ const Route_creation = ({ navigation }) => {
             setWorkDurationOnPress(false);
             Keyboard.dismiss();
         }
-        else if (editStartAddress) {
-            setStartAddressOnPress(false);
+        else if (editStreet) {
+            setStreetOnPress(false);
+            Keyboard.dismiss();
+        }
+        else if (editCity){
+            setCityOnPress(false);
             Keyboard.dismiss();
         }
     };
@@ -64,7 +79,8 @@ const Route_creation = ({ navigation }) => {
     }
 
     const validAddress = async () => {
-        const response = await fetch(`http://${ip}:3000/letterValidation/${startAddress}`, {
+        let address = street + ", " + city
+        const response = await fetch(`http://${ip}:3000/letterValidation/${address}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -178,21 +194,35 @@ const Route_creation = ({ navigation }) => {
                         )}
                     </TouchableOpacity>
                     <Text style={styles.attribute_text}>נקודת התחלה</Text>
-                    <TouchableOpacity style={styles.btn} onPress={editStartAddressBtnPress}>
-                        {editStartAddress ? (
+                    <Text style={styles.attribute_text}>שם ומספר רחוב</Text>
+                    <TouchableOpacity style={styles.btn} onPress={editStreetBtnPress}>
+                        {editStreet ? (
                             <TextInput
                                 style={styles.attribute_input_text}
-                                onChangeText={startAddressChangeFunction}
-                                value={startAddress}
+                                onChangeText={streetChangeFunction}
+                                value={street}
                                 autoFocus={true}
-                                onBlur={() => setStartAddressOnPress(false)}
+                                onBlur={() => setStreetOnPress(false)}
                             />
                         ) : (
-                            <Text style={styles.attribute_input_text}>{startAddress}</Text>
+                            <Text style={styles.attribute_input_text}>{street}</Text>
+                        )}
+                    </TouchableOpacity>
+                    <Text style={styles.attribute_text}>עיר</Text>
+                    <TouchableOpacity style={styles.btn} onPress={editCityBtnPress}>
+                        {editCity ? (
+                            <TextInput
+                                style={styles.attribute_input_text}
+                                onChangeText={cityChangeFunction}
+                                value={city}
+                                autoFocus={true}
+                                onBlur={() => setCityOnPress(false)}
+                            />
+                        ) : (
+                            <Text style={styles.attribute_input_text}>{city}</Text>
                         )}
                     </TouchableOpacity>
                 </View>
-
                 <TouchableOpacity
                     style={styles.save_btn}
                     onPress={create_route_btn_press}
