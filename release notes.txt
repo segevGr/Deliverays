@@ -64,3 +64,7 @@ Version 1.4.2
 
 	Frontend:
 	* Fix "Route_creation.js" file according the the Split of "deliveryAddress" (Version 1.3.0)
+
+Version 1.5.0
+	Frontend:
+	* Fix "management_style.js" and "Delivers_management.js" files names according the Grammar fixing
