@@ -1,527 +1,542 @@
-import React, { useState } from 'react';
-import { IP, getLoginUserId } from '../../constFiles';
+import React, { useState } from "react";
+import { IP, getLoginUserId } from "../../constFiles";
 import {
-	View, TextInput, Text, StyleSheet, TouchableOpacity, Alert,
-	Dimensions, Image, TouchableWithoutFeedback, Keyboard, ScrollView,
-	KeyboardAvoidingView
-} from 'react-native';
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Dimensions,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
+  KeyboardAvoidingView,
+} from "react-native";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 const Add_delivery = ({ navigation }) => {
-	const ip = IP();
-	const deliver_id = getLoginUserId();
+  const ip = IP();
+  const deliver_id = getLoginUserId();
 
-	const back_to_previous_page = () => {
-		navigation.goBack();
-	};
+  const back_to_previous_page = () => {
+    navigation.goBack();
+  };
 
-	const [editID, setIDOnPress] = useState(false);
-	const [ID, setID] = useState();
+  const [editID, setIDOnPress] = useState(false);
+  const [ID, setID] = useState();
 
-	const editIDBtnPress = () => {
-		setIDOnPress(true);
-	};
+  const editIDBtnPress = () => {
+    setIDOnPress(true);
+  };
 
-	const IDTextChangeFunction = (newID) => {
-		setID(newID);
-	};
+  const IDTextChangeFunction = (newID) => {
+    setID(newID);
+  };
 
-	const [editStreet, setStreetOnPress] = useState(false);
-	const [street, setStreet] = useState('');
+  const [editStreet, setStreetOnPress] = useState(false);
+  const [street, setStreet] = useState("");
 
-	const editStreetBtnPress = () => {
-		setStreetOnPress(true);
-	};
+  const editStreetBtnPress = () => {
+    setStreetOnPress(true);
+  };
 
-	const streetTextChangeFunction = (newStreet) => {
-		setStreet(newStreet);
-	};
+  const streetTextChangeFunction = (newStreet) => {
+    setStreet(newStreet);
+  };
 
-	const [editCity, setCityOnPress] = useState(false);
-	const [city, setCity] = useState('');
+  const [editCity, setCityOnPress] = useState(false);
+  const [city, setCity] = useState("");
 
-	const editCityBtnPress = () => {
-		setCityOnPress(true);
-	};
+  const editCityBtnPress = () => {
+    setCityOnPress(true);
+  };
 
-	const cityTextChangeFunction = (newCity) => {
-		setCity(newCity);
-	};
+  const cityTextChangeFunction = (newCity) => {
+    setCity(newCity);
+  };
 
-	const [editClient, setClientOnPress] = useState(false);
-	const [client, setClient] = useState('');
+  const [editClient, setClientOnPress] = useState(false);
+  const [client, setClient] = useState("");
 
-	const editClientBtnPress = () => {
-		setClientOnPress(true);
-	};
+  const editClientBtnPress = () => {
+    setClientOnPress(true);
+  };
 
-	const clientTextChangeFunction = (newClient) => {
-		setClient(newClient);
-	};
+  const clientTextChangeFunction = (newClient) => {
+    setClient(newClient);
+  };
 
-	const [editRecipient, setRecipientOnPress] = useState(false);
-	const [recipient, setRecipient] = useState('');
+  const [editRecipient, setRecipientOnPress] = useState(false);
+  const [recipient, setRecipient] = useState("");
 
-	const editRecipientBtnPress = () => {
-		setRecipientOnPress(true);
-	};
+  const editRecipientBtnPress = () => {
+    setRecipientOnPress(true);
+  };
 
-	const recipientChangeFunction = (newRecipient) => {
-		setRecipient(newRecipient);
-	};
+  const recipientChangeFunction = (newRecipient) => {
+    setRecipient(newRecipient);
+  };
 
+  const [editRecipient_phoneNumber, setRecipient_phoneNumberOnPress] =
+    useState(false);
+  const [recipient_phoneNumber, setRecipient_phoneNumber] = useState("");
 
-	const [editRecipient_phoneNumber, setRecipient_phoneNumberOnPress] = useState(false);
-	const [recipient_phoneNumber, setRecipient_phoneNumber] = useState('');
+  const editRecipient_phoneNumberBtnPress = () => {
+    setRecipient_phoneNumberOnPress(true);
+  };
 
-	const editRecipient_phoneNumberBtnPress = () => {
-		setRecipient_phoneNumberOnPress(true);
-	};
+  const recipient_phoneNumberChangeFunction = (newRecipient_phoneNumber) => {
+    setRecipient_phoneNumber(newRecipient_phoneNumber);
+  };
 
-	const recipient_phoneNumberChangeFunction = (newRecipient_phoneNumber) => {
-		setRecipient_phoneNumber(newRecipient_phoneNumber);
-	};
+  const [editDeliveryDate, setDeliveryDateOnPress] = useState(false);
+  const [deliveryDate, setDeliveryDate] = useState("");
 
-	const [editDeliveryDate, setDeliveryDateOnPress] = useState(false);
-	const [deliveryDate, setDeliveryDate] = useState('');
+  const editDeliveryDateBtnPress = () => {
+    setDeliveryDateOnPress(true);
+  };
 
-	const editDeliveryDateBtnPress = () => {
-		setDeliveryDateOnPress(true);
-	};
+  const deliveryDateChangeFunction = (newDeliveryDate) => {
+    setDeliveryDate(newDeliveryDate);
+  };
 
-	const deliveryDateChangeFunction = (newDeliveryDate) => {
-		setDeliveryDate(newDeliveryDate);
-	};
+  const exitEditMode = () => {
+    if (editStreet) {
+      setStreetOnPress(false);
+      Keyboard.dismiss();
+    } else if (editCity) {
+      setRecipientOnPress(false);
+      Keyboard.dismiss();
+    } else if (editRecipient) {
+      setRecipientOnPress(false);
+      Keyboard.dismiss();
+    } else if (editDeliveryDate) {
+      setDeliveryDateOnPress(false);
+      Keyboard.dismiss();
+    } else if (editClient) {
+      setClientOnPress(false);
+      Keyboard.dismiss();
+    } else if (editID) {
+      setIDOnPress(false);
+      Keyboard.dismiss();
+    } else if (editRecipient_phoneNumber) {
+      setRecipient_phoneNumberOnPress(false);
+      Keyboard.dismiss();
+    }
+  };
 
-	const exitEditMode = () => {
-		if (editStreet) {
-			setStreetOnPress(false);
-			Keyboard.dismiss();
-		}
-		else if (editCity) {
-			setRecipientOnPress(false);
-			Keyboard.dismiss();
-		}
-		else if (editRecipient) {
-			setRecipientOnPress(false);
-			Keyboard.dismiss();
-		}
-		else if (editDeliveryDate) {
-			setDeliveryDateOnPress(false);
-			Keyboard.dismiss();
-		}
-		else if (editClient) {
-			setClientOnPress(false);
-			Keyboard.dismiss();
-		}
-		else if (editID) {
-			setIDOnPress(false);
-			Keyboard.dismiss();
-		}
-		else if (editRecipient_phoneNumber) {
-			setRecipient_phoneNumberOnPress(false);
-			Keyboard.dismiss();
-		}
-	};
+  const save_changes_press = () => {
+    Alert.alert(
+      `האם אתה בטוח שאתה רוצה להוסיף את המשלוח?`,
+      "",
+      [
+        { text: "לא", onPress: () => null },
+        { text: "כן", onPress: () => check_if_filled_all_fields() },
+      ],
+      { cancelable: false }
+    );
+  };
 
-	const save_changes_press = () => {
-		Alert.alert(
-			`האם אתה בטוח שאתה רוצה להוסיף את המשלוח?`,
-			'',
-			[
-				{ text: 'לא', onPress: () => null },
-				{ text: 'כן', onPress: () => check_if_filled_all_fields() },
-			],
-			{ cancelable: false }
-		);
-	}
+  const cancel_changes_press = () => {
+    Alert.alert(
+      `האם אתה בטוח שאתה רוצה לבטל את ההוספה?`,
+      "",
+      [
+        { text: "לא", onPress: () => null },
+        { text: "כן", onPress: () => cancel_changes() },
+      ],
+      { cancelable: false }
+    );
+  };
 
-	const cancel_changes_press = () => {
-		Alert.alert(
-			`האם אתה בטוח שאתה רוצה לבטל את ההוספה?`,
-			'',
-			[
-				{ text: 'לא', onPress: () => null },
-				{ text: 'כן', onPress: () => cancel_changes() },
-			],
-			{ cancelable: false }
-		);
-	}
+  const check_if_filled_all_fields = async () => {
+    if (
+      ID == "" ||
+      street == "" ||
+      city == "" ||
+      client == "" ||
+      recipient == "" ||
+      recipient_phoneNumber == "" ||
+      deliveryDate == ""
+    ) {
+      Alert.alert(`אנא מלאו את כל השדות`, "", [{ text: "הבנתי!" }]);
+    } else {
+      save_changes_in_DB();
+    }
+  };
 
-	const check_if_filled_all_fields = async () => {
-		if (ID == "" || street == "" || city == "" || client == "" ||
-			recipient == "" || recipient_phoneNumber == "" || deliveryDate == "") {
-			Alert.alert(
-				`אנא מלאו את כל השדות`,
-				'',
-				[{ text: 'הבנתי!', }]
-			);
-		}
-		else { save_changes_in_DB() }
-	}
+  const convert_date_to_request_syntax = (date) => {
+    return date.replace(/\./g, "-");
+  };
 
-	const convert_date_to_request_syntax = (date) => {
-		return date.replace(/\./g, '-')
+  const is_valid_phone_number = () => {
+    const valid_phone_number_regex = /^05\d{8}$/;
+    if (valid_phone_number_regex.test(recipient_phoneNumber)) {
+      return true;
+    }
+    return false;
+  };
 
-	}
+  const is_id_already_exists = async () => {
+    try {
+      const response = await fetch(`http://${ip}:3000/letter/${ID}`, {
+        method: "GET",
+      });
+      const data = await response.json();
+      if (data.result.length == 1) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.log("Error fetching letters:", error);
+    }
+  };
 
-	const is_valid_phone_number = () => {
-		const valid_phone_number_regex = /^05\d{8}$/;
-		if (valid_phone_number_regex.test(recipient_phoneNumber)) {
-			return true;
-		}
-		return false;
-	}
+  const is_valid_date_format = () => {
+    const dateRegex = /^(0[1-9]|[1-2]\d|3[0-1])\.(0[1-9]|1[0-2])\.\d{4}$/;
+    if (!dateRegex.test(deliveryDate)) {
+      Alert.alert(
+        `שגיאה - תאריך לא תקין`,
+        "אנא הזן תאריך תקין לפי הפורמט\nDD.MM.YYYY",
+        [{ text: "הבנתי!" }]
+      );
+      return false;
+    }
 
-	const is_id_already_exists = async () => {
-		try {
-			const response = await fetch(`http://${ip}:3000/letter/${ID}`, {
-				method: 'GET',
-			});
-			const data = await response.json();
-			if (data.result.length == 1) {
-				return true;
-			}
-			return false;
-		} catch (error) {
-			console.log('Error fetching letters:', error);
-		}
-	};
+    const [day, month, year] = deliveryDate.split(".").map(Number);
+    const providedDate = new Date(year, month - 1, day);
 
-	const is_valid_date_format = () => {
-		const dateRegex = /^(0[1-9]|[1-2]\d|3[0-1])\.(0[1-9]|1[0-2])\.\d{4}$/;
-		if (!dateRegex.test(deliveryDate)) {
-			Alert.alert(
-				`שגיאה - תאריך לא תקין`,
-				'אנא הזן תאריך תקין לפי הפורמט\nDD.MM.YYYY',
-				[{ text: 'הבנתי!', }]
-			);
-			return false;
-		}
+    const today = new Date();
 
-		const [day, month, year] = deliveryDate.split('.').map(Number);
-		const providedDate = new Date(year, month - 1, day);
+    if (providedDate < today) {
+      Alert.alert(
+        `שגיאה - תאריך לא תקין`,
+        "התאריך שהזנת כבר עבר\nאנא הכנס תאריך עתידי",
+        [{ text: "הבנתי!" }]
+      );
+      return false;
+    }
+    return true;
+  };
 
-		const today = new Date();
+  const validAddress = async () => {
+    let address = street + ", " + city;
+    const response = await fetch(
+      `http://${ip}:3000/letterValidation/${address}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-		if (providedDate < today) {
-			Alert.alert(
-				`שגיאה - תאריך לא תקין`,
-				'התאריך שהזנת כבר עבר\nאנא הכנס תאריך עתידי',
-				[{ text: 'הבנתי!', }]
-			);
-			return false;
-		}
-		return true;
-	}
+    const data = await response.json();
+    return data["Valid address"];
+  };
 
-	const validAddress = async () => {
-		let address = street + ", " + city
-		const response = await fetch(`http://${ip}:3000/letterValidation/${address}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
+  const save_changes_in_DB = async () => {
+    const correct_address = await validAddress();
+    if (await is_id_already_exists()) {
+      Alert.alert(
+        `שגיאה - מספר המשלוח כבר קיים במערכת`,
+        "אנא בדקו שהזנתם את מספר המשלוח כראוי",
+        [{ text: "הבנתי!" }]
+      );
+      return;
+    } else if (!correct_address) {
+      Alert.alert(
+        `שגיאה! כתובת המשלוח אינה קיימת`,
+        `אנא מלא כתובת תקינה`,
+        [{ text: "הבנתי", onPress: () => null }],
+        { cancelable: false }
+      );
+      return;
+    } else if (!is_valid_phone_number()) {
+      Alert.alert(`שגיאה - מספר הטלפון לא תקין`, "אנא הזן מספר טלפון תקין", [
+        { text: "הבנתי!" },
+      ]);
+      return;
+    } else if (!is_valid_date_format()) {
+      return;
+    }
 
-		const data = await response.json();
-		return data["Valid address"];
-	}
+    setStreet(correct_address.split(",")[0].trim());
+    setCity(correct_address.split(",")[1].trim());
 
-	const save_changes_in_DB = async () => {
-		const correct_address = await validAddress();
-		if (await is_id_already_exists()) {
-			Alert.alert(
-				`שגיאה - מספר המשלוח כבר קיים במערכת`,
-				'אנא בדקו שהזנתם את מספר המשלוח כראוי',
-				[{ text: 'הבנתי!', }]
-			);
-			return;
-		}
-		else if (!correct_address) {
-			Alert.alert(
-				`שגיאה! כתובת המשלוח אינה קיימת`,
-				`אנא מלא כתובת תקינה`,
-				[
-					{ text: 'הבנתי', onPress: () => null },
-				],
-				{ cancelable: false }
-			);
-			return;
-		}
-		else if (!is_valid_phone_number()) {
-			Alert.alert(
-				`שגיאה - מספר הטלפון לא תקין`,
-				'אנא הזן מספר טלפון תקין',
-				[{ text: 'הבנתי!', }]
-			);
-			return;
-		}
-		else if (!is_valid_date_format()) {
-			return;
-		}
+    const requestBody = JSON.stringify({
+      letterNumber: ID,
+      addressee: recipient,
+      clientName: client,
+      deliveryStreet: street,
+      deliveryCity: city,
+      deliveryDeadline: convert_date_to_request_syntax(deliveryDate),
+      addresseePhoneNumber: recipient_phoneNumber,
+      userID: deliver_id,
+    });
 
-		setStreet(correct_address.split(',')[0].trim());
-		setCity(correct_address.split(',')[1].trim());
+    try {
+      const response = await fetch(`http://${ip}:3000/letter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: requestBody,
+      });
 
-		const requestBody = JSON.stringify({
-			"letterNumber": ID,
-			"addressee": recipient,
-			"clientName": client,
-			"deliveryStreet": street,
-			"deliveryCity": city,
-			"deliveryDeadline": convert_date_to_request_syntax(deliveryDate),
-			"addresseePhoneNumber": recipient_phoneNumber,
-			"userID": deliver_id
-		});
+      Alert.alert(
+        `המשלוח נוסף בהצלחה למערכת!`,
+        "",
+        [{ text: "תודה!", onPress: () => null }],
+        { cancelable: false }
+      );
+    } catch (error) {
+      console.log("Error fetching users:", error);
+      Alert.alert(
+        `אופס... משהו השתבש`,
+        "אנא נסו שוב מאוחר יותר",
+        [{ text: "הבנתי", onPress: () => null }],
+        { cancelable: false }
+      );
+    }
 
-		try {
-			const response = await fetch(`http://${ip}:3000/letter`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: requestBody,
-			});
+    navigation.goBack();
+  };
 
-			Alert.alert(
-				`המשלוח נוסף בהצלחה למערכת!`,
-				'',
-				[
-					{ text: 'תודה!', onPress: () => null },
-				],
-				{ cancelable: false }
-			);
-		} catch (error) {
-			console.log('Error fetching users:', error);
-			Alert.alert(
-				`אופס... משהו השתבש`,
-				'אנא נסו שוב מאוחר יותר',
-				[
-					{ text: 'הבנתי', onPress: () => null },
-				],
-				{ cancelable: false }
-			);
-		}
+  const cancel_changes = () => {
+    navigation.goBack();
+  };
 
-		navigation.goBack();
-	}
+  return (
+    <TouchableWithoutFeedback onPress={exitEditMode}>
+      <View style={styles.container}>
+        <View style={styles.title_style}>
+          <TouchableOpacity onPress={back_to_previous_page}>
+            <Image
+              source={require("../../assets/back_icon.png")}
+              style={styles.back_icon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.title_text}>הוספת משלוח חדש</Text>
+        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <ScrollView contentContainerStyle={styles.scrollView}>
+            <View>
+              <Text style={styles.attribute_text}>שם ומספר רחוב</Text>
+              <TouchableOpacity style={styles.btn} onPress={editStreetBtnPress}>
+                {editStreet ? (
+                  <TextInput
+                    style={styles.attribute_input_text}
+                    onChangeText={streetTextChangeFunction}
+                    value={street}
+                    autoFocus={true}
+                    onBlur={() => setStreetOnPress(false)}
+                  />
+                ) : (
+                  <Text style={styles.attribute_input_text}>{street}</Text>
+                )}
+              </TouchableOpacity>
+              <Text style={styles.attribute_text}>עיר</Text>
+              <TouchableOpacity style={styles.btn} onPress={editCityBtnPress}>
+                {editCity ? (
+                  <TextInput
+                    style={styles.attribute_input_text}
+                    onChangeText={cityTextChangeFunction}
+                    value={city}
+                    autoFocus={true}
+                    onBlur={() => setCityOnPress(false)}
+                  />
+                ) : (
+                  <Text style={styles.attribute_input_text}>{city}</Text>
+                )}
+              </TouchableOpacity>
+              <Text style={styles.attribute_text}>מספר סידורי של המכתב</Text>
+              <TouchableOpacity style={styles.btn} onPress={editIDBtnPress}>
+                {editID ? (
+                  <TextInput
+                    style={styles.attribute_input_text}
+                    onChangeText={IDTextChangeFunction}
+                    value={ID}
+                    keyboardType="numeric"
+                    autoFocus={true}
+                    onBlur={() => setIDOnPress(false)}
+                  />
+                ) : (
+                  <Text style={styles.attribute_input_text}>{ID}</Text>
+                )}
+              </TouchableOpacity>
+              <Text style={styles.attribute_text}>שולח</Text>
+              <TouchableOpacity style={styles.btn} onPress={editClientBtnPress}>
+                {editClient ? (
+                  <TextInput
+                    style={styles.attribute_input_text}
+                    onChangeText={clientTextChangeFunction}
+                    value={client}
+                    autoFocus={true}
+                    onBlur={() => setClientOnPress(false)}
+                  />
+                ) : (
+                  <Text style={styles.attribute_input_text}>{client}</Text>
+                )}
+              </TouchableOpacity>
+              <Text style={styles.attribute_text}>נמען</Text>
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={editRecipientBtnPress}
+              >
+                {editRecipient ? (
+                  <TextInput
+                    style={styles.attribute_input_text}
+                    onChangeText={recipientChangeFunction}
+                    value={recipient}
+                    autoFocus={true}
+                    onBlur={() => setRecipientOnPress(false)}
+                  />
+                ) : (
+                  <Text style={styles.attribute_input_text}>{recipient}</Text>
+                )}
+              </TouchableOpacity>
+              <Text style={styles.attribute_text}>מספר טלפון של הנמען</Text>
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={editRecipient_phoneNumberBtnPress}
+              >
+                {editRecipient_phoneNumber ? (
+                  <TextInput
+                    style={styles.attribute_input_text}
+                    onChangeText={recipient_phoneNumberChangeFunction}
+                    value={recipient_phoneNumber}
+                    keyboardType="numeric"
+                    autoFocus={true}
+                    onBlur={() => setRecipient_phoneNumberOnPress(false)}
+                  />
+                ) : (
+                  <Text style={styles.attribute_input_text}>
+                    {recipient_phoneNumber}
+                  </Text>
+                )}
+              </TouchableOpacity>
+              <Text style={styles.attribute_text}>צריך להימסר עד</Text>
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={editDeliveryDateBtnPress}
+              >
+                {editDeliveryDate ? (
+                  <TextInput
+                    style={styles.attribute_input_text}
+                    onChangeText={deliveryDateChangeFunction}
+                    value={deliveryDate}
+                    keyboardType="numeric"
+                    autoFocus={true}
+                    onBlur={() => setDeliveryDateOnPress(false)}
+                    placeholder="DD.MM.YYYY"
+                  />
+                ) : (
+                  <Text style={styles.attribute_input_text}>
+                    {deliveryDate}
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </View>
 
-	const cancel_changes = () => {
-		navigation.goBack();
-	}
+            <View style={styles.btns_container}>
+              <TouchableOpacity
+                style={styles.save_btn}
+                onPress={save_changes_press}
+              >
+                <Text style={styles.btn_text}>הוספת משלוח</Text>
+              </TouchableOpacity>
 
-	return (
-		<TouchableWithoutFeedback onPress={exitEditMode}>
-			<View style={styles.container}>
-				<View style={styles.title_style}>
-					<TouchableOpacity onPress={back_to_previous_page}>
-						<Image source={require('../../assets/back_icon.png')} style={styles.back_icon} />
-					</TouchableOpacity>
-					<Text style={styles.title_text}>הוספת משלוח חדש</Text>
-				</View>
-				<KeyboardAvoidingView
-					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-					style={{ flex: 1 }}>
-					<ScrollView contentContainerStyle={styles.scrollView}>
-						<View>
-							<Text style={styles.attribute_text}>שם ומספר רחוב</Text>
-							<TouchableOpacity style={styles.btn} onPress={editStreetBtnPress}>
-								{editStreet ? (
-									<TextInput
-										style={styles.attribute_input_text}
-										onChangeText={streetTextChangeFunction}
-										value={street}
-										autoFocus={true}
-										onBlur={() => setStreetOnPress(false)}
-									/>
-								) : (
-									<Text style={styles.attribute_input_text}>{street}</Text>
-								)}
-							</TouchableOpacity>
-							<Text style={styles.attribute_text}>עיר</Text>
-							<TouchableOpacity style={styles.btn} onPress={editCityBtnPress}>
-								{editCity ? (
-									<TextInput
-										style={styles.attribute_input_text}
-										onChangeText={cityTextChangeFunction}
-										value={city}
-										autoFocus={true}
-										onBlur={() => setCityOnPress(false)}
-									/>
-								) : (
-									<Text style={styles.attribute_input_text}>{city}</Text>
-								)}
-							</TouchableOpacity>
-							<Text style={styles.attribute_text}>מספר סידורי של המכתב</Text>
-							<TouchableOpacity style={styles.btn} onPress={editIDBtnPress}>
-								{editID ? (
-									<TextInput
-										style={styles.attribute_input_text}
-										onChangeText={IDTextChangeFunction}
-										value={ID}
-										keyboardType="numeric"
-										autoFocus={true}
-										onBlur={() => setIDOnPress(false)}
-									/>
-								) : (
-									<Text style={styles.attribute_input_text}>{ID}</Text>
-								)}
-							</TouchableOpacity>
-							<Text style={styles.attribute_text}>שולח</Text>
-							<TouchableOpacity style={styles.btn} onPress={editClientBtnPress}>
-								{editClient ? (
-									<TextInput
-										style={styles.attribute_input_text}
-										onChangeText={clientTextChangeFunction}
-										value={client}
-										autoFocus={true}
-										onBlur={() => setClientOnPress(false)}
-									/>
-								) : (
-									<Text style={styles.attribute_input_text}>{client}</Text>
-								)}
-							</TouchableOpacity>
-							<Text style={styles.attribute_text}>נמען</Text>
-							<TouchableOpacity style={styles.btn} onPress={editRecipientBtnPress}>
-								{editRecipient ? (
-									<TextInput
-										style={styles.attribute_input_text}
-										onChangeText={recipientChangeFunction}
-										value={recipient}
-										autoFocus={true}
-										onBlur={() => setRecipientOnPress(false)}
-									/>
-								) : (
-									<Text style={styles.attribute_input_text}>{recipient}</Text>
-								)}
-							</TouchableOpacity>
-							<Text style={styles.attribute_text}>מספר טלפון של הנמען</Text>
-							<TouchableOpacity style={styles.btn} onPress={editRecipient_phoneNumberBtnPress}>
-								{editRecipient_phoneNumber ? (
-									<TextInput
-										style={styles.attribute_input_text}
-										onChangeText={recipient_phoneNumberChangeFunction}
-										value={recipient_phoneNumber}
-										keyboardType="numeric"
-										autoFocus={true}
-										onBlur={() => setRecipient_phoneNumberOnPress(false)}
-									/>
-								) : (
-									<Text style={styles.attribute_input_text}>{recipient_phoneNumber}</Text>
-								)}
-							</TouchableOpacity>
-							<Text style={styles.attribute_text}>צריך להימסר עד</Text>
-							<TouchableOpacity style={styles.btn} onPress={editDeliveryDateBtnPress}>
-								{editDeliveryDate ? (
-									<TextInput
-										style={styles.attribute_input_text}
-										onChangeText={deliveryDateChangeFunction}
-										value={deliveryDate}
-										keyboardType="numeric"
-										autoFocus={true}
-										onBlur={() => setDeliveryDateOnPress(false)}
-										placeholder="DD.MM.YYYY"
-									/>
-								) : (
-									<Text style={styles.attribute_input_text}>{deliveryDate}</Text>
-								)}
-							</TouchableOpacity>
-						</View>
-
-						<View style={styles.btns_container}>
-							<TouchableOpacity
-								style={styles.save_btn}
-								onPress={save_changes_press}
-							>
-								<Text style={styles.btn_text}>הוספת משלוח</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity
-								style={styles.cancel_btn}
-								onPress={cancel_changes_press}
-							>
-								<Text style={styles.btn_text}>ביטול</Text>
-							</TouchableOpacity>
-						</View>
-					</ScrollView>
-				</KeyboardAvoidingView>
-			</View>
-		</TouchableWithoutFeedback>
-	);
+              <TouchableOpacity
+                style={styles.cancel_btn}
+                onPress={cancel_changes_press}
+              >
+                <Text style={styles.btn_text}>ביטול</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    </TouchableWithoutFeedback>
+  );
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		backgroundColor: '#C7F9CC',
-	},
-	title_text: {
-		textAlign: 'center',
-		fontSize: height * 0.06,
-		// fontWeight: 'bold',
-		// marginTop: height * 0.08,
-		color: "#38A3A5",
-	},
-	btn: {
-		backgroundColor: "white",
-		width: width * 0.65,
-		height: height * 0.065,
-		// marginTop: height * 0.11,
-		borderRadius: width * 0.06,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	attribute_input_text: {
-		color: 'black',
-		textAlign: 'center',
-		fontSize: width * 0.06,
-	},
-	back_icon: {
-		width: width * 0.1,
-		height: width * 0.1,
-		marginLeft: width * 0.08
-	},
-	title_style: {
-		display: "flex",
-		marginTop: height * 0.05,
-		width: width,
-	},
-	attribute_text: {
-		textAlign: 'center',
-		fontSize: width * 0.06,
-		marginTop: width * 0.08,
-	},
-	save_btn: {
-		backgroundColor: "#4FC132",
-		width: width * 0.32,
-		height: height * 0.065,
-		borderRadius: width * 0.06,
-		marginTop: height * 0.05,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	cancel_btn: {
-		backgroundColor: "#FF0000",
-		width: width * 0.32,
-		height: height * 0.065,
-		borderRadius: width * 0.06,
-		marginTop: height * 0.03,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	btn_text: {
-		color: 'white',
-		textAlign: 'center',
-		fontSize: width * 0.04,
-		fontWeight: 'bold',
-	},
-	btns_container: {
-		alignItems: 'center',
-		marginBottom: width * 0.1,
-	},
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#C7F9CC",
+  },
+  title_text: {
+    textAlign: "center",
+    fontSize: height * 0.06,
+    // fontWeight: 'bold',
+    // marginTop: height * 0.08,
+    color: "#38A3A5",
+  },
+  btn: {
+    backgroundColor: "white",
+    width: width * 0.65,
+    height: height * 0.065,
+    // marginTop: height * 0.11,
+    borderRadius: width * 0.06,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  attribute_input_text: {
+    color: "black",
+    textAlign: "center",
+    fontSize: width * 0.06,
+  },
+  back_icon: {
+    width: width * 0.1,
+    height: width * 0.1,
+    marginLeft: width * 0.08,
+  },
+  title_style: {
+    display: "flex",
+    marginTop: height * 0.05,
+    width: width,
+  },
+  attribute_text: {
+    textAlign: "center",
+    fontSize: width * 0.06,
+    marginTop: width * 0.08,
+  },
+  save_btn: {
+    backgroundColor: "#4FC132",
+    width: width * 0.32,
+    height: height * 0.065,
+    borderRadius: width * 0.06,
+    marginTop: height * 0.05,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cancel_btn: {
+    backgroundColor: "#FF0000",
+    width: width * 0.32,
+    height: height * 0.065,
+    borderRadius: width * 0.06,
+    marginTop: height * 0.03,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btn_text: {
+    color: "white",
+    textAlign: "center",
+    fontSize: width * 0.04,
+    fontWeight: "bold",
+  },
+  btns_container: {
+    alignItems: "center",
+    marginBottom: width * 0.1,
+  },
 });
 
 export default Add_delivery;

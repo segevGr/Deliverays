@@ -161,7 +161,9 @@ const Change_password_dialog = ({ visible, onClose }) => {
                   secureTextEntry={true}
                 />
               ) : (
-                <Text style={styles.input}>{"•".repeat(currentPass.length)}</Text>
+                <Text style={styles.input}>
+                  {"•".repeat(currentPass.length)}
+                </Text>
               )}
             </TouchableOpacity>
 
@@ -201,7 +203,9 @@ const Change_password_dialog = ({ visible, onClose }) => {
                   secureTextEntry={true}
                 />
               ) : (
-                <Text style={styles.input} secureTextEntry={true}>{"•".repeat(acceptNewPass.length)}</Text>
+                <Text style={styles.input} secureTextEntry={true}>
+                  {"•".repeat(acceptNewPass.length)}
+                </Text>
               )}
             </TouchableOpacity>
 
@@ -256,7 +260,7 @@ const styles = StyleSheet.create({
   btns: {
     width: width * 0.3,
     alignItems: "center",
-	marginTop: width * 0.05
+    marginTop: width * 0.05,
   },
   btns_text: {
     color: "#38A3A5",
@@ -276,7 +280,7 @@ const styles = StyleSheet.create({
   input: {
     textAlign: "center",
     color: "white",
-	width: "100%"
+    width: "100%",
   },
 });
 

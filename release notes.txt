@@ -72,3 +72,7 @@ Version 1.5.0
 Version 1.5.1
 	Frontend:
 	* Improve "Change_password_dialog.js" functionality and design
+
+Version 1.5.2
+	Frontend:
+	* Use "Prettier" add-on to organize all files
