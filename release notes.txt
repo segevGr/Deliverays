@@ -68,3 +68,7 @@ Version 1.4.2
 Version 1.5.0
 	Frontend:
 	* Fix "management_style.js" and "Delivers_management.js" files names according the Grammar fixing
+
+Version 1.5.1
+	Frontend:
+	* Improve "Change_password_dialog.js" functionality and design
