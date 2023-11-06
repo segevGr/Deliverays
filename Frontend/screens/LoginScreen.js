@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
 const { width, height } = Dimensions.get("window");
@@ -72,24 +74,26 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="שם משתמש"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="סיסמה"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={true}
-      />
-      <TouchableOpacity style={styles.login_btn} onPress={handleLogin}>
-        <Text style={styles.login_text}>התחברות</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder="שם משתמש"
+          value={username}
+          onChangeText={setUsername}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="סיסמה"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true}
+        />
+        <TouchableOpacity style={styles.login_btn} onPress={handleLogin}>
+          <Text style={styles.login_text}>התחברות</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

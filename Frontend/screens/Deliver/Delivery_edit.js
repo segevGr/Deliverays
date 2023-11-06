@@ -26,96 +26,37 @@ const Delivery_edit = ({ navigation, route }) => {
     navigation.goBack();
   };
 
-  const [editRecipient_phoneNumber, setRecipient_phoneNumberOnPress] =
-    useState(false);
   const [recipient_phoneNumber, setRecipient_phoneNumber] = useState("");
-
-  const editRecipient_phoneNumberBtnPress = () => {
-    setRecipient_phoneNumberOnPress(true);
-  };
-
   const recipient_phoneNumberChangeFunction = (newRecipient_phoneNumber) => {
     setRecipient_phoneNumber(newRecipient_phoneNumber);
   };
 
-  const [editClient, setClientOnPress] = useState(false);
   const [client, setClient] = useState("");
-
-  const editClientBtnPress = () => {
-    setClientOnPress(true);
-  };
-
   const clientTextChangeFunction = (newClient) => {
     setClient(newClient);
   };
 
-  const [editStreet, setStreetOnPress] = useState(false);
   const [street, setStreet] = useState("");
-
-  const editStreetBtnPress = () => {
-    setStreetOnPress(true);
-  };
-
   const streetTextChangeFunction = (newStreet) => {
     setStreet(newStreet);
   };
 
-  const [editCity, setCityOnPress] = useState(false);
   const [city, setCity] = useState("");
-
-  const editCityBtnPress = () => {
-    setCityOnPress(true);
-  };
-
   const cityTextChangeFunction = (newCity) => {
     setCity(newCity);
   };
 
-  const [editRecipient, setRecipientOnPress] = useState(false);
   const [recipient, setRecipient] = useState();
-
-  const editRecipientBtnPress = () => {
-    setRecipientOnPress(true);
-  };
-
   const recipientChangeFunction = (newRecipient) => {
     setRecipient(newRecipient);
   };
 
-  const [editDeliveryDate, setDeliveryDateOnPress] = useState(false);
   const [deliveryDate, setDeliveryDate] = useState();
-
-  const editDeliveryDateBtnPress = () => {
-    setDeliveryDateOnPress(true);
-  };
-
   const deliveryDateChangeFunction = (newDeliveryDate) => {
     setDeliveryDate(newDeliveryDate);
   };
 
   const [deliveryStatus, setDeliveryStatus] = useState("לא נמסר");
-
-  const exitEditMode = () => {
-    if (editStreet) {
-      setStreetOnPress(false);
-      Keyboard.dismiss();
-    } else if (editCity) {
-      setRecipientOnPress(false);
-      Keyboard.dismiss();
-    } else if (editRecipient) {
-      setRecipientOnPress(false);
-      Keyboard.dismiss();
-    } else if (editDeliveryDate) {
-      setDeliveryDateOnPress(false);
-      Keyboard.dismiss();
-    } else if (editClient) {
-      setClientOnPress(false);
-      Keyboard.dismiss();
-    } else if (editRecipient_phoneNumber) {
-      setRecipient_phoneNumberOnPress(false);
-      Keyboard.dismiss();
-    }
-  };
 
   const save_changes_press = () => {
     Alert.alert(
@@ -303,7 +244,7 @@ const Delivery_edit = ({ navigation, route }) => {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={exitEditMode}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.title_style}>
           <TouchableOpacity onPress={back_to_previous_page}>
@@ -321,113 +262,50 @@ const Delivery_edit = ({ navigation, route }) => {
           <ScrollView contentContainerStyle={styles.scrollView}>
             <View>
               <Text style={styles.attribute_text}>שם ומספר רחוב</Text>
-              <TouchableOpacity style={styles.btn} onPress={editStreetBtnPress}>
-                {editStreet ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={streetTextChangeFunction}
-                    value={street}
-                    autoFocus={true}
-                    onBlur={() => setStreetOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>{street}</Text>
-                )}
-              </TouchableOpacity>
+              <TextInput
+                style={styles.btn}
+                onChangeText={streetTextChangeFunction}
+                value={street}
+              />
               <Text style={styles.attribute_text}>עיר</Text>
-              <TouchableOpacity style={styles.btn} onPress={editCityBtnPress}>
-                {editCity ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={cityTextChangeFunction}
-                    value={city}
-                    autoFocus={true}
-                    onBlur={() => setCityOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>{city}</Text>
-                )}
-              </TouchableOpacity>
+              <TextInput
+                style={styles.btn}
+                onChangeText={cityTextChangeFunction}
+                value={city}
+              />
               <Text style={styles.attribute_text}>שולח</Text>
-              <TouchableOpacity style={styles.btn} onPress={editClientBtnPress}>
-                {editClient ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={clientTextChangeFunction}
-                    value={client}
-                    autoFocus={true}
-                    onBlur={() => setClientOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>{client}</Text>
-                )}
-              </TouchableOpacity>
+              <TextInput
+                style={styles.btn}
+                onChangeText={clientTextChangeFunction}
+                value={client}
+              />
               <Text style={styles.attribute_text}>נמען</Text>
-              <TouchableOpacity
+              <TextInput
                 style={styles.btn}
-                onPress={editRecipientBtnPress}
-              >
-                {editRecipient ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={recipientChangeFunction}
-                    value={recipient}
-                    autoFocus={true}
-                    onBlur={() => setRecipientOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>{recipient}</Text>
-                )}
-              </TouchableOpacity>
+                onChangeText={recipientChangeFunction}
+                value={recipient}
+              />
               <Text style={styles.attribute_text}>מספר טלפון של הנמען</Text>
-              <TouchableOpacity
+              <TextInput
                 style={styles.btn}
-                onPress={editRecipient_phoneNumberBtnPress}
-              >
-                {editRecipient_phoneNumber ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={recipient_phoneNumberChangeFunction}
-                    value={recipient_phoneNumber}
-                    keyboardType="numeric"
-                    autoFocus={true}
-                    onBlur={() => setRecipient_phoneNumberOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>
-                    {recipient_phoneNumber}
-                  </Text>
-                )}
-              </TouchableOpacity>
+                onChangeText={recipient_phoneNumberChangeFunction}
+                value={recipient_phoneNumber}
+                keyboardType="numeric"
+              />
               <Text style={styles.attribute_text}>צריך להימסר עד</Text>
-              <TouchableOpacity
+              <TextInput
                 style={styles.btn}
-                onPress={editDeliveryDateBtnPress}
-              >
-                {editDeliveryDate ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={deliveryDateChangeFunction}
-                    value={deliveryDate}
-                    keyboardType="numeric"
-                    autoFocus={true}
-                    onBlur={() => setDeliveryDateOnPress(false)}
-                    placeholder="DD.MM.YYYY"
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>
-                    {deliveryDate}
-                  </Text>
-                )}
-              </TouchableOpacity>
+                onChangeText={deliveryDateChangeFunction}
+                value={deliveryDate}
+                keyboardType="numeric"
+                placeholder="DD.MM.YYYY"
+              />
               <Text style={styles.attribute_text}>סטטוס</Text>
-              <TouchableOpacity style={styles.btn}>
-                <TextInput
-                  style={styles.attribute_input_text}
-                  value={deliveryStatus}
-                  editable={false}
-                />
-              </TouchableOpacity>
+              <TextInput
+                style={styles.btn}
+                value={deliveryStatus}
+                editable={false}
+              />
             </View>
 
             <View style={styles.btns_container}>
@@ -461,20 +339,15 @@ const styles = StyleSheet.create({
   title_text: {
     textAlign: "center",
     fontSize: height * 0.06,
-    // fontWeight: 'bold',
-    // marginTop: height * 0.08,
     color: "#38A3A5",
   },
   btn: {
     backgroundColor: "white",
     width: width * 0.65,
     height: height * 0.065,
-    // marginTop: height * 0.11,
     borderRadius: width * 0.06,
     justifyContent: "center",
     alignItems: "center",
-  },
-  attribute_input_text: {
     color: "black",
     textAlign: "center",
     fontSize: width * 0.06,

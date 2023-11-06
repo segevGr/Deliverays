@@ -76,3 +76,7 @@ Version 1.5.1
 Version 1.5.2
 	Frontend:
 	* Use "Prettier" add-on to organize all files
+
+Version 1.5.3
+	Frontend:
+	* Change to Keyboard dismiss in all screens that contains Keyboard

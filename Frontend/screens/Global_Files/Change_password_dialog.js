@@ -21,22 +21,8 @@ const Change_password_dialog = ({ visible, onClose }) => {
   const ip = IP();
 
   const [currentPass, setCurrentPass] = useState("");
-  const [editCurrentPass, setCurrentPassOnPress] = useState(false);
-  const editCurrentPassBtnPress = () => {
-    setCurrentPassOnPress(true);
-  };
-
   const [newPass, setNewPass] = useState("");
-  const [editNewPass, setNewPassOnPress] = useState(false);
-  const editNewPassBtnPress = () => {
-    setNewPassOnPress(true);
-  };
-
   const [acceptNewPass, setAcceptNewPass] = useState("");
-  const [editAcceptNewPass, setAcceptNewPassOnPress] = useState(false);
-  const editAcceptPassBtnPress = () => {
-    setAcceptNewPassOnPress(true);
-  };
 
   const check_current_pass = async () => {
     try {
@@ -119,19 +105,6 @@ const Change_password_dialog = ({ visible, onClose }) => {
     }
   };
 
-  const exitEditMode = () => {
-    if (editCurrentPass) {
-      setCurrentPassOnPress(false);
-      Keyboard.dismiss();
-    } else if (editNewPass) {
-      setNewPassOnPress(false);
-      Keyboard.dismiss();
-    } else if (editAcceptNewPass) {
-      setAcceptNewPassOnPress(false);
-      Keyboard.dismiss();
-    }
-  };
-
   useEffect(() => {
     if (visible) {
       setCurrentPass("");
@@ -142,72 +115,35 @@ const Change_password_dialog = ({ visible, onClose }) => {
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      <TouchableWithoutFeedback onPress={exitEditMode}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.modalContainer}>
           <View style={styles.dialog}>
             <Text style={styles.title}>סיסמה נוכחית</Text>
-            <TouchableOpacity
+            <TextInput
               style={styles.input_container}
-              onPress={editCurrentPassBtnPress}
-            >
-              {editCurrentPass ? (
-                <TextInput
-                  style={styles.input}
-                  value={currentPass}
-                  onChangeText={setCurrentPass}
-                  placeholderTextColor="white"
-                  autoFocus={true}
-                  onBlur={() => setCurrentPassOnPress(false)}
-                  secureTextEntry={true}
-                />
-              ) : (
-                <Text style={styles.input}>
-                  {"•".repeat(currentPass.length)}
-                </Text>
-              )}
-            </TouchableOpacity>
+              value={currentPass}
+              onChangeText={setCurrentPass}
+              placeholderTextColor="white"
+              secureTextEntry={true}
+            />
 
             <Text style={styles.title}>סיסמה חדשה</Text>
-            <TouchableOpacity
+            <TextInput
               style={styles.input_container}
-              onPress={editNewPassBtnPress}
-            >
-              {editNewPass ? (
-                <TextInput
-                  style={styles.input}
-                  value={newPass}
-                  onChangeText={setNewPass}
-                  placeholderTextColor="white"
-                  autoFocus={true}
-                  onBlur={() => setNewPassOnPress(false)}
-                  secureTextEntry={true}
-                />
-              ) : (
-                <Text style={styles.input}>{"•".repeat(newPass.length)}</Text>
-              )}
-            </TouchableOpacity>
+              value={newPass}
+              onChangeText={setNewPass}
+              placeholderTextColor="white"
+              secureTextEntry={true}
+            />
 
             <Text style={styles.title}>אימות סיסמה</Text>
-            <TouchableOpacity
+            <TextInput
               style={styles.input_container}
-              onPress={editAcceptPassBtnPress}
-            >
-              {editAcceptNewPass ? (
-                <TextInput
-                  style={styles.input}
-                  value={acceptNewPass}
-                  onChangeText={setAcceptNewPass}
-                  placeholderTextColor="white"
-                  autoFocus={true}
-                  onBlur={() => setAcceptNewPassOnPress(false)}
-                  secureTextEntry={true}
-                />
-              ) : (
-                <Text style={styles.input} secureTextEntry={true}>
-                  {"•".repeat(acceptNewPass.length)}
-                </Text>
-              )}
-            </TouchableOpacity>
+              value={acceptNewPass}
+              onChangeText={setAcceptNewPass}
+              placeholderTextColor="white"
+              secureTextEntry={true}
+            />
 
             <View style={styles.btns_container}>
               <TouchableOpacity style={styles.btns} onPress={onClose}>
@@ -276,11 +212,8 @@ const styles = StyleSheet.create({
     borderRadius: width * 0.06,
     justifyContent: "center",
     alignItems: "center",
-  },
-  input: {
     textAlign: "center",
     color: "white",
-    width: "100%",
   },
 });
 

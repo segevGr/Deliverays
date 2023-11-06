@@ -24,50 +24,19 @@ const Deliver_edit = ({ navigation, route }) => {
     navigation.goBack();
   };
 
-  const [editUsername, setUsernameOnPress] = useState(false);
   const [Username, setUsername] = useState();
-
-  const editUsernameBtnPress = () => {
-    setUsernameOnPress(true);
-  };
-
   const UsernameTextChangeFunction = (newUsername) => {
     setUsername(newUsername);
   };
 
-  const [editPhoneNumber, setPhoneNumberOnPress] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState();
-
-  const editPhoneNumberBtnPress = () => {
-    setPhoneNumberOnPress(true);
-  };
-
   const phoneNumberChangeFunction = (newPhoneNumber) => {
     setPhoneNumber(newPhoneNumber);
   };
 
-  const [editAddress, setAddressOnPress] = useState(false);
   const [address, setAddress] = useState();
-
-  const editAddressBtnPress = () => {
-    setAddressOnPress(true);
-  };
-
   const addressChangeFunction = (newAddress) => {
     setAddress(newAddress);
-  };
-
-  const exitEditMode = () => {
-    if (editUsername) {
-      setUsernameOnPress(false);
-      Keyboard.dismiss();
-    } else if (editPhoneNumber) {
-      setPhoneNumberOnPress(false);
-      Keyboard.dismiss();
-    } else if (editAddress) {
-      setAddressOnPress(false);
-      Keyboard.dismiss();
-    }
   };
 
   const getUsersFromDB = async () => {
@@ -209,7 +178,7 @@ const Deliver_edit = ({ navigation, route }) => {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={exitEditMode}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.title_style}>
           <TouchableOpacity onPress={back_to_previous_page}>
@@ -222,51 +191,24 @@ const Deliver_edit = ({ navigation, route }) => {
         </View>
         <View>
           <Text style={styles.attribute_text}>שם השליח</Text>
-          <TouchableOpacity style={styles.btn} onPress={editUsernameBtnPress}>
-            {editUsername ? (
-              <TextInput
-                style={styles.attribute_input_text}
-                onChangeText={UsernameTextChangeFunction}
-                value={Username}
-                autoFocus={true}
-                onBlur={() => setUsernameOnPress(false)}
-              />
-            ) : (
-              <Text style={styles.attribute_input_text}>{Username}</Text>
-            )}
-          </TouchableOpacity>
-          <Text style={styles.attribute_text}>טלפון</Text>
-          <TouchableOpacity
+          <TextInput
             style={styles.btn}
-            onPress={editPhoneNumberBtnPress}
-          >
-            {editPhoneNumber ? (
-              <TextInput
-                style={styles.attribute_input_text}
-                onChangeText={phoneNumberChangeFunction}
-                keyboardType="numeric"
-                value={phoneNumber}
-                autoFocus={true}
-                onBlur={() => setPhoneNumberOnPress(false)}
-              />
-            ) : (
-              <Text style={styles.attribute_input_text}>{phoneNumber}</Text>
-            )}
-          </TouchableOpacity>
+            onChangeText={UsernameTextChangeFunction}
+            value={Username}
+          />
+          <Text style={styles.attribute_text}>טלפון</Text>
+          <TextInput
+            style={styles.btn}
+            onChangeText={phoneNumberChangeFunction}
+            keyboardType="numeric"
+            value={phoneNumber}
+          />
           <Text style={styles.attribute_text}>כתובת</Text>
-          <TouchableOpacity style={styles.btn} onPress={editAddressBtnPress}>
-            {editAddress ? (
-              <TextInput
-                style={styles.attribute_input_text}
-                onChangeText={addressChangeFunction}
-                value={address}
-                autoFocus={true}
-                onBlur={() => setAddressOnPress(false)}
-              />
-            ) : (
-              <Text style={styles.attribute_input_text}>{address}</Text>
-            )}
-          </TouchableOpacity>
+          <TextInput
+            style={styles.btn}
+            onChangeText={addressChangeFunction}
+            value={address}
+          />
         </View>
 
         <TouchableOpacity style={styles.save_btn} onPress={save_changes_press}>
@@ -302,8 +244,6 @@ const styles = StyleSheet.create({
     borderRadius: width * 0.06,
     justifyContent: "center",
     alignItems: "center",
-  },
-  attribute_input_text: {
     color: "black",
     textAlign: "center",
     fontSize: width * 0.06,

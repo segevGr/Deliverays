@@ -18,7 +18,6 @@ const { width, height } = Dimensions.get("window");
 
 const Route_creation = ({ navigation }) => {
   const deliver_id = getLoginUserId();
-  const deliver_name = getLoginUserName();
   const ip = IP();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -26,50 +25,19 @@ const Route_creation = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const [editWorkDuration, setWorkDurationOnPress] = useState(false);
   const [workDuration, setWorkDuration] = useState();
-
-  const editWorkDurationBtnPress = () => {
-    setWorkDurationOnPress(true);
-  };
-
   const workDurationChangeFunction = (newWorkDuration) => {
     setWorkDuration(newWorkDuration);
   };
 
-  const [editStreet, setStreetOnPress] = useState(false);
   const [street, setStreet] = useState();
-
-  const editStreetBtnPress = () => {
-    setStreetOnPress(true);
-  };
-
   const streetChangeFunction = (newStartAddress) => {
     setStreet(newStartAddress);
   };
 
-  const [editCity, setCityOnPress] = useState(false);
   const [city, setCity] = useState();
-
-  const editCityBtnPress = () => {
-    setCityOnPress(true);
-  };
-
   const cityChangeFunction = (newStartAddress) => {
     setCity(newStartAddress);
-  };
-
-  const exitEditMode = () => {
-    if (editWorkDuration) {
-      setWorkDurationOnPress(false);
-      Keyboard.dismiss();
-    } else if (editStreet) {
-      setStreetOnPress(false);
-      Keyboard.dismiss();
-    } else if (editCity) {
-      setCityOnPress(false);
-      Keyboard.dismiss();
-    }
   };
 
   const create_route_btn_press = () => {
@@ -174,7 +142,7 @@ const Route_creation = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={exitEditMode}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.title_style}>
           <TouchableOpacity onPress={back_to_previous_page}>
@@ -187,52 +155,25 @@ const Route_creation = ({ navigation }) => {
         </View>
         <View>
           <Text style={styles.attribute_text}>שעות עבודה</Text>
-          <TouchableOpacity
+          <TextInput
             style={styles.btn}
-            onPress={editWorkDurationBtnPress}
-          >
-            {editWorkDuration ? (
-              <TextInput
-                style={styles.attribute_input_text}
-                onChangeText={workDurationChangeFunction}
-                value={workDuration}
-                autoFocus={true}
-                keyboardType="numeric"
-                onBlur={() => setWorkDurationOnPress(false)}
-              />
-            ) : (
-              <Text style={styles.attribute_input_text}>{workDuration}</Text>
-            )}
-          </TouchableOpacity>
+            onChangeText={workDurationChangeFunction}
+            value={workDuration}
+            keyboardType="numeric"
+          />
           <Text style={styles.attribute_text}>נקודת התחלה</Text>
           <Text style={styles.attribute_text}>שם ומספר רחוב</Text>
-          <TouchableOpacity style={styles.btn} onPress={editStreetBtnPress}>
-            {editStreet ? (
-              <TextInput
-                style={styles.attribute_input_text}
-                onChangeText={streetChangeFunction}
-                value={street}
-                autoFocus={true}
-                onBlur={() => setStreetOnPress(false)}
-              />
-            ) : (
-              <Text style={styles.attribute_input_text}>{street}</Text>
-            )}
-          </TouchableOpacity>
+          <TextInput
+            style={styles.btn}
+            onChangeText={streetChangeFunction}
+            value={street}
+          />
           <Text style={styles.attribute_text}>עיר</Text>
-          <TouchableOpacity style={styles.btn} onPress={editCityBtnPress}>
-            {editCity ? (
-              <TextInput
-                style={styles.attribute_input_text}
-                onChangeText={cityChangeFunction}
-                value={city}
-                autoFocus={true}
-                onBlur={() => setCityOnPress(false)}
-              />
-            ) : (
-              <Text style={styles.attribute_input_text}>{city}</Text>
-            )}
-          </TouchableOpacity>
+          <TextInput
+            style={styles.btn}
+            onChangeText={cityChangeFunction}
+            value={city}
+          />
         </View>
         <TouchableOpacity
           style={styles.save_btn}
@@ -268,8 +209,6 @@ const styles = StyleSheet.create({
     borderRadius: width * 0.06,
     justifyContent: "center",
     alignItems: "center",
-  },
-  attribute_input_text: {
     color: "black",
     textAlign: "center",
     fontSize: width * 0.06,

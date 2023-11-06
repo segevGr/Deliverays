@@ -25,67 +25,27 @@ const Add_deliver = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const [editUsername, setUsernameOnPress] = useState(false);
   const [Username, setUsername] = useState("");
-
-  const editUsernameBtnPress = () => {
-    setUsernameOnPress(true);
-  };
-
   const UsernameTextChangeFunction = (newUsername) => {
     setUsername(newUsername);
   };
 
-  const [editPhoneNumber, setPhoneNumberOnPress] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-
-  const editPhoneNumberBtnPress = () => {
-    setPhoneNumberOnPress(true);
-  };
-
   const phoneNumberChangeFunction = (newPhoneNumber) => {
     setPhoneNumber(newPhoneNumber);
   };
 
-  const [editAddress, setAddressOnPress] = useState(false);
   const [address, setAddress] = useState("");
-
-  const editAddressBtnPress = () => {
-    setAddressOnPress(true);
-  };
-
   const addressChangeFunction = (newAddress) => {
     setAddress(newAddress);
   };
 
-  const [editID, setIDOnPress] = useState(false);
   const [ID, setID] = useState("");
-
-  const editIDBtnPress = () => {
-    setIDOnPress(true);
-  };
-
   const IDChangeFunction = (newID) => {
     setID(newID);
   };
 
   const [role, setRole] = useState("0");
-
-  const exitEditMode = () => {
-    if (editUsername) {
-      setUsernameOnPress(false);
-      Keyboard.dismiss();
-    } else if (editPhoneNumber) {
-      setPhoneNumberOnPress(false);
-      Keyboard.dismiss();
-    } else if (editAddress) {
-      setAddressOnPress(false);
-      Keyboard.dismiss();
-    } else if (editID) {
-      setAddressOnPress(false);
-      Keyboard.dismiss();
-    }
-  };
 
   const save_changes_press = async () => {
     Alert.alert(
@@ -244,7 +204,7 @@ const Add_deliver = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={exitEditMode}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.title_style}>
           <TouchableOpacity onPress={back_to_previous_page}>
@@ -262,72 +222,31 @@ const Add_deliver = ({ navigation }) => {
           <ScrollView contentContainerStyle={styles.scrollView}>
             <View>
               <Text style={styles.attribute_text}>שם השליח</Text>
-              <TouchableOpacity
+              <TextInput
                 style={styles.btn}
-                onPress={editUsernameBtnPress}
-              >
-                {editUsername ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={UsernameTextChangeFunction}
-                    value={Username}
-                    autoFocus={true}
-                    onBlur={() => setUsernameOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>{Username}</Text>
-                )}
-              </TouchableOpacity>
+                onChangeText={UsernameTextChangeFunction}
+                value={Username}
+              />
               <Text style={styles.attribute_text}>טלפון</Text>
-              <TouchableOpacity
+              <TextInput
                 style={styles.btn}
-                onPress={editPhoneNumberBtnPress}
-              >
-                {editPhoneNumber ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={phoneNumberChangeFunction}
-                    keyboardType="numeric"
-                    value={phoneNumber}
-                    autoFocus={true}
-                    onBlur={() => setPhoneNumberOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>{phoneNumber}</Text>
-                )}
-              </TouchableOpacity>
+                onChangeText={phoneNumberChangeFunction}
+                keyboardType="numeric"
+                value={phoneNumber}
+              />
               <Text style={styles.attribute_text}>מספר תז</Text>
-              <TouchableOpacity style={styles.btn} onPress={editIDBtnPress}>
-                {editID ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={IDChangeFunction}
-                    value={ID}
-                    keyboardType="numeric"
-                    autoFocus={true}
-                    onBlur={() => setIDOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>{ID}</Text>
-                )}
-              </TouchableOpacity>
-              <Text style={styles.attribute_text}>כתובת</Text>
-              <TouchableOpacity
+              <TextInput
                 style={styles.btn}
-                onPress={editAddressBtnPress}
-              >
-                {editAddress ? (
-                  <TextInput
-                    style={styles.attribute_input_text}
-                    onChangeText={addressChangeFunction}
-                    value={address}
-                    autoFocus={true}
-                    onBlur={() => setAddressOnPress(false)}
-                  />
-                ) : (
-                  <Text style={styles.attribute_input_text}>{address}</Text>
-                )}
-              </TouchableOpacity>
+                onChangeText={IDChangeFunction}
+                value={ID}
+                keyboardType="numeric"
+              />
+              <Text style={styles.attribute_text}>כתובת</Text>
+              <TextInput
+                style={styles.btn}
+                onChangeText={addressChangeFunction}
+                value={address}
+              />
 
               <Text style={styles.attribute_text}>תפקיד</Text>
               <RadioButton.Group
@@ -393,8 +312,6 @@ const styles = StyleSheet.create({
     borderRadius: width * 0.06,
     justifyContent: "center",
     alignItems: "center",
-  },
-  attribute_input_text: {
     color: "black",
     textAlign: "center",
     fontSize: width * 0.06,
