@@ -65,22 +65,7 @@ const Delivery_filter_dialog = ({
           <View style={styles.option_container}>
             <Text style={{ fontSize: 22 }}>סטטוס המשלוח</Text>
             <RNPickerSelect
-              style={{
-                inputIOS: {
-                  color: "black",
-                  fontSize: 18,
-                  textAlign: "center",
-                  borderColor: "black",
-                  borderWidth: 1,
-                },
-                inputAndroid: {
-                  color: "black",
-                  fontSize: 18,
-                  textAlign: "center",
-                  borderColor: "black",
-                  borderWidth: 1,
-                },
-              }}
+              style={pickerStyles}
               placeholder={{ label: "בחר סטטוס" }}
               items={delivered_dropdown}
               onValueChange={(value) => setSelectedStatus(value)}
@@ -91,22 +76,7 @@ const Delivery_filter_dialog = ({
           <View style={styles.option_container}>
             <Text style={{ fontSize: 22 }}>עיר</Text>
             <RNPickerSelect
-              style={{
-                inputIOS: {
-                  color: "black",
-                  fontSize: 18,
-                  textAlign: "center",
-                  borderColor: "black",
-                  borderWidth: 1,
-                },
-                inputAndroid: {
-                  color: "black",
-                  fontSize: 18,
-                  textAlign: "center",
-                  borderColor: "black",
-                  borderWidth: 1,
-                },
-              }}
+              style={pickerStyles}
               placeholder={{ label: "בחר לקוח" }}
               items={clients_dropdown}
               onValueChange={(value) => setSelectedClient(value)}
@@ -117,22 +87,7 @@ const Delivery_filter_dialog = ({
           <View style={styles.option_container}>
             <Text style={{ fontSize: 22 }}>עיר המשלוח</Text>
             <RNPickerSelect
-              style={{
-                inputIOS: {
-                  color: "black",
-                  fontSize: 18,
-                  textAlign: "center",
-                  borderColor: "black",
-                  borderWidth: 1,
-                },
-                inputAndroid: {
-                  color: "black",
-                  fontSize: 18,
-                  textAlign: "center",
-                  borderColor: "black",
-                  borderWidth: 1,
-                },
-              }}
+              style={pickerStyles}
               placeholder={{ label: "בחר עיר" }}
               items={cities_dropdown}
               onValueChange={(value) => setSelectedCity(value)}
@@ -167,20 +122,20 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   dialog: {
-    width: "80%",
+    width: "85%",
+    height: "45%",
     backgroundColor: "white",
     padding: 25,
     borderRadius: 8,
     alignItems: "center",
-    justifyContent: "center",
   },
   btns_container: {
     flexDirection: "row",
+    marginTop: width * 0.1,
   },
   btns: {
     marginLeft: 5,
     width: width * 0.2,
-    marginTop: width * 0.05,
     alignItems: "center",
   },
   btns_text: {
@@ -191,7 +146,32 @@ const styles = StyleSheet.create({
   option_container: {
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: width * 0.05,
+    marginTop: width * 0.04,
+  },
+});
+
+const pickerStyles = StyleSheet.create({
+  inputIOS: {
+    width: width * 0.5,
+    height: width * 0.123,
+    backgroundColor: "#38A3A5",
+    borderRadius: width * 0.06,
+    fontSize: 22,
+    textAlign: "center",
+    borderColor: "#38A3A5",
+    color: "white",
+    borderWidth: 1,
+  },
+  inputAndroid: {
+    width: width * 0.5,
+    height: width * 0.123,
+    backgroundColor: "#38A3A5",
+    borderRadius: width * 0.06,
+    fontSize: 22,
+    textAlign: "center",
+    borderColor: "#38A3A5",
+    color: "white",
+    borderWidth: 1,
   },
 });
 

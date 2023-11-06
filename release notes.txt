@@ -80,3 +80,9 @@ Version 1.5.2
 Version 1.5.3
 	Frontend:
 	* Change to Keyboard dismiss in all screens that contains Keyboard
+
+Version 1.5.4
+	Frontend:
+	* Add input placeholders in "Change_password_dialog.js"
+	* Improve "Delivery_filter_dialog.js" design
+	* Use "Prettier" add-on in "Add_delivery.js"

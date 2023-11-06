@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   filter_btn: {
-    backgroundColor: "#bbbbbb",
+    backgroundColor: "#38A3A5",
     width: width * 0.36,
     height: height * 0.06,
     borderRadius: width * 0.1,

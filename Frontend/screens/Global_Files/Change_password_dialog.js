@@ -122,6 +122,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
             <TextInput
               style={styles.input_container}
               value={currentPass}
+              placeholder="הכנס את הסיסמה הנוכחית"
               onChangeText={setCurrentPass}
               placeholderTextColor="white"
               secureTextEntry={true}
@@ -131,6 +132,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
             <TextInput
               style={styles.input_container}
               value={newPass}
+              placeholder="הכנס את הסיסמה החדשה"
               onChangeText={setNewPass}
               placeholderTextColor="white"
               secureTextEntry={true}
@@ -140,6 +142,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
             <TextInput
               style={styles.input_container}
               value={acceptNewPass}
+              placeholder="אמת את הסיסמה החדשה"
               onChangeText={setAcceptNewPass}
               placeholderTextColor="white"
               secureTextEntry={true}
@@ -207,13 +210,10 @@ const styles = StyleSheet.create({
     width: width * 0.5,
     height: height * 0.06,
     backgroundColor: "#38A3A5",
-    marginBottom: height * 0.01,
-    paddingHorizontal: width * 0.02,
     borderRadius: width * 0.06,
-    justifyContent: "center",
-    alignItems: "center",
     textAlign: "center",
     color: "white",
+    marginBottom: height * 0.01,
   },
 });
 
