@@ -1,16 +1,16 @@
-export let AdornmentType;
-(function (AdornmentType) {
+export let AdornmentType = /*#__PURE__*/function (AdornmentType) {
   AdornmentType["Icon"] = "icon";
   AdornmentType["Affix"] = "affix";
-})(AdornmentType || (AdornmentType = {}));
-export let AdornmentSide;
-(function (AdornmentSide) {
+  return AdornmentType;
+}({});
+export let AdornmentSide = /*#__PURE__*/function (AdornmentSide) {
   AdornmentSide["Right"] = "right";
   AdornmentSide["Left"] = "left";
-})(AdornmentSide || (AdornmentSide = {}));
-export let InputMode;
-(function (InputMode) {
+  return AdornmentSide;
+}({});
+export let InputMode = /*#__PURE__*/function (InputMode) {
   InputMode["Outlined"] = "outlined";
   InputMode["Flat"] = "flat";
-})(InputMode || (InputMode = {}));
+  return InputMode;
+}({});
 //# sourceMappingURL=enums.js.map

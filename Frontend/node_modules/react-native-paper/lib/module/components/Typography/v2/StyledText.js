@@ -2,8 +2,8 @@ function _extends() { _extends = Object.assign ? Object.assign.bind() : function
 import * as React from 'react';
 import { I18nManager, StyleSheet } from 'react-native';
 import color from 'color';
-import { useInternalTheme } from '../../../core/theming';
 import Text from './Text';
+import { useInternalTheme } from '../../../core/theming';
 const StyledText = _ref => {
   var _theme$colors, _theme$fonts;
   let {

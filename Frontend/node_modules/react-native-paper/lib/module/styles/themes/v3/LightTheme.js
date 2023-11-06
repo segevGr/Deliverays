@@ -1,6 +1,6 @@
 import color from 'color';
-import configureFonts from '../../fonts';
 import { MD3Colors, tokens } from './tokens';
+import configureFonts from '../../fonts';
 const {
   palette,
   opacity

@@ -43,6 +43,7 @@ const DrawerSection = _ref => {
     theme: themeOverrides,
     style,
     showDivider = true,
+    titleMaxFontSizeMultiplier,
     ...rest
   } = _ref;
   const theme = useInternalTheme(themeOverrides);
@@ -63,7 +64,8 @@ const DrawerSection = _ref => {
       color: titleColor,
       marginLeft: titleMargin,
       ...font
-    }]
+    }],
+    maxFontSizeMultiplier: titleMaxFontSizeMultiplier
   }, title)), children, showDivider && /*#__PURE__*/React.createElement(Divider, _extends({}, isV3 && {
     horizontalInset: true,
     bold: true

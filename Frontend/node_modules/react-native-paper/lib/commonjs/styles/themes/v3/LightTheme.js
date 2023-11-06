@@ -5,8 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MD3LightTheme = void 0;
 var _color = _interopRequireDefault(require("color"));
-var _fonts = _interopRequireDefault(require("../../fonts"));
 var _tokens = require("./tokens");
+var _fonts = _interopRequireDefault(require("../../fonts"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const {
   palette,

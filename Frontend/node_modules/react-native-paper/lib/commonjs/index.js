@@ -33,6 +33,7 @@ var _exportNames = {
   Divider: true,
   FAB: true,
   HelperText: true,
+  Icon: true,
   IconButton: true,
   Menu: true,
   Modal: true,
@@ -165,6 +166,12 @@ Object.defineProperty(exports, "HelperText", {
   enumerable: true,
   get: function () {
     return _HelperText.default;
+  }
+});
+Object.defineProperty(exports, "Icon", {
+  enumerable: true,
+  get: function () {
+    return _Icon.default;
   }
 });
 Object.defineProperty(exports, "IconButton", {
@@ -399,6 +406,7 @@ var _Dialog = _interopRequireDefault(require("./components/Dialog/Dialog"));
 var _Divider = _interopRequireDefault(require("./components/Divider"));
 var _FAB = _interopRequireDefault(require("./components/FAB"));
 var _HelperText = _interopRequireDefault(require("./components/HelperText/HelperText"));
+var _Icon = _interopRequireDefault(require("./components/Icon"));
 var _IconButton = _interopRequireDefault(require("./components/IconButton/IconButton"));
 var _Menu = _interopRequireDefault(require("./components/Menu/Menu"));
 var _Modal = _interopRequireDefault(require("./components/Modal"));

@@ -28,6 +28,7 @@ const AvatarText = _ref => {
     labelStyle,
     color: customColor,
     theme: themeOverrides,
+    maxFontSizeMultiplier,
     ...rest
   } = _ref;
   const theme = useInternalTheme(themeOverrides);
@@ -52,7 +53,8 @@ const AvatarText = _ref => {
       fontSize: size / 2,
       lineHeight: size / fontScale
     }, labelStyle],
-    numberOfLines: 1
+    numberOfLines: 1,
+    maxFontSizeMultiplier: maxFontSizeMultiplier
   }, label));
 };
 AvatarText.displayName = 'Avatar.Text';

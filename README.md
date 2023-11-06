@@ -1,1 +1,1 @@
-# Deliverays
+https://expo.dev/@segev_gr/Deliverays?serviceType=classic&distribution=expo-go

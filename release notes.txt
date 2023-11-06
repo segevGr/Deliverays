@@ -86,3 +86,9 @@ Version 1.5.4
 	* Add input placeholders in "Change_password_dialog.js"
 	* Improve "Delivery_filter_dialog.js" design
 	* Use "Prettier" add-on in "Add_delivery.js"
+
+Version 1.6.0
+	Frontend:
+	* Deploy the app
+	* Add to "assets" folder photos for the deployment
+	* Fix filter title on "Delivery_filter_dialog.js"

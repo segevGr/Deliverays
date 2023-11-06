@@ -42,6 +42,7 @@ const DrawerCollapsedItem = _ref => {
     accessibilityLabel,
     badge = false,
     testID = 'drawer-collapsed-item',
+    labelMaxFontSizeMultiplier,
     ...rest
   } = _ref;
   const theme = useInternalTheme(themeOverrides);
@@ -136,7 +137,8 @@ const DrawerCollapsedItem = _ref => {
     selectable: false,
     numberOfLines: 2,
     onTextLayout: onTextLayout,
-    style: [styles.label, androidLetterSpacingStyle, labelTextStyle]
+    style: [styles.label, androidLetterSpacingStyle, labelTextStyle],
+    maxFontSizeMultiplier: labelMaxFontSizeMultiplier
   }, label) : null)));
 };
 DrawerCollapsedItem.displayName = 'Drawer.CollapsedItem';

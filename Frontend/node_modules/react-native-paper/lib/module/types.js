@@ -1,6 +1,5 @@
 // MD3 types
-export let MD3TypescaleKey;
-(function (MD3TypescaleKey) {
+export let MD3TypescaleKey = /*#__PURE__*/function (MD3TypescaleKey) {
   MD3TypescaleKey["displayLarge"] = "displayLarge";
   MD3TypescaleKey["displayMedium"] = "displayMedium";
   MD3TypescaleKey["displaySmall"] = "displaySmall";
@@ -16,14 +15,15 @@ export let MD3TypescaleKey;
   MD3TypescaleKey["bodyLarge"] = "bodyLarge";
   MD3TypescaleKey["bodyMedium"] = "bodyMedium";
   MD3TypescaleKey["bodySmall"] = "bodySmall";
-})(MD3TypescaleKey || (MD3TypescaleKey = {}));
-export let ElevationLevels;
-(function (ElevationLevels) {
+  return MD3TypescaleKey;
+}({});
+export let ElevationLevels = /*#__PURE__*/function (ElevationLevels) {
   ElevationLevels[ElevationLevels["level0"] = 0] = "level0";
   ElevationLevels[ElevationLevels["level1"] = 1] = "level1";
   ElevationLevels[ElevationLevels["level2"] = 2] = "level2";
   ElevationLevels[ElevationLevels["level3"] = 3] = "level3";
   ElevationLevels[ElevationLevels["level4"] = 4] = "level4";
   ElevationLevels[ElevationLevels["level5"] = 5] = "level5";
-})(ElevationLevels || (ElevationLevels = {}));
+  return ElevationLevels;
+}({});
 //# sourceMappingURL=types.js.map

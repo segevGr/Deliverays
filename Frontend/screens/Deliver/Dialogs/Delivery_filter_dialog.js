@@ -74,7 +74,7 @@ const Delivery_filter_dialog = ({
           </View>
 
           <View style={styles.option_container}>
-            <Text style={{ fontSize: 22 }}>עיר</Text>
+            <Text style={{ fontSize: 22 }}>שם השולח</Text>
             <RNPickerSelect
               style={pickerStyles}
               placeholder={{ label: "בחר לקוח" }}

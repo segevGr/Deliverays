@@ -7,9 +7,7 @@
 
 #include <functional>
 #include <memory>
-#include <mutex>
-
-#include <butter/mutex.h>
+#include <shared_mutex>
 
 namespace facebook {
 namespace react {
@@ -24,14 +22,14 @@ namespace react {
  * - When captured by `std::function` arguments are not copyable;
  * - When we need to replace the content of the callable later on the go.
  */
-template <typename ReturnT = void, typename... ArgumentT>
+template <typename... ArgumentT>
 class SharedFunction {
-  using T = ReturnT(ArgumentT...);
+  using T = void(ArgumentT...);
 
   struct Pair {
     Pair(std::function<T> &&function) : function(std::move(function)) {}
     std::function<T> function;
-    butter::shared_mutex mutex{};
+    std::shared_mutex mutex{};
   };
 
  public:
@@ -45,13 +43,15 @@ class SharedFunction {
   SharedFunction &operator=(SharedFunction &&other) noexcept = default;
 
   void assign(std::function<T> function) const {
-    std::unique_lock<butter::shared_mutex> lock(pair_->mutex);
+    std::unique_lock lock(pair_->mutex);
     pair_->function = function;
   }
 
-  ReturnT operator()(ArgumentT... args) const {
-    std::shared_lock<butter::shared_mutex> lock(pair_->mutex);
-    return pair_->function(args...);
+  void operator()(ArgumentT... args) const {
+    std::shared_lock lock(pair_->mutex);
+    if (pair_->function) {
+      pair_->function(args...);
+    }
   }
 
  private:

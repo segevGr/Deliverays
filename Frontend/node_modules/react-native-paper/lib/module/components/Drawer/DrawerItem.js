@@ -35,6 +35,7 @@ const DrawerItem = _ref => {
     onPress,
     accessibilityLabel,
     right,
+    labelMaxFontSizeMultiplier,
     ...rest
   } = _ref;
   const theme = useInternalTheme(themeOverrides);
@@ -78,7 +79,8 @@ const DrawerItem = _ref => {
       color: contentColor,
       marginLeft: labelMargin,
       ...font
-    }]
+    }],
+    maxFontSizeMultiplier: labelMaxFontSizeMultiplier
   }, label)), right === null || right === void 0 ? void 0 : right({
     color: contentColor
   }))));

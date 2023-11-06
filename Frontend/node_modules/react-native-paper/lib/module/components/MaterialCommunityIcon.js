@@ -50,7 +50,8 @@ const defaultIcon = _ref2 => {
     color = black,
     size,
     direction,
-    allowFontScaling
+    allowFontScaling,
+    testID
   } = _ref2;
   return /*#__PURE__*/React.createElement(MaterialCommunityIcons, _extends({
     allowFontScaling: allowFontScaling,
@@ -64,7 +65,8 @@ const defaultIcon = _ref2 => {
       lineHeight: size
     }, styles.icon],
     pointerEvents: "none",
-    selectable: false
+    selectable: false,
+    testID: testID
   }, accessibilityProps));
 };
 const styles = StyleSheet.create({

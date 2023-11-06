@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MD2DarkTheme = void 0;
 var _color = _interopRequireDefault(require("color"));
-var _fonts = _interopRequireDefault(require("../../fonts"));
 var _colors = require("./colors");
 var _LightTheme = require("./LightTheme");
+var _fonts = _interopRequireDefault(require("../../fonts"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const MD2DarkTheme = {
   ..._LightTheme.MD2LightTheme,

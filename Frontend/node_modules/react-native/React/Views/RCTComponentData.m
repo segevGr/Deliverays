@@ -12,6 +12,7 @@
 #import "RCTBridge.h"
 #import "RCTBridgeModule.h"
 #import "RCTComponentEvent.h"
+#import "RCTConstants.h"
 #import "RCTConvert.h"
 #import "RCTEventDispatcherProtocol.h"
 #import "RCTParserUtils.h"
@@ -430,25 +431,13 @@ static RCTPropBlock createNSInvocationSetter(NSMethodSignature *typeSignature, S
 
     if ([type isEqualToString:@"RCTBubblingEventBlock"]) {
       [bubblingEvents addObject:RCTNormalizeInputEventName(name)];
-
-      // TODO(109509380): Remove this gating
-      if (!RCTViewConfigEventValidAttributesDisabled()) {
-        propTypes[name] = @"BOOL";
-      }
+      propTypes[name] = @"BOOL";
     } else if ([type isEqualToString:@"RCTCapturingEventBlock"]) {
       [capturingEvents addObject:RCTNormalizeInputEventName(name)];
-
-      // TODO(109509380): Remove this gating
-      if (!RCTViewConfigEventValidAttributesDisabled()) {
-        propTypes[name] = @"BOOL";
-      }
+      propTypes[name] = @"BOOL";
     } else if ([type isEqualToString:@"RCTDirectEventBlock"]) {
       [directEvents addObject:RCTNormalizeInputEventName(name)];
-
-      // TODO(109509380): Remove this gating
-      if (!RCTViewConfigEventValidAttributesDisabled()) {
-        propTypes[name] = @"BOOL";
-      }
+      propTypes[name] = @"BOOL";
     } else {
       propTypes[name] = type;
     }

@@ -20,10 +20,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -46,6 +48,7 @@ import com.facebook.react.common.SurfaceDelegateFactory;
 import com.facebook.react.devsupport.DevServerHelper.PackagerCommandListener;
 import com.facebook.react.devsupport.interfaces.BundleLoadCallback;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
+import com.facebook.react.devsupport.interfaces.DevLoadingViewManager;
 import com.facebook.react.devsupport.interfaces.DevOptionHandler;
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.facebook.react.devsupport.interfaces.ErrorCustomizer;
@@ -95,7 +98,7 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
   private final File mJSBundleDownloadedFile;
   private final File mJSSplitBundlesDir;
   private final DefaultJSExceptionHandler mDefaultJSExceptionHandler;
-  private final DevLoadingViewController mDevLoadingViewController;
+  private final DevLoadingViewManager mDevLoadingViewManager;
 
   private @Nullable SurfaceDelegate mRedBoxSurfaceDelegate;
   private @Nullable AlertDialog mDevOptionsDialog;
@@ -132,7 +135,8 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
       @Nullable DevBundleDownloadListener devBundleDownloadListener,
       int minNumShakes,
       @Nullable Map<String, RequestHandler> customPackagerCommandHandlers,
-      @Nullable SurfaceDelegateFactory surfaceDelegateFactory) {
+      @Nullable SurfaceDelegateFactory surfaceDelegateFactory,
+      @Nullable DevLoadingViewManager devLoadingViewManager) {
     mReactInstanceDevHelper = reactInstanceDevHelper;
     mApplicationContext = applicationContext;
     mJSAppBundleName = packagerPathForJSBundleName;
@@ -206,7 +210,10 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
     setDevSupportEnabled(enableOnCreate);
 
     mRedBoxHandler = redBoxHandler;
-    mDevLoadingViewController = new DevLoadingViewController(reactInstanceDevHelper);
+    mDevLoadingViewManager =
+        devLoadingViewManager != null
+            ? devLoadingViewManager
+            : new DefaultDevLoadingViewImplementation(reactInstanceDevHelper);
     mSurfaceDelegateFactory = surfaceDelegateFactory;
   };
 
@@ -548,17 +555,30 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
       return;
     }
 
-    final TextView textView = new TextView(getApplicationContext());
-    textView.setText("React Native DevMenu (" + getUniqueTag() + ")");
-    textView.setPadding(0, 50, 0, 0);
-    textView.setGravity(Gravity.CENTER);
-    textView.setTextColor(Color.BLACK);
-    textView.setTextSize(17);
-    textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+    final LinearLayout header = new LinearLayout(getApplicationContext());
+    header.setOrientation(LinearLayout.VERTICAL);
+
+    final TextView title = new TextView(getApplicationContext());
+    title.setText("React Native Dev Menu (" + getUniqueTag() + ")");
+    title.setPadding(0, 50, 0, 0);
+    title.setGravity(Gravity.CENTER);
+    title.setTextColor(Color.DKGRAY);
+    title.setTextSize(16);
+    title.setTypeface(title.getTypeface(), Typeface.BOLD);
+
+    final TextView jsExecutorLabel = new TextView(getApplicationContext());
+    jsExecutorLabel.setText(getJSExecutorDescription());
+    jsExecutorLabel.setPadding(0, 20, 0, 0);
+    jsExecutorLabel.setGravity(Gravity.CENTER);
+    jsExecutorLabel.setTextColor(Color.GRAY);
+    jsExecutorLabel.setTextSize(14);
+
+    header.addView(title);
+    header.addView(jsExecutorLabel);
 
     mDevOptionsDialog =
         new AlertDialog.Builder(context)
-            .setCustomTitle(textView)
+            .setCustomTitle(header)
             .setItems(
                 options.keySet().toArray(new String[0]),
                 new DialogInterface.OnClickListener() {
@@ -580,6 +600,10 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
     if (mCurrentContext != null) {
       mCurrentContext.getJSModule(RCTNativeAppEventEmitter.class).emit("RCTDevMenuShown", null);
     }
+  }
+
+  private String getJSExecutorDescription() {
+    return "Running " + getReactInstanceDevHelper().getJavaScriptExecutorFactory().toString();
   }
 
   /**
@@ -752,19 +776,40 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
 
   @UiThread
   private void showDevLoadingViewForUrl(String bundleUrl) {
-    mDevLoadingViewController.showForUrl(bundleUrl);
+    if (mApplicationContext == null) {
+      return;
+    }
+
+    URL parsedURL;
+
+    try {
+      parsedURL = new URL(bundleUrl);
+    } catch (MalformedURLException e) {
+      FLog.e(ReactConstants.TAG, "Bundle url format is invalid. \n\n" + e.toString());
+      return;
+    }
+
+    int port = parsedURL.getPort() != -1 ? parsedURL.getPort() : parsedURL.getDefaultPort();
+    mDevLoadingViewManager.showMessage(
+        mApplicationContext.getString(
+            R.string.catalyst_loading_from_url, parsedURL.getHost() + ":" + port));
     mDevLoadingViewVisible = true;
   }
 
   @UiThread
   protected void showDevLoadingViewForRemoteJSEnabled() {
-    mDevLoadingViewController.showForRemoteJSEnabled();
+    if (mApplicationContext == null) {
+      return;
+    }
+
+    mDevLoadingViewManager.showMessage(
+        mApplicationContext.getString(R.string.catalyst_debug_connecting));
     mDevLoadingViewVisible = true;
   }
 
   @UiThread
   protected void hideDevLoadingView() {
-    mDevLoadingViewController.hide();
+    mDevLoadingViewManager.hide();
     mDevLoadingViewVisible = false;
   }
 
@@ -806,7 +851,7 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
                   @Override
                   public void onProgress(
                       @Nullable String status, @Nullable Integer done, @Nullable Integer total) {
-                    mDevLoadingViewController.updateProgress(status, done, total);
+                    mDevLoadingViewManager.updateProgress(status, done, total);
                   }
 
                   @Override
@@ -947,7 +992,7 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
           public void onSuccess() {
             hideDevLoadingView();
             synchronized (DevSupportManagerBase.this) {
-              mBundleStatus.isLastDownloadSucess = true;
+              mBundleStatus.isLastDownloadSuccess = true;
               mBundleStatus.updateTimestamp = System.currentTimeMillis();
             }
             if (mBundleDownloadListener != null) {
@@ -962,7 +1007,7 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
               @Nullable final String status,
               @Nullable final Integer done,
               @Nullable final Integer total) {
-            mDevLoadingViewController.updateProgress(status, done, total);
+            mDevLoadingViewManager.updateProgress(status, done, total);
             if (mBundleDownloadListener != null) {
               mBundleDownloadListener.onProgress(status, done, total);
             }
@@ -972,7 +1017,7 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
           public void onFailure(final Exception cause) {
             hideDevLoadingView();
             synchronized (DevSupportManagerBase.this) {
-              mBundleStatus.isLastDownloadSucess = false;
+              mBundleStatus.isLastDownloadSuccess = false;
             }
             if (mBundleDownloadListener != null) {
               mBundleDownloadListener.onFailure(cause);
@@ -1098,13 +1143,13 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
       if (!mIsReceiverRegistered) {
         IntentFilter filter = new IntentFilter();
         filter.addAction(getReloadAppAction(mApplicationContext));
-        mApplicationContext.registerReceiver(mReloadAppBroadcastReceiver, filter);
+        compatRegisterReceiver(mApplicationContext, mReloadAppBroadcastReceiver, filter, true);
         mIsReceiverRegistered = true;
       }
 
       // show the dev loading if it should be
       if (mDevLoadingViewVisible) {
-        mDevLoadingViewController.showMessage("Reloading...");
+        mDevLoadingViewManager.showMessage("Reloading...");
       }
 
       mDevServerHelper.openPackagerConnection(
@@ -1185,7 +1230,7 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
       hideDevOptionsDialog();
 
       // hide loading view
-      mDevLoadingViewController.hide();
+      mDevLoadingViewManager.hide();
       mDevServerHelper.closePackagerConnection();
     }
   }
@@ -1213,5 +1258,22 @@ public abstract class DevSupportManagerBase implements DevSupportManager {
     }
 
     return mSurfaceDelegateFactory.createSurfaceDelegate(moduleName);
+  }
+
+  /**
+   * Starting with Android 14, apps and services that target Android 14 and use context-registered
+   * receivers are required to specify a flag to indicate whether or not the receiver should be
+   * exported to all other apps on the device: either RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED
+   *
+   * <p>https://developer.android.com/about/versions/14/behavior-changes-14#runtime-receivers-exported
+   */
+  private void compatRegisterReceiver(
+      Context context, BroadcastReceiver receiver, IntentFilter filter, boolean exported) {
+    if (Build.VERSION.SDK_INT >= 34 && context.getApplicationInfo().targetSdkVersion >= 34) {
+      context.registerReceiver(
+          receiver, filter, exported ? Context.RECEIVER_EXPORTED : Context.RECEIVER_NOT_EXPORTED);
+    } else {
+      context.registerReceiver(receiver, filter);
+    }
   }
 }

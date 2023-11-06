@@ -30,6 +30,7 @@ const ListSubheader = _ref => {
   let {
     style,
     theme: overrideTheme,
+    maxFontSizeMultiplier,
     ...rest
   } = _ref;
   const theme = (0, _theming.useInternalTheme)(overrideTheme);
@@ -37,7 +38,8 @@ const ListSubheader = _ref => {
   const font = theme.isV3 ? theme.fonts.bodyMedium : theme.fonts.medium;
   return /*#__PURE__*/React.createElement(_Text.default, _extends({
     variant: "bodyMedium",
-    numberOfLines: 1
+    numberOfLines: 1,
+    maxFontSizeMultiplier: maxFontSizeMultiplier
   }, rest, {
     style: [styles.container, {
       color: textColor,

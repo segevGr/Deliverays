@@ -4,12 +4,19 @@ export const getCardCoverStyle = _ref => {
   let {
     theme,
     index,
-    total
+    total,
+    borderRadiusStyles
   } = _ref;
   const {
     isV3,
     roundness
   } = theme;
+  if (Object.keys(borderRadiusStyles).length > 0) {
+    return {
+      borderRadius: 3 * roundness,
+      ...borderRadiusStyles
+    };
+  }
   if (isV3) {
     return {
       borderRadius: 3 * roundness

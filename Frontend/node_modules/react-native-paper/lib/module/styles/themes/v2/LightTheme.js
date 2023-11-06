@@ -1,6 +1,6 @@
 import color from 'color';
-import configureFonts from '../../fonts';
 import { black, pinkA400, white } from './colors';
+import configureFonts from '../../fonts';
 export const MD2LightTheme = {
   dark: false,
   roundness: 4,
