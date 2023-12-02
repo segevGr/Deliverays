@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IP } from "../../constFiles";
 import {
   View,
   TextInput,
@@ -15,12 +14,15 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { RadioButton } from "react-native-paper";
+import {
+  isIdAlreadyExists,
+  isUserNameAlreadyExists,
+  addUser,
+} from "../../database/usersQueries";
 
 const { width, height } = Dimensions.get("window");
 
 const Add_deliver = ({ navigation }) => {
-  const ip = IP();
-
   const back_to_previous_page = () => {
     navigation.goBack();
   };
@@ -71,36 +73,6 @@ const Add_deliver = ({ navigation }) => {
     );
   };
 
-  const is_id_already_exists = async () => {
-    try {
-      const response = await fetch(`http://${ip}:3000/user/${ID}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (data.user.length == 1) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.log("Error fetching users:", error);
-    }
-  };
-
-  const is_username_already_exists = async () => {
-    try {
-      const response = await fetch(`http://${ip}:3000/username/${Username}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (data.user.length == 1) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.log("Error fetching users:", error);
-    }
-  };
-
   const check_if_filled_all_fields = async () => {
     if (Username == "" || phoneNumber == "" || ID == "" || address == "") {
       Alert.alert(`אנא מלאו את כל השדות`, "", [{ text: "הבנתי!" }]);
@@ -117,31 +89,32 @@ const Add_deliver = ({ navigation }) => {
     return false;
   };
 
-  const validAddress = async () => {
-    const response = await fetch(
-      `http://${ip}:3000/letterValidation/${address}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  // const validAddress = async () => {
+  //   const response = await fetch(
+  //     `http://${ip}:3000/letterValidation/${address}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const data = await response.json();
-    return data["Valid address"];
-  };
+  //   const data = await response.json();
+  //   return data["Valid address"];
+  // };
 
   const save_changes_in_DB = async () => {
-    const correct_address = await validAddress();
-    if (await is_id_already_exists()) {
+    // const correct_address = await validAddress();
+    const correct_address = true;
+    if (await isIdAlreadyExists(ID)) {
       Alert.alert(
         `שגיאה - מספר התז כבר קיים במערכת`,
         "אנא בדקו שהמשתמש כבר לא קיים במערכת",
         [{ text: "הבנתי!" }]
       );
       return;
-    } else if (await is_username_already_exists()) {
+    } else if (await isUserNameAlreadyExists(Username)) {
       Alert.alert(`שגיאה - שם המשתמש כבר תפוס`, "אנא נסו להזין שם משתמש חדש", [
         { text: "הבנתי!" },
       ]);
@@ -161,40 +134,33 @@ const Add_deliver = ({ navigation }) => {
       return;
     }
 
-    const requestBody = JSON.stringify({
+    const userDetails = {
       ID: ID,
-      FullName: Username,
-      address: correct_address,
+      fullName: Username,
+      address: address,
       phoneNumber: phoneNumber,
-      isAdmin: parseInt(role, 10),
+      isAdmin: role,
       password: "1234",
       isActiveUser: 1,
-    });
+    };
 
-    try {
-      const response = await fetch(`http://${ip}:3000/user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: requestBody,
-      });
-
-      Alert.alert(
-        `השליח ${Username} נוסף בהצלחה למערכת!`,
-        "",
-        [{ text: "תודה!", onPress: () => null }],
-        { cancelable: false }
-      );
-    } catch (error) {
-      console.log("Error fetching users:", error);
+    const addResult = await addUser(userDetails, ID);
+    if (addResult !== true) {
+      console.log("Error fetching letters:", addResult);
       Alert.alert(
         `אופס... משהו השתבש`,
         "אנא נסו שוב מאוחר יותר",
         [{ text: "הבנתי", onPress: () => null }],
         { cancelable: false }
       );
+      return;
     }
+    Alert.alert(
+      `השליח ${Username} נוסף בהצלחה למערכת!`,
+      "",
+      [{ text: "תודה!", onPress: () => null }],
+      { cancelable: false }
+    );
 
     navigation.goBack();
   };

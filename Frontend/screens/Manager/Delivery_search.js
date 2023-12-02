@@ -13,6 +13,8 @@ import {
   Keyboard,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
+import { getUserByID } from "../../database/usersQueries";
+import { getDeliveryByID } from "../../database/deliveriesQueries";
 
 const { width, height } = Dimensions.get("window");
 
@@ -23,49 +25,35 @@ const Delivery_search = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const [editSearch, setSearchOnPress] = useState(false);
-  const [search, setSearch] = useState("");
+  const [editDeliveryId, setDeliveryIdOnPress] = useState(false);
+  const [deliveryId, setDeliveryId] = useState("");
 
-  const editSearchBtnPress = () => {
-    setSearchOnPress(true);
+  const editDeliveryIdBtnPress = () => {
+    setDeliveryIdOnPress(true);
   };
 
-  const SearchTextChangeFunction = (newSearch) => {
-    setSearch(newSearch);
+  const deliveryIdTextChangeFunction = (newDeliveryId) => {
+    setDeliveryId(newDeliveryId);
   };
 
   const exitEditMode = () => {
-    if (editSearch) {
-      setSearchOnPress(false);
+    if (editDeliveryId) {
+      setDeliveryIdOnPress(false);
       Keyboard.dismiss();
-    }
-  };
-
-  const getUserNameFromDB = async (userID) => {
-    try {
-      const response = await fetch(`http://${ip}:3000/user/${userID}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      return data["user"][0]["fullName"];
-    } catch (error) {
-      console.log("Error fetching users:", error);
     }
   };
 
   const getDeliveryFromDB = async () => {
     try {
-      const response = await fetch(`http://${ip}:3000/letter/${search}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (data.result.length == 0) {
+      const deliveryDetails = await getDeliveryByID(deliveryId);
+      if (deliveryDetails == 'notExists') {
         return "notExists";
       }
-      setAddressee(data["result"][0]["addressee"]);
-      setDeliver(await getUserNameFromDB(data["result"][0]["userID"]));
-      setAddress(data["result"][0]["deliveryAddress"]);
-      if (data["result"][0]["isDelivered"] == 1) {
+      const deliverDetails = await getUserByID(deliveryDetails.userID)
+      setAddressee(deliveryDetails.addressee);
+      setDeliver(deliverDetails.fullName);
+      setAddress(deliveryDetails.deliveryStreet + ", " + deliveryDetails.deliveryCity);
+      if (deliveryDetails.isDelivered == '1') {
         return "delivered";
       } else {
         return "undelivered";
@@ -75,8 +63,8 @@ const Delivery_search = ({ navigation }) => {
     }
   };
 
-  const search_delivery = async () => {
-    if (search == "") {
+  const deliveryId_delivery = async () => {
+    if (deliveryId == "") {
       Alert.alert("אנא מלאו את כתובת המשלוח", "", [{ text: "OK" }]);
       setNotFoundDelivery(false);
       setDeliveryDetails(false);
@@ -128,32 +116,32 @@ const Delivery_search = ({ navigation }) => {
           </TouchableOpacity>
           <Text style={styles.title_text}>חיפוש משלוח</Text>
         </View>
-        <View style={styles.search_bar_container}>
+        <View style={styles.deliveryId_bar_container}>
           <TouchableOpacity
-            style={styles.search_btn_container}
-            onPress={editSearchBtnPress}
+            style={styles.deliveryId_btn_container}
+            onPress={editDeliveryIdBtnPress}
           >
-            <View style={styles.search_btn_icon_container}>
-              <TouchableOpacity onPress={search_delivery}>
+            <View style={styles.deliveryId_btn_icon_container}>
+              <TouchableOpacity onPress={deliveryId_delivery}>
                 <Image
                   source={require("../../assets/Search_alt.png")}
-                  style={styles.search_btn}
+                  style={styles.deliveryId_btn}
                 />
               </TouchableOpacity>
             </View>
             <View style={styles.editText_container}>
-              {editSearch ? (
+              {editDeliveryId ? (
                 <TextInput
-                  style={styles.search_input_text}
-                  onChangeText={SearchTextChangeFunction}
-                  value={search}
+                  style={styles.deliveryId_input_text}
+                  onChangeText={deliveryIdTextChangeFunction}
+                  value={deliveryId}
                   autoFocus={true}
                   keyboardType="numeric"
                   placeholder="אנא הכנס מזהה משלוח"
-                  onBlur={() => setSearchOnPress(false)}
+                  onBlur={() => setDeliveryIdOnPress(false)}
                 />
               ) : (
-                <Text style={styles.search_input_text}>{search}</Text>
+                <Text style={styles.deliveryId_input_text}>{deliveryId}</Text>
               )}
             </View>
           </TouchableOpacity>
@@ -209,7 +197,7 @@ const styles = StyleSheet.create({
     fontSize: height * 0.06,
     color: "#38A3A5",
   },
-  search_btn_container: {
+  deliveryId_btn_container: {
     flexDirection: "row",
     backgroundColor: "white",
     width: width * 0.9,
@@ -224,7 +212,7 @@ const styles = StyleSheet.create({
     color: "black",
     marginTop: width * 0.015,
   },
-  search_input_text: {
+  deliveryId_input_text: {
     fontSize: width * 0.06,
     paddingVertical: 0,
     textAlignVertical: "center",
@@ -239,16 +227,16 @@ const styles = StyleSheet.create({
     marginTop: height * 0.05,
     width: width,
   },
-  search_btn: {
+  deliveryId_btn: {
     width: width * 0.1,
     height: height * 0.05,
   },
-  search_btn_icon_container: {
+  deliveryId_btn_icon_container: {
     alignSelf: "flex-start",
     marginLeft: width * 0.05,
     marginTop: width * 0.02,
   },
-  search_bar_container: {
+  deliveryId_bar_container: {
     alignItems: "center",
     justifyContent: "center",
   },

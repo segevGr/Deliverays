@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IP, setLoginUserId, setLoginUserName } from "../constFiles";
+import { setLoginUserId, setLoginUserName } from "../constFiles";
 import {
   View,
   TextInput,
@@ -11,12 +11,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { checkUserLogin } from "../database/usersQueries";
 
 const { width, height } = Dimensions.get("window");
 
 const LoginScreen = ({ navigation }) => {
-  const ip = IP();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,6 +28,7 @@ const LoginScreen = ({ navigation }) => {
       );
       return;
     }
+    Keyboard.dismiss();
     const user_results = await is_deliver_exists(username, password);
     if (user_results == "deliver") {
       Alert.alert(`ברוך הבא ${username}!`, "מיד תועבר לעמוד האישי שלך", [
@@ -51,19 +51,16 @@ const LoginScreen = ({ navigation }) => {
 
   const is_deliver_exists = async (username, password) => {
     try {
-      const response = await fetch(
-        `http://${ip}:3000/user/${username}/${password}`,
-        {
-          method: "GET",
-        }
-      );
-      const data = await response.json();
-      if (data.users.length == 0) {
-        return "false";
+      userType = await checkUserLogin(username, password);
+
+      if (userType === "Doesn't exists") {
+        return false;
       }
-      setLoginUserId(data.users[0].ID);
+
+      setLoginUserId(userType.id);
       setLoginUserName(username);
-      if (data.users[0].isAdmin == 0) {
+
+      if (userType.isAdmin == 0) {
         return "deliver";
       } else {
         return "manager";

@@ -92,3 +92,6 @@ Version 1.6.0
 	* Deploy the app
 	* Add to "assets" folder photos for the deployment
 	* Fix filter title on "Delivery_filter_dialog.js"
+
+Version 2.0.0
+	* Change the Backend from Node.js to Firebase DB and update all the Frontend DB calls.

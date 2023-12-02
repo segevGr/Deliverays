@@ -11,53 +11,18 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { IP, getLoginUserName, getLoginUserId } from "../../constFiles";
+import { getLoginUserName, getLoginUserId } from "../../constFiles";
+import { checkUserLogin, changePassword } from "../../database/usersQueries";
 
 const { width, height } = Dimensions.get("window");
 
 const Change_password_dialog = ({ visible, onClose }) => {
-  const user_name = getLoginUserName();
-  const user_id = getLoginUserId();
-  const ip = IP();
+  const username = getLoginUserName();
+  const userID = getLoginUserId();
 
   const [currentPass, setCurrentPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [acceptNewPass, setAcceptNewPass] = useState("");
-
-  const check_current_pass = async () => {
-    try {
-      const response = await fetch(
-        `http://${ip}:3000/user/${user_name}/${currentPass}`,
-        {
-          method: "GET",
-        }
-      );
-      const data = await response.json();
-      return data.users.length == 1;
-    } catch (error) {
-      console.log("Error fetching letters:", error);
-    }
-  };
-
-  const change_password = async () => {
-    const requestBody = JSON.stringify({
-      password: newPass,
-    });
-
-    try {
-      const response = await fetch(`http://${ip}:3000/user/${user_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: requestBody,
-      });
-      return true;
-    } catch (error) {
-      console.log("Error fetching users:", error);
-      return false;
-    }
-  };
 
   const handle_change_password = async () => {
     if (currentPass == "" || newPass == "" || acceptNewPass == "") {
@@ -65,7 +30,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
         { text: "הבנתי" },
       ]);
       return;
-    } else if (!(await check_current_pass())) {
+    } else if (await checkUserLogin(username, currentPass) === "Doesn't exists") {
       Alert.alert(
         `שגיאה! הסיסמה הנוכחית שהזנת לא נכונה`,
         "אנא הזן סיסמה נוכחית תקינה",
@@ -85,7 +50,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
       ]);
       return;
     } else {
-      if (await change_password()) {
+      if (await changePassword(userID, newPass)) {
         Alert.alert(
           `הסיסמה עודכנה בהצלחה!`,
           "",

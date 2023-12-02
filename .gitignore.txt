@@ -18,3 +18,4 @@ Thumbs.db    # Windows
 ToDo.txt
 constFiles.js
 route_creation_script.py
+firebaseInit.js

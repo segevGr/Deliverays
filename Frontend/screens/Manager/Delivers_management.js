@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IP, getLoginUserId, getLoginUserName } from "../../constFiles";
+import { getLoginUserId, getLoginUserName } from "../../constFiles";
 import {
   View,
   Text,
@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import styles from "../Global_Files/management_style";
+import { getAllUsers, deleteUser } from "../../database/usersQueries";
 
 const Delivers_management = ({ navigation }) => {
-  const ip = IP();
 
   const delete_alert = (deliver_id, deliver_name) => {
     Alert.alert(
@@ -27,12 +27,7 @@ const Delivers_management = ({ navigation }) => {
   };
 
   const delete_deliver = async (deliver_id) => {
-    try {
-      const response = await fetch(`http://${ip}:3000/user/${deliver_id}`, {
-        method: "DELETE",
-      });
-    } catch (error) {
-      console.log("Error fetching users:", error);
+    if (!await deleteUser(deliver_id)){
       Alert.alert(
         `אופס... משהו השתבש`,
         "אנא נסו שוב מאוחר יותר",
@@ -63,18 +58,24 @@ const Delivers_management = ({ navigation }) => {
 
   const getUsersFromDB = async () => {
     try {
-      const response = await fetch(`http://${ip}:3000/user`, {
-        method: "GET",
-      });
-      const data = await response.json();
+      const usersList = await getAllUsers();
+      const result = usersList.map((result) => ({
+        ID: result.ID,
+        address: result.address,
+        fullName: result.fullName,
+        isActiveUser: result.isActiveUser,
+        isAdmin: result.isAdmin,
+        password: result.password,
+        phoneNumber: result.phoneNumber,
+      }));
 
-      const users = data.users
+      const users = result
         .map((user) => ({
           id: user.ID,
           fullName: user.fullName,
           isAdmin: user.isAdmin,
         }))
-        .filter((user) => user.isAdmin === 0);
+        .filter((user) => user.isAdmin === "0");
       setDelivers_list(users);
     } catch (error) {
       console.log("Error fetching users:", error);

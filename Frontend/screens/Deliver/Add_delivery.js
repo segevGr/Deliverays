@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IP, getLoginUserId } from "../../constFiles";
+import { getLoginUserId } from "../../constFiles";
 import {
   View,
   TextInput,
@@ -14,18 +14,18 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
+import { addDelivery, isDeliveryAlreadyExists } from "../../database/deliveriesQueries";
 
 const { width, height } = Dimensions.get("window");
 
 const Add_delivery = ({ navigation }) => {
-  const ip = IP();
   const deliver_id = getLoginUserId();
 
   const back_to_previous_page = () => {
     navigation.goBack();
   };
 
-  const [ID, setID] = useState();
+  const [letterNumber, setID] = useState();
   const IDTextChangeFunction = (newID) => {
     setID(newID);
   };
@@ -86,7 +86,7 @@ const Add_delivery = ({ navigation }) => {
 
   const check_if_filled_all_fields = async () => {
     if (
-      ID == "" ||
+      letterNumber == "" ||
       street == "" ||
       city == "" ||
       client == "" ||
@@ -110,21 +110,6 @@ const Add_delivery = ({ navigation }) => {
       return true;
     }
     return false;
-  };
-
-  const is_id_already_exists = async () => {
-    try {
-      const response = await fetch(`http://${ip}:3000/letter/${ID}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (data.result.length == 1) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.log("Error fetching letters:", error);
-    }
   };
 
   const is_valid_date_format = () => {
@@ -154,25 +139,26 @@ const Add_delivery = ({ navigation }) => {
     return true;
   };
 
-  const validAddress = async () => {
-    let address = street + ", " + city;
-    const response = await fetch(
-      `http://${ip}:3000/letterValidation/${address}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  // const validAddress = async () => {
+  //   let address = street + ", " + city;
+  //   const response = await fetch(
+  //     `http://${ip}:3000/letterValidation/${address}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const data = await response.json();
-    return data["Valid address"];
-  };
+  //   const data = await response.json();
+  //   return data["Valid address"];
+  // };
 
   const save_changes_in_DB = async () => {
-    const correct_address = await validAddress();
-    if (await is_id_already_exists()) {
+    // const correct_address = await validAddress();
+    const correct_address = true;
+    if (await isDeliveryAlreadyExists(letterNumber)) {
       Alert.alert(
         `שגיאה - מספר המשלוח כבר קיים במערכת`,
         "אנא בדקו שהזנתם את מספר המשלוח כראוי",
@@ -196,11 +182,11 @@ const Add_delivery = ({ navigation }) => {
       return;
     }
 
-    setStreet(correct_address.split(",")[0].trim());
-    setCity(correct_address.split(",")[1].trim());
+    // setStreet(correct_address.split(",")[0].trim());
+    // setCity(correct_address.split(",")[1].trim());
 
-    const requestBody = JSON.stringify({
-      letterNumber: ID,
+    const letterDetails = {
+      letterNumber: letterNumber,
       addressee: recipient,
       clientName: client,
       deliveryStreet: street,
@@ -208,32 +194,27 @@ const Add_delivery = ({ navigation }) => {
       deliveryDeadline: convert_date_to_request_syntax(deliveryDate),
       addresseePhoneNumber: recipient_phoneNumber,
       userID: deliver_id,
-    });
+      isDelivered: '0'
+    };
 
-    try {
-      const response = await fetch(`http://${ip}:3000/letter`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: requestBody,
-      });
-
-      Alert.alert(
-        `המשלוח נוסף בהצלחה למערכת!`,
-        "",
-        [{ text: "תודה!", onPress: () => null }],
-        { cancelable: false }
-      );
-    } catch (error) {
-      console.log("Error fetching users:", error);
+    const addResult = await addDelivery(letterDetails, letterNumber);
+    if (addResult !== true) {
+      console.log("Error fetching letters:", addResult);
       Alert.alert(
         `אופס... משהו השתבש`,
         "אנא נסו שוב מאוחר יותר",
         [{ text: "הבנתי", onPress: () => null }],
         { cancelable: false }
       );
+      return;
     }
+
+    Alert.alert(
+      `המשלוח נוסף בהצלחה למערכת!`,
+      "",
+      [{ text: "תודה!", onPress: () => null }],
+      { cancelable: false }
+    );
 
     navigation.goBack();
   };
@@ -276,7 +257,7 @@ const Add_delivery = ({ navigation }) => {
               <TextInput
                 style={styles.btn}
                 onChangeText={IDTextChangeFunction}
-                value={ID}
+                value={letterNumber}
                 keyboardType="numeric"
               />
               <Text style={styles.attribute_text}>שולח</Text>

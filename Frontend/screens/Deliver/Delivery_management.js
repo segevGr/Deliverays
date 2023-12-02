@@ -7,14 +7,17 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { IP, getLoginUserId } from "../../constFiles";
+import { getLoginUserId } from "../../constFiles";
 import { useFocusEffect } from "@react-navigation/native";
 import Delivery_filter_dialog from "./Dialogs/Delivery_filter_dialog";
 import styles from "../Global_Files/management_style";
+import {
+  getAllDeliveries,
+  deleteDelivery,
+} from "../../database/deliveriesQueries";
 
 const Delivery_management = ({ navigation }) => {
   const deliver_id = getLoginUserId();
-  const ip = IP();
 
   const [filterDialogVisible, setFilterDialogVisible] = useState(false);
   const [clientNameList, setClientNameList] = useState([]);
@@ -41,20 +44,17 @@ const Delivery_management = ({ navigation }) => {
   };
 
   const delete_delivery = async (letterNumber) => {
-    try {
-      const response = await fetch(`http://${ip}:3000/letter/${letterNumber}`, {
-        method: "DELETE",
-      });
-    } catch (error) {
-      console.log("Error fetching letters:", error);
+    const deleteResult = await deleteDelivery(letterNumber);
+    if (deleteResult !== true) {
+      console.log("Error fetching letters:", deleteResult);
       Alert.alert(
         `אופס... משהו השתבש`,
         "אנא נסו שוב מאוחר יותר",
         [{ text: "הבנתי", onPress: () => null }],
         { cancelable: false }
       );
+      return;
     }
-
     const updatedDelivery_list = delivery_list.filter(
       (delivery) => delivery.letterNumber !== letterNumber
     );
@@ -75,15 +75,8 @@ const Delivery_management = ({ navigation }) => {
 
   const getLettersFromDB = async () => {
     try {
-      const response = await fetch(
-        `http://${ip}:3000/letter/all/${deliver_id}`,
-        {
-          method: "GET",
-        }
-      );
-      const data = await response.json();
-
-      const result = data.result.map((result) => ({
+      const deliveriesList = await getAllDeliveries(deliver_id);
+      const result = deliveriesList.map((result) => ({
         letterNumber: result.letterNumber,
         deliveryAddress: result.deliveryStreet + ", " + result.deliveryCity,
         deliveryCity: result.deliveryCity,
@@ -171,10 +164,10 @@ const Delivery_management = ({ navigation }) => {
             let deliveryColor;
 
             switch (letter.isDelivered) {
-              case 0:
+              case "0":
                 deliveryColor = "#22577A";
                 break;
-              case 1:
+              case "1":
                 deliveryColor = "green";
                 break;
             }

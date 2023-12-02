@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IP } from "../../constFiles";
 import {
   View,
   TextInput,
@@ -13,11 +12,11 @@ import {
   Keyboard,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
+import { getUserByID, isUserNameAlreadyExists, updateUserDetails } from "../../database/usersQueries";
 
 const { width, height } = Dimensions.get("window");
 
 const Deliver_edit = ({ navigation, route }) => {
-  const ip = IP();
   const { deliver_id, deliver_name } = route.params;
 
   const back_to_previous_page = () => {
@@ -41,13 +40,10 @@ const Deliver_edit = ({ navigation, route }) => {
 
   const getUsersFromDB = async () => {
     try {
-      const response = await fetch(`http://${ip}:3000/user/${deliver_id}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      setUsername(data["user"][0]["fullName"]);
-      setAddress(data["user"][0]["address"]);
-      setPhoneNumber(data["user"][0]["phoneNumber"]);
+      const userDetails = await getUserByID(deliver_id)
+      setUsername(userDetails.fullName);
+      setAddress(userDetails.address);
+      setPhoneNumber(userDetails.phoneNumber);
     } catch (error) {
       console.log("Error fetching users:", error);
     }
@@ -77,24 +73,6 @@ const Deliver_edit = ({ navigation, route }) => {
     );
   };
 
-  const is_username_already_exists = async () => {
-    if (deliver_name == Username) {
-      return false;
-    }
-    try {
-      const response = await fetch(`http://${ip}:3000/username/${Username}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (data.user.length == 1) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.log("Error fetching users:", error);
-    }
-  };
-
   const is_valid_phone_number = () => {
     const valid_phone_number_regex = /^05\d{8}$/;
     if (valid_phone_number_regex.test(phoneNumber)) {
@@ -103,24 +81,25 @@ const Deliver_edit = ({ navigation, route }) => {
     return false;
   };
 
-  const validAddress = async () => {
-    const response = await fetch(
-      `http://${ip}:3000/letterValidation/${address}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  // const validAddress = async () => {
+  //   const response = await fetch(
+  //     `http://${ip}:3000/letterValidation/${address}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const data = await response.json();
-    return data["Valid address"];
-  };
+  //   const data = await response.json();
+  //   return data["Valid address"];
+  // };
 
   const save_changes_in_DB = async () => {
-    const correct_address = await validAddress();
-    if (await is_username_already_exists()) {
+    // const correct_address = await validAddress();
+    const correct_address = true;
+    if (deliver_name != Username && await isUserNameAlreadyExists(Username)) {
       Alert.alert(`שגיאה - שם המשתמש כבר תפוס`, "אנא נסו להזין שם משתמש חדש", [
         { text: "הבנתי!" },
       ]);
@@ -140,30 +119,31 @@ const Deliver_edit = ({ navigation, route }) => {
       return;
     }
 
-    try {
-      const requestBody = JSON.stringify({
-        FullName: Username,
-        address: correct_address,
+      const userDetails = {
+        fullName: Username,
+        address: address,
         phoneNumber: phoneNumber,
-      });
+      };
 
-      const response = await fetch(`http://${ip}:3000/user/${deliver_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: requestBody,
-      });
-    } catch (error) {
-      console.log("Error fetching users:", error);
+      const updateResult = await updateUserDetails(deliver_id, userDetails);
+      if (updateResult !== true) {
+        console.log("Error fetching letters:", updateResult);
+        Alert.alert(
+          `אופס... משהו השתבש`,
+          "אנא נסו שוב מאוחר יותר",
+          [{ text: "הבנתי", onPress: () => null }],
+          { cancelable: false }
+        );
+        return;
+      }
+
       Alert.alert(
-        `אופס... משהו השתבש`,
-        "אנא נסו שוב מאוחר יותר",
-        [{ text: "הבנתי", onPress: () => null }],
+        `פרטי השליח ${Username} עודכנו בהצלחה!`,
+        "",
+        [{ text: "תודה!", onPress: () => null }],
         { cancelable: false }
       );
-    }
-
+  
     navigation.goBack();
   };
 

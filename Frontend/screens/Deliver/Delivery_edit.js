@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IP } from "../../constFiles";
 import {
   View,
   TextInput,
@@ -15,11 +14,14 @@ import {
   ScrollView,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
+import {
+  updateDelivery,
+  getDeliveryByID,
+} from "../../database/deliveriesQueries";
 
 const { width, height } = Dimensions.get("window");
 
 const Delivery_edit = ({ navigation, route }) => {
-  const ip = IP();
   const { letterNumber } = route.params;
 
   const back_to_previous_page = () => {
@@ -124,24 +126,25 @@ const Delivery_edit = ({ navigation, route }) => {
     return true;
   };
 
-  const validAddress = async () => {
-    let address = street + ", " + city;
-    const response = await fetch(
-      `http://${ip}:3000/letterValidation/${address}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  // const validAddress = async () => {
+  //   let address = street + ", " + city;
+  //   const response = await fetch(
+  //     `http://${ip}:3000/letterValidation/${address}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const data = await response.json();
-    return data["Valid address"];
-  };
+  //   const data = await response.json();
+  //   return data["Valid address"];
+  // };
 
   const save_changes_in_DB = async () => {
-    const correct_address = await validAddress();
+    // const correct_address = await validAddress();
+    const correct_address = true;
     if (!correct_address) {
       Alert.alert(
         `שגיאה! כתובת המשלוח אינה קיימת`,
@@ -159,43 +162,34 @@ const Delivery_edit = ({ navigation, route }) => {
       return;
     }
 
-    setStreet(correct_address.split(",")[0].trim());
-    setCity(correct_address.split(",")[1].trim());
+    // setStreet(correct_address.split(",")[0].trim());
+    // setCity(correct_address.split(",")[1].trim());
 
-    const requestBody = JSON.stringify({
+    const letterDetails = {
       addressee: recipient,
       clientName: client,
       deliveryStreet: street,
       deliveryCity: city,
       deliveryDeadline: convert_date_to_request_syntax(deliveryDate),
       addresseePhoneNumber: recipient_phoneNumber,
-    });
-
-    try {
-      const response = await fetch(`http://${ip}:3000/letter/${letterNumber}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: requestBody,
-      });
-
-      Alert.alert(
-        `המשלוח עודכן בהצלחה במערכת!`,
-        "",
-        [{ text: "תודה!", onPress: () => null }],
-        { cancelable: false }
-      );
-    } catch (error) {
-      console.log("Error fetching users:", error);
+    };
+    const updateResult = await updateDelivery(letterDetails, letterNumber);
+    if (updateResult !== true) {
+      console.log("Error fetching letters:", updateResult);
       Alert.alert(
         `אופס... משהו השתבש`,
         "אנא נסו שוב מאוחר יותר",
         [{ text: "הבנתי", onPress: () => null }],
         { cancelable: false }
       );
+      return;
     }
-
+    Alert.alert(
+      `המשלוח עודכן בהצלחה במערכת!`,
+      "",
+      [{ text: "תודה!", onPress: () => null }],
+      { cancelable: false }
+    );
     navigation.goBack();
   };
 
@@ -217,19 +211,15 @@ const Delivery_edit = ({ navigation, route }) => {
 
   const getDeliverFromDB = async () => {
     try {
-      const response = await fetch(`http://${ip}:3000/letter/${letterNumber}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      setStreet(data["result"][0]["deliveryStreet"]);
-      setCity(data["result"][0]["deliveryCity"]);
-      setRecipient(data["result"][0]["addressee"]);
-      setRecipient_phoneNumber(data["result"][0]["addresseePhoneNumber"]);
-      setClient(data["result"][0]["clientName"]);
-      setDeliveryDate(
-        data["result"][0]["deliveryDeadline"].replaceAll("-", ".")
-      );
-      if (data["result"][0]["isDelivered"] == 1) {
+      const delivery = await getDeliveryByID(letterNumber);
+
+      setStreet(delivery.deliveryStreet);
+      setCity(delivery.deliveryCity);
+      setRecipient(delivery.addressee);
+      setRecipient_phoneNumber(delivery.addresseePhoneNumber);
+      setClient(delivery.clientName);
+      setDeliveryDate(delivery.deliveryDeadline);
+      if (delivery.isDelivered == 1) {
         setDeliveryStatus("נמסר");
       }
     } catch (error) {
