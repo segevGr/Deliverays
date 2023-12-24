@@ -98,3 +98,10 @@ Version 2.0.0
 
 Version 2.0.1
 	* Update gitignore file
+
+Version 2.1.0
+	Frontend:
+	* Create comps folder that will include components.
+	* Create "MainPageOptions.js" that includes the management component and set it into
+		"Home_page_manager.js" and "Home_page_deliver.js".
+	* Change in the screens above + "ChangePasswordDialog.JS" + "Home_page_style.js" all to camelCases.

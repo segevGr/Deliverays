@@ -16,7 +16,7 @@ import { checkUserLogin, changePassword } from "../../database/usersQueries";
 
 const { width, height } = Dimensions.get("window");
 
-const Change_password_dialog = ({ visible, onClose }) => {
+const ChangePasswordDialog = ({ visible, onClose }) => {
   const username = getLoginUserName();
   const userID = getLoginUserId();
 
@@ -24,13 +24,15 @@ const Change_password_dialog = ({ visible, onClose }) => {
   const [newPass, setNewPass] = useState("");
   const [acceptNewPass, setAcceptNewPass] = useState("");
 
-  const handle_change_password = async () => {
+  const handleChangePassword = async () => {
     if (currentPass == "" || newPass == "" || acceptNewPass == "") {
       Alert.alert("שגיאה!", "אנא מלאו את כל השדות על מנת לשנות סיסמה", [
         { text: "הבנתי" },
       ]);
       return;
-    } else if (await checkUserLogin(username, currentPass) === "Doesn't exists") {
+    } else if (
+      (await checkUserLogin(username, currentPass)) === "Doesn't exists"
+    ) {
       Alert.alert(
         `שגיאה! הסיסמה הנוכחית שהזנת לא נכונה`,
         "אנא הזן סיסמה נוכחית תקינה",
@@ -85,7 +87,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
           <View style={styles.dialog}>
             <Text style={styles.title}>סיסמה נוכחית</Text>
             <TextInput
-              style={styles.input_container}
+              style={styles.inputContainer}
               value={currentPass}
               placeholder="הכנס את הסיסמה הנוכחית"
               onChangeText={setCurrentPass}
@@ -95,7 +97,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 
             <Text style={styles.title}>סיסמה חדשה</Text>
             <TextInput
-              style={styles.input_container}
+              style={styles.inputContainer}
               value={newPass}
               placeholder="הכנס את הסיסמה החדשה"
               onChangeText={setNewPass}
@@ -105,7 +107,7 @@ const Change_password_dialog = ({ visible, onClose }) => {
 
             <Text style={styles.title}>אימות סיסמה</Text>
             <TextInput
-              style={styles.input_container}
+              style={styles.inputContainer}
               value={acceptNewPass}
               placeholder="אמת את הסיסמה החדשה"
               onChangeText={setAcceptNewPass}
@@ -113,16 +115,16 @@ const Change_password_dialog = ({ visible, onClose }) => {
               secureTextEntry={true}
             />
 
-            <View style={styles.btns_container}>
+            <View style={styles.btnsContainer}>
               <TouchableOpacity style={styles.btns} onPress={onClose}>
-                <Text style={styles.btns_text}>ביטול</Text>
+                <Text style={styles.btnsText}>ביטול</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.btns}
-                onPress={handle_change_password}
+                onPress={handleChangePassword}
               >
-                <Text style={styles.btns_text}>שנה סיסמה</Text>
+                <Text style={styles.btnsText}>שנה סיסמה</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -147,15 +149,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
   },
-  option_container: {
-    alignItems: "center",
-    margin: width * 0.035,
-  },
   title: {
     fontSize: width * 0.045,
     marginTop: width * 0.02,
   },
-  btns_container: {
+  btnsContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -166,12 +164,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: width * 0.05,
   },
-  btns_text: {
+  btnsText: {
     color: "#38A3A5",
     fontWeight: "bold",
     fontSize: width * 0.055,
   },
-  input_container: {
+  inputContainer: {
     width: width * 0.5,
     height: height * 0.06,
     backgroundColor: "#38A3A5",
@@ -182,4 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Change_password_dialog;
+export default ChangePasswordDialog;

@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#C7F9CC",
   },
-  title_text: {
+  titleText: {
     textAlign: "center",
     fontSize: height * 0.035,
     fontWeight: "bold",
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  btn_text: {
+  btnText: {
     color: "white",
     textAlign: "center",
     fontSize: width * 0.06,
