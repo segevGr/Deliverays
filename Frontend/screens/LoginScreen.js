@@ -7,13 +7,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
+  SafeAreaView,
 } from "react-native";
 import { checkUserLogin } from "../database/usersQueries";
-
-const { width, height } = Dimensions.get("window");
+import MainContainerStyle from "../comps/MainContainerStyle";
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -72,24 +71,34 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="שם משתמש"
-          value={username}
-          onChangeText={setUsername}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="סיסמה"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={true}
-        />
-        <TouchableOpacity style={styles.login_btn} onPress={handleLogin}>
-          <Text style={styles.login_text}>התחברות</Text>
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView
+        style={{
+          ...MainContainerStyle.container,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <View>
+          <TextInput
+            style={styles.input}
+            placeholder="שם משתמש"
+            value={username}
+            onChangeText={setUsername}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="סיסמה"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
+          />
+          <View style={styles.loginContainer}>
+            <TouchableOpacity style={styles.login_btn} onPress={handleLogin}>
+              <Text style={styles.login_text}>התחברות</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
@@ -99,33 +108,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
     backgroundColor: "#C7F9CC",
   },
   input: {
-    width: width * 0.6,
-    height: height * 0.06,
+    width: 270,
+    height: 65,
     backgroundColor: "white",
-    marginBottom: height * 0.01,
-    paddingHorizontal: width * 0.02,
+    marginBottom: 30,
     textAlign: "center",
-    borderRadius: width * 0.06,
+    borderRadius: 50,
+    fontSize: 20,
+  },
+  loginContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 15,
   },
   login_btn: {
     backgroundColor: "#38A3A5",
-    width: width * 0.28,
-    height: height * 0.05,
-    padding: width * 0.02,
-    borderRadius: width * 0.06,
-    marginTop: height * 0.015,
-    borderRadius: 25,
+    width: 150,
+    height: 55,
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
   },
   login_text: {
     color: "white",
     textAlign: "center",
-    fontSize: width * 0.04,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });
