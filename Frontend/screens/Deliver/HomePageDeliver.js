@@ -1,22 +1,14 @@
 import { SafeAreaView } from "react-native";
 import { getLoginUserName } from "../../constFiles";
 import React, { useState } from "react";
-import ChangePasswordDialog from "../Global_Files/ChangePasswordDialog";
 import { Option, Title } from "../../comps/MainPageComp";
 import MainContainerStyle from "../../comps/MainContainerStyle";
+import ChangePasswordDialog from "../../comps/ChangePasswordDialog";
 
-const Home_page_deliver = ({ navigation }) => {
+const HomePageDeliver = ({ navigation }) => {
   const userName = getLoginUserName();
 
   const [passwordDialog, setChangePassDialog] = useState(false);
-
-  const showChangePassDialog = () => {
-    setChangePassDialog(true);
-  };
-
-  const closePassDialog = () => {
-    setChangePassDialog(false);
-  };
 
   const createRoute = () => {
     navigation.navigate("Route_creation");
@@ -32,14 +24,14 @@ const Home_page_deliver = ({ navigation }) => {
     >
       <ChangePasswordDialog
         visible={passwordDialog}
-        onClose={closePassDialog}
+        onClose={() => setChangePassDialog(false)}
       />
       <Title userName={userName} />
       <Option onPress={createRoute} text={"לבנות מסלול"} />
       <Option onPress={DeliveryManagement} text={"לנהל משלוחים"} />
-      <Option onPress={showChangePassDialog} text={"לשנות סיסמה"} />
+      <Option onPress={() => setChangePassDialog(true)} text={"לשנות סיסמה"} />
     </SafeAreaView>
   );
 };
 
-export default Home_page_deliver;
+export default HomePageDeliver;

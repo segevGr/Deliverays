@@ -1,22 +1,14 @@
 import { SafeAreaView } from "react-native";
 import { getLoginUserName } from "../../constFiles";
 import React, { useState } from "react";
-import ChangePasswordDialog from "../Global_Files/ChangePasswordDialog";
 import { Option, Title } from "../../comps/MainPageComp";
 import MainContainerStyle from "../../comps/MainContainerStyle";
+import ChangePasswordDialog from "../../comps/ChangePasswordDialog";
 
-const Home_page_deliver = ({ navigation }) => {
+const HomePageDeliver = ({ navigation }) => {
   const userName = getLoginUserName();
 
   const [passwordDialog, setChangePasswordDialog] = useState(false);
-
-  const showChangePassDialog = () => {
-    setChangePasswordDialog(true);
-  };
-
-  const closePasswordDialog = () => {
-    setChangePasswordDialog(false);
-  };
 
   const deliversManagement = () => {
     navigation.navigate("Delivers_management");
@@ -32,14 +24,17 @@ const Home_page_deliver = ({ navigation }) => {
     >
       <ChangePasswordDialog
         visible={passwordDialog}
-        onClose={closePasswordDialog}
+        onClose={() => setChangePasswordDialog(false)}
       />
       <Title userName={userName} />
       <Option onPress={deliversManagement} text={"לנהל שליחים"} />
       <Option onPress={deliverySearch} text={"לחפש משלוח"} />
-      <Option onPress={showChangePassDialog} text={"לשנות סיסמה"} />
+      <Option
+        onPress={() => setChangePasswordDialog(true)}
+        text={"לשנות סיסמה"}
+      />
     </SafeAreaView>
   );
 };
 
-export default Home_page_deliver;
+export default HomePageDeliver;

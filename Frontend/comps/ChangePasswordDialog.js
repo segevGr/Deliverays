@@ -11,8 +11,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { getLoginUserName, getLoginUserId } from "../../constFiles";
-import { checkUserLogin, changePassword } from "../../database/usersQueries";
+import { getLoginUserName, getLoginUserId } from "../constFiles";
+import { checkUserLogin, changePassword } from "../database/usersQueries";
 
 const { width, height } = Dimensions.get("window");
 

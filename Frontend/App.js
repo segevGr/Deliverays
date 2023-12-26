@@ -2,8 +2,8 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
-import Home_page_deliver from "./screens/Deliver/Home_page_deliver";
-import Home_page_manager from "./screens/Manager/Home_page_manager";
+import HomePageDeliver from "./screens/Deliver/HomePageDeliver";
+import HomePageManager from "./screens/Manager/HomePageManager";
 import Delivers_management from "./screens/Manager/Delivers_management";
 import Delivery_management from "./screens/Deliver/Delivery_management";
 import Deliver_edit from "./screens/Manager/Deliver_edit";
@@ -22,8 +22,8 @@ const MyStack = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="Home_page_deliver" component={Home_page_deliver} />
-        <Stack.Screen name="Home_page_manager" component={Home_page_manager} />
+        <Stack.Screen name="HomePageDeliver" component={HomePageDeliver} />
+        <Stack.Screen name="HomePageManager" component={HomePageManager} />
         <Stack.Screen
           name="Delivers_management"
           component={Delivers_management}

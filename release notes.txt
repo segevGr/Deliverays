@@ -103,7 +103,7 @@ Version 2.1.0
 	Frontend:
 	* Create comps folder that will include components.
 	* Create "MainPageOptions.js" that includes the management component and set it into
-		"Home_page_manager.js" and "Home_page_deliver.js".
+		"HomePageManager.js" and "HomePageDeliver.js".
 	* Change in the screens above + "ChangePasswordDialog.JS" + "Home_page_style.js" all to camelCases.
 
 Version 2.1.1
@@ -114,8 +114,14 @@ Version 2.1.1
 	* Delete "Home_page_style.js".
 	* Create "MainContainerStyle.js".
 	* Rename "MainPageOptions.js" to "MainPageComp.js" and add style in it.
-	* In pages: "Home_page_manager.js" and "Home_page_deliver.js":
+	* In pages: "HomePageManager.js" and "HomePageDeliver.js":
 		- Add "SafeAreaView"
 		- Import and use "MainContainerStyle.js"
 		- Stop using "Home_page_style.js"
 		- Start using "MainContainerStyle.js"
+
+Version 2.1.2
+	* Change "ChangePasswordDialog.js" path and update imports.
+	* In pages: "HomePageManager.js" and "HomePageDeliver.js":
+		- Change dialog call function
+		- Change filenames to camelCases and update all imports

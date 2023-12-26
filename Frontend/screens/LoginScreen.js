@@ -33,12 +33,12 @@ const LoginScreen = ({ navigation }) => {
       Alert.alert(`ברוך הבא ${username}!`, "מיד תועבר לעמוד האישי שלך", [
         { text: "OK" },
       ]);
-      navigation.navigate("Home_page_deliver");
+      navigation.navigate("HomePageDeliver");
     } else if (user_results == "manager") {
       Alert.alert(`ברוך הבא ${username}!`, "מיד תועבר לעמוד האישי שלך", [
         { text: "OK" },
       ]);
-      navigation.navigate("Home_page_manager", { username: username });
+      navigation.navigate("HomePageManager", { username: username });
     } else {
       Alert.alert(
         "שם משתמש או סיסמה לא נכונים",
