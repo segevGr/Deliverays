@@ -1,6 +1,8 @@
 # Ignore node_modules directory
-/node_modules
-node_modules/
+node_modules
+
+# Ignore files
+firebaseInit.js
 
 # Ignore build output directories
 /build/
@@ -15,8 +17,3 @@ node_modules/
 # Ignore OS-specific files
 .DS_Store    # macOS
 Thumbs.db    # Windows
-
-ToDo.txt
-constFiles.js
-route_creation_script.py
-Frontend/database/firebaseInit.js
