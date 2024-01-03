@@ -15,7 +15,7 @@ const HomePageDeliver = ({ navigation }) => {
   };
 
   const DeliveryManagement = () => {
-    navigation.navigate("Delivery_management");
+    navigation.navigate("DeliveryManagement");
   };
 
   return (

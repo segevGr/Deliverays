@@ -11,12 +11,12 @@ Version 1.1.0
 	Frontend:
 	* Create "Global_Files" folder
 	* Create Home page style file ("home_page_style.js) and use it in Home pages screens (Deliver & Manager)
-	* Create a filter button in "Delivery_management.js" that opens a
+	* Create a filter button in "DeliveryManagement.js" that opens a
 	  filter dialog ("Delivery_filter_dialog.js") That now filter only by Status.
 
 Version 1.1.1
 	Frontend:
-	* Create Management style file ("Management_file.js") and use it on "Delivery_management.js" & "Delivers_Management.js"
+	* Create Management style file ("Management_file.js") and use it on "DeliveryManagement.js" & "DeliversManagement.js"
 	* Create gitignore file
 
 Version 1.2.0
@@ -34,7 +34,7 @@ Version 1.3.0
 	* Split "deliveryAddress" column in DB to 2 columns: "deliveryStreet", "deliveryCity"
 
 	Frontend:
-	* Update "Delivery_management.js" because of DB changes
+	* Update "DeliveryManagement.js" because of DB changes
 	* Update "Add_delivery.js" because of DB changes
 	* Update "Delivery_edit.js" because of DB changes
 
@@ -67,7 +67,7 @@ Version 1.4.2
 
 Version 1.5.0
 	Frontend:
-	* Fix "management_style.js" and "Delivers_management.js" files names according the Grammar fixing
+	* Fix "management_style.js" and "DeliversManagement.js" files names according the Grammar fixing
 
 Version 1.5.1
 	Frontend:
@@ -125,3 +125,12 @@ Version 2.1.2
 	* In pages: "HomePageManager.js" and "HomePageDeliver.js":
 		- Change dialog call function
 		- Change filenames to camelCases and update all imports
+
+Version 2.1.3
+	* Create "ManagementPageComp.js"
+	* In pages: "DeliversManagement.js" and "DeliveryManagement.js":
+		- Link to "ManagementPageComp.js" and update style
+		- Add "SafeAreaView"
+		- Change filenames to camelCases and update all imports
+	* Delete "management_style.js" file.
+	* Delete "Global_Files" folder.

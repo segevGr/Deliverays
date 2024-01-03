@@ -11,7 +11,7 @@ const HomePageDeliver = ({ navigation }) => {
   const [passwordDialog, setChangePasswordDialog] = useState(false);
 
   const deliversManagement = () => {
-    navigation.navigate("Delivers_management");
+    navigation.navigate("DeliversManagement");
   };
 
   const deliverySearch = () => {
